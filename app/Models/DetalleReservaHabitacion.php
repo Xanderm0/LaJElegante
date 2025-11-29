@@ -15,9 +15,9 @@ class DetalleReservaHabitacion extends Model
 
     protected $fillable = [
         'id_habitacion',
-        'fecha_inicio',
-        'fecha_fin',
-        'cantidad_personas',
+        'fecha_inicio', 
+        'fecha_fin', 
+        'cantidad_personas', 
         'noches',
         'precio_noche',
         'descuento_aplicado',
