@@ -1,10 +1,5 @@
 package entities.enums;
 
-<<<<<<< HEAD
-public class Rol {
-    
-}
-=======
 public enum Rol {
     RECEPCIONISTA("recepcionista"),
     ASISTENTE_ADMINISTRATIVO("asistente_administrativo"),
@@ -23,4 +18,3 @@ public enum Rol {
         return valor;
     }
 }
->>>>>>> java-jeremy

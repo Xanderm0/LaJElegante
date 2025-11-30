@@ -1,10 +1,5 @@
 package entities;
 
-<<<<<<< HEAD
-public class Empleado extends ClaseBase {
-    
-}
-=======
 import entities.enums.Rol;
 import javax.persistence.*;
 import javax.validation.constraints.*;
@@ -75,4 +70,3 @@ public class Empleado extends ClaseBase {
         this.rol = rol;
     }
 }
->>>>>>> java-jeremy
