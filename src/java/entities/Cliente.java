@@ -16,7 +16,7 @@ public class Cliente extends ClaseBase {
     private int idCliente;
     
     @NotNull(message = "El tipo de cliente es obligatorio")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_tipo_cliente")
     private TipoCliente tipoCliente;
     

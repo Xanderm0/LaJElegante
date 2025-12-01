@@ -2,29 +2,23 @@ package entities;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import javax.persistence.*;
 
 public abstract class ClaseBase implements Serializable {
     
     private static final long serialVersionUID = 1L; // ayuda a controlar la compatibilidad
     
-    @Column(name = "created_at", updatable = false, nullable = false)
     private LocalDateTime createdAt;
 
-    @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
 
-    @Column(name = "deleted_at")
     private LocalDateTime deletedAt;
 
-    @PrePersist
     public void prePersist() {
         LocalDateTime now = LocalDateTime.now();
         this.createdAt = now;
         this.updatedAt = now;
     }
 
-    @PreUpdate
     public void preUpdate() {
         this.updatedAt = LocalDateTime.now();
     }

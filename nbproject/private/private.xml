@@ -3,8 +3,18 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/C:/Users/Pan/Documents/VSC/JAVA/JSF/LaJElegante-JSF/src/java/entities/Empleado.java</file>
             <file>file:/C:/Users/Pan/Documents/VSC/JAVA/JSF/LaJElegante-JSF/src/java/entities/Cliente.java</file>
+            <file>file:/C:/Users/Pan/Documents/VSC/JAVA/JSF/LaJElegante-JSF/src/java/entities/Habitacion.java</file>
+            <file>file:/C:/Users/Pan/Documents/VSC/JAVA/JSF/LaJElegante-JSF/src/java/entities/Mesa.java</file>
+            <file>file:/C:/Users/Pan/Documents/VSC/JAVA/JSF/LaJElegante-JSF/src/java/entities/ReservaHabitacion.java</file>
+            <file>file:/C:/Users/Pan/Documents/VSC/JAVA/JSF/LaJElegante-JSF/src/java/entities/ReservaRestaurante.java</file>
+            <file>file:/C:/Users/Pan/Documents/VSC/JAVA/JSF/LaJElegante-JSF/src/java/entities/Tarifa.java</file>
+            <file>file:/C:/Users/Pan/Documents/VSC/JAVA/JSF/LaJElegante-JSF/src/java/entities/ClaseBase.java</file>
             <file>file:/C:/Users/Pan/Documents/VSC/JAVA/JSF/LaJElegante-JSF/src/java/entities/DetallesReservaHabitacion.java</file>
+            <file>file:/C:/Users/Pan/Documents/VSC/JAVA/JSF/LaJElegante-JSF/src/java/entities/Temporada.java</file>
+            <file>file:/C:/Users/Pan/Documents/VSC/JAVA/JSF/LaJElegante-JSF/src/java/entities/TipoCliente.java</file>
+            <file>file:/C:/Users/Pan/Documents/VSC/JAVA/JSF/LaJElegante-JSF/src/java/entities/TipoHabitacion.java</file>
         </group>
     </open-files>
 </project-private>
