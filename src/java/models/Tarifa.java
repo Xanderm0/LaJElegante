@@ -1,6 +1,6 @@
-package entities;
+package models;
 
-import entities.enums.Estado;
+import models.enums.Estado;
 
 public class Tarifa extends ClaseBase{
     private int idTarifa;

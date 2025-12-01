@@ -1,6 +1,6 @@
-package entities;
+package models;
 
-import entities.enums.Rol;
+import models.enums.Rol;
 
 public class Empleado extends ClaseBase { 
     private int id;

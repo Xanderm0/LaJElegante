@@ -1,4 +1,4 @@
-package entities.enums;
+package models.enums;
 
 public enum EstadoHabitacion {
     EN_SERVICIO("en servicio"),

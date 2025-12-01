@@ -1,4 +1,4 @@
-package entities.enums;
+package models.enums;
 
 public enum NombreTemporada {
     ALTA("alta"),

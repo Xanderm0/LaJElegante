@@ -1,7 +1,7 @@
-package entities;
+package models;
 
-import entities.enums.Estado;
-import entities.enums.EstadoReserva;
+import models.enums.Estado;
+import models.enums.EstadoReserva;
 import java.time.LocalDate;
 import java.time.LocalTime;
 

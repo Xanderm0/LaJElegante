@@ -1,6 +1,6 @@
-package entities;
+package models;
 
-import entities.enums.Estado;
+import models.enums.Estado;
 
 public class Mesa extends ClaseBase {
     private int idMesa;

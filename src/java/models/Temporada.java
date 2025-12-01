@@ -1,6 +1,6 @@
-package entities;
+package models;
 
-import entities.enums.NombreTemporada;
+import models.enums.NombreTemporada;
 import java.time.LocalDate;
 
 public class Temporada extends ClaseBase {

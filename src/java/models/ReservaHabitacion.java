@@ -1,4 +1,4 @@
-package entities;
+package models;
 
 public class ReservaHabitacion extends ClaseBase {
     private int idReservaHabitacion;

@@ -1,6 +1,6 @@
-package entities;
+package models;
 
-import entities.enums.NombreTipoHabitacion;
+import models.enums.NombreTipoHabitacion;
 
 public class TipoHabitacion extends ClaseBase {
     private int idTipoHabitacion;

@@ -1,7 +1,7 @@
-package entities;
+package models;
 
-import entities.enums.Estado;
-import entities.enums.Saludo;
+import models.enums.Estado;
+import models.enums.Saludo;
 import javax.validation.constraints.*;
 import javax.persistence.*;
 import org.hibernate.validator.constraints.Email;

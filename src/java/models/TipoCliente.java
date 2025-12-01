@@ -1,4 +1,4 @@
-package entities;
+package models;
 
 public class TipoCliente extends ClaseBase {
     private int idTipoCliente;
