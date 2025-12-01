@@ -1,33 +1,16 @@
 package entities;
 
 import entities.enums.Rol;
-import javax.persistence.*;
-import javax.validation.constraints.*;
-import org.hibernate.validator.constraints.Email;
-import org.hibernate.validator.constraints.NotBlank;
 
-@Entity
-@Table(name = "empleados")
-public class Empleado extends ClaseBase {
-    
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class Empleado extends ClaseBase { 
     private int id;
     
-    @NotBlank(message = "El nombre es obligatorio")
-    @Size(max = 255, message = "El nombre no puede exceder 255 caracteres")
     private String name;
     
-    @NotBlank(message = "El email es obligatorio")
-    @Email(message = "Debe ser un email válido")
-    @Column(unique = true)
     private String email;
     
-    @NotBlank(message = "La contraseña es obligatoria")
     private String password;
     
-    @NotNull(message = "El rol es obligatorio")
-    @Enumerated(EnumType.STRING)
     private Rol rol;
 
     public int getId() {
