@@ -14,9 +14,6 @@ public class TemporadaDAO {
     private PreparedStatement ps;
     private ResultSet rs;
 
-    // ------------------------------------------------------------
-    // Obtener temporada actual según fechas
-    // ------------------------------------------------------------
     public Temporada getTemporadaActual() {
         Temporada temporada = null;
 
@@ -39,9 +36,6 @@ public class TemporadaDAO {
         return temporada;
     }
 
-    // ------------------------------------------------------------
-    // Listar todas las temporadas activas
-    // ------------------------------------------------------------
     public List<Temporada> getAllTemporadas() {
         List<Temporada> lista = new ArrayList<>();
 
@@ -60,10 +54,7 @@ public class TemporadaDAO {
         }
         return lista;
     }
-
-    // ------------------------------------------------------------
-    // Crear temporada
-    // ------------------------------------------------------------
+    
     public void createTemporada(Temporada t) {
         try {
             String sql = "INSERT INTO temporadas "
@@ -83,9 +74,6 @@ public class TemporadaDAO {
         }
     }
 
-    // ------------------------------------------------------------
-    // Actualizar temporada
-    // ------------------------------------------------------------
     public void updateTemporada(Temporada t) {
         try {
             String sql = "UPDATE temporadas SET "
@@ -107,9 +95,6 @@ public class TemporadaDAO {
         }
     }
 
-    // ------------------------------------------------------------
-    // Mapeo ResultSet → Temporada
-    // ------------------------------------------------------------
     private Temporada mapTemporada(ResultSet rs) throws SQLException {
 
         Temporada t = new Temporada();
@@ -132,3 +117,4 @@ public class TemporadaDAO {
         return t;
     }
 }
+
