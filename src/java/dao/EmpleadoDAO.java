@@ -16,7 +16,6 @@ public class EmpleadoDAO {
     private PreparedStatement ps;
     private ResultSet rs;
 
-    // LISTAR TODOS LOS EMPLEADOS ACTIVOS
     public List<Empleado> getAll() {
         List<Empleado> lista = new ArrayList<>();
 
@@ -36,7 +35,6 @@ public class EmpleadoDAO {
         return lista;
     }
 
-    // BUSCAR POR ID
     public Empleado getById(int id) {
         Empleado emp = null;
 
@@ -57,7 +55,6 @@ public class EmpleadoDAO {
         return emp;
     }
 
-    // BUSCAR POR EMAIL
     public Empleado getByEmail(String email) {
         Empleado emp = null;
 
@@ -78,7 +75,6 @@ public class EmpleadoDAO {
         return emp;
     }
 
-    // CREAR EMPLEADO
     public void create(Empleado emp) {
         try {
             String sql = "INSERT INTO users (name, email, password, role, created_at, updated_at) "
@@ -97,7 +93,6 @@ public class EmpleadoDAO {
         }
     }
 
-    // ACTUALIZAR EMPLEADO
     public void update(Empleado emp) {
         try {
             String sql = "UPDATE users SET name = ?, email = ?, password = ?, role = ?, "
@@ -117,7 +112,6 @@ public class EmpleadoDAO {
         }
     }
 
-    // ELIMINACIÓN LÓGICA (SOFT DELETE)
     public void delete(int id) {
         try {
             String sql = "UPDATE users SET deleted_at = NOW() WHERE id = ?";
@@ -130,7 +124,6 @@ public class EmpleadoDAO {
         }
     }
 
-    // MAPEAR REGISTRO A OBJETO EMPLEADO
     private Empleado mapRow(ResultSet rs) throws SQLException {
         Empleado emp = new Empleado();
 
@@ -143,7 +136,6 @@ public class EmpleadoDAO {
                 Rol.valueOf(rs.getString("role"))
         );
 
-        // atributos de ClaseBase
         emp.setCreatedAt(rs.getTimestamp("created_at"));
         emp.setUpdatedAt(rs.getTimestamp("updated_at"));
         emp.setDeletedAt(rs.getTimestamp("deleted_at"));
@@ -151,3 +143,4 @@ public class EmpleadoDAO {
         return emp;
     }
 }
+
