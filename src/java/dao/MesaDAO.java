@@ -16,17 +16,14 @@ public class MesaDAO {
     private PreparedStatement ps;
     private ResultSet rs;
 
-    // Convertir tinyint(1) -> Estado enum
     private Estado mapEstado(int valorBD) {
         return valorBD == 1 ? Estado.ACTIVO : Estado.INACTIVO;
     }
 
-    // Convertir Estado enum -> tinyint(1)
     private int mapEstadoToInt(Estado estado) {
         return estado == Estado.ACTIVO ? 1 : 0;
     }
 
-    // Obtener mesa por ID
     public Mesa getMesaById(int id) {
         Mesa m = null;
 
@@ -47,7 +44,6 @@ public class MesaDAO {
         return m;
     }
 
-    // Obtener mesas ACTIVAS (estado = ACTIVO)
     public List<Mesa> getMesasDisponibles() {
         List<Mesa> lista = new ArrayList<>();
 
@@ -67,7 +63,6 @@ public class MesaDAO {
         return lista;
     }
 
-    // Crear mesa
     public void createMesa(Mesa m) {
         try {
             String sql =
@@ -88,7 +83,6 @@ public class MesaDAO {
         }
     }
 
-    // Actualizar mesa
     public void updateMesa(Mesa m) {
         try {
             String sql =
@@ -110,7 +104,6 @@ public class MesaDAO {
         }
     }
 
-    // Mapper ResultSet -> Modelo Mesa
     private Mesa mapRow(ResultSet rs) throws SQLException {
         Mesa m = new Mesa();
 
@@ -122,7 +115,6 @@ public class MesaDAO {
 
         m.setEstado(mapEstado(rs.getInt("activo")));
 
-        // Si Mesa hereda campos created_at y updated_at, asignarlos:
         m.setCreated_at(rs.getTimestamp("created_at"));
         m.setUpdated_at(rs.getTimestamp("updated_at"));
 
@@ -130,6 +122,7 @@ public class MesaDAO {
     }
 
     Mesa getById(int aInt) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }
+
