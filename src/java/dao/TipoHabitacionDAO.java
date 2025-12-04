@@ -17,9 +17,6 @@ public class TipoHabitacionDAO {
     private PreparedStatement ps;
     private ResultSet rs;
 
-    // ============================================
-    // LISTAR ACTIVOS (deleted_at IS NULL)
-    // ============================================
     public List<TipoHabitacion> getAllTiposHabitacion() {
         List<TipoHabitacion> lista = new ArrayList<>();
 
@@ -56,9 +53,6 @@ public class TipoHabitacionDAO {
         return lista;
     }
 
-    // ============================================
-    // BUSCAR POR ID
-    // ============================================
     public TipoHabitacion getTipoHabitacionById(int id) {
         TipoHabitacion tipo = null;
 
@@ -94,9 +88,6 @@ public class TipoHabitacionDAO {
         return tipo;
     }
 
-    // ============================================
-    // CREAR NUEVO TIPO DE HABITACIÓN
-    // ============================================
     public void createTipoHabitacion(TipoHabitacion tipo) {
         try {
             String sql = "INSERT INTO tipo_habitacion "
@@ -115,9 +106,6 @@ public class TipoHabitacionDAO {
         }
     }
 
-    // ============================================
-    // ACTUALIZAR REGISTRO
-    // ============================================
     public void updateTipoHabitacion(TipoHabitacion tipo) {
         try {
             String sql = "UPDATE tipo_habitacion SET "
@@ -136,10 +124,6 @@ public class TipoHabitacionDAO {
             e.printStackTrace();
         }
     }
-
-    // ============================================
-    // BORRADO LÓGICO
-    // ============================================
     public void deleteTipoHabitacion(int id) {
         try {
             String sql = "UPDATE tipo_habitacion SET deleted_at = NOW() WHERE id_tipo_habitacion = ?";
@@ -153,6 +137,7 @@ public class TipoHabitacionDAO {
     }
 
     TipoHabitacion getById(int idTipoHab) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }
+
