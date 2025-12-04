@@ -16,9 +16,6 @@ public class HabitacionDAO {
 
     private final TipoHabitacionDAO tipoDAO = new TipoHabitacionDAO();
 
-    // ============================================
-    // LISTAR TODAS LAS HABITACIONES ACTIVAS
-    // ============================================
     public List<Habitacion> getAll() {
         List<Habitacion> lista = new ArrayList<>();
 
@@ -37,10 +34,7 @@ public class HabitacionDAO {
 
         return lista;
     }
-
-    // ============================================
-    // BUSCAR POR ID
-    // ============================================
+    
     public Habitacion getById(int id) {
         Habitacion h = null;
 
@@ -60,10 +54,7 @@ public class HabitacionDAO {
 
         return h;
     }
-
-    // ============================================
-    // CREAR HABITACIÓN
-    // ============================================
+    
     public void create(Habitacion h) {
         try {
             String sql =
@@ -83,9 +74,6 @@ public class HabitacionDAO {
         }
     }
 
-    // ============================================
-    // ACTUALIZAR HABITACIÓN
-    // ============================================
     public void update(Habitacion h) {
         try {
             String sql =
@@ -106,9 +94,6 @@ public class HabitacionDAO {
         }
     }
 
-    // ============================================
-    // ELIMINACIÓN LÓGICA
-    // ============================================
     public void delete(int id) {
         try {
             String sql = "UPDATE habitaciones SET deleted_at = NOW() WHERE id_habitacion = ?";
@@ -120,9 +105,6 @@ public class HabitacionDAO {
         }
     }
 
-    // ============================================
-    // MAPEAR RESULTSET A MODELO Habitacion
-    // ============================================
     private Habitacion mapRow(ResultSet rs) throws SQLException {
         Habitacion h = new Habitacion();
 
@@ -133,12 +115,10 @@ public class HabitacionDAO {
                 EstadoHabitacion.valueOf(rs.getString("estado_habitacion").toUpperCase())
         );
 
-        // Obtener TipoHabitacion como objeto completo
         int idTipoHab = rs.getInt("id_tipo_habitacion");
         TipoHabitacion tipo = tipoDAO.getById(idTipoHab);
         h.setTipoHabitacion(tipo);
 
-        // Fechas heredadas de ClaseBase
         Timestamp created = rs.getTimestamp("created_at");
         Timestamp updated = rs.getTimestamp("updated_at");
         Timestamp deleted = rs.getTimestamp("deleted_at");
@@ -150,3 +130,4 @@ public class HabitacionDAO {
         return h;
     }
 }
+
