@@ -4,21 +4,6 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/Users/Pan/Documents/VSC/JAVA/JSF/LaJElegante-JSF/src/java/dao/ConectarBD.java</file>
-            <file>file:/C:/Users/Pan/Documents/VSC/JAVA/JSF/LaJElegante-JSF/web/views/hotel/index.xhtml</file>
-            <file>file:/C:/Users/Pan/Documents/VSC/JAVA/JSF/LaJElegante-JSF/web/views/hotel/habitaciones.xhtml</file>
-            <file>file:/C:/Users/Pan/Documents/VSC/JAVA/JSF/LaJElegante-JSF/web/views/hotel/restaurante.xhtml</file>
-            <file>file:/C:/Users/Pan/Documents/VSC/JAVA/JSF/LaJElegante-JSF/web/views/hotel/login.xhtml</file>
-            <file>file:/C:/Users/Pan/Documents/VSC/JAVA/JSF/LaJElegante-JSF/web/views/hotel/register.xhtml</file>
-            <file>file:/C:/Users/Pan/Documents/VSC/JAVA/JSF/LaJElegante-JSF/web/views/hotel/tyc.xhtml</file>
-            <file>file:/C:/Users/Pan/Documents/VSC/JAVA/JSF/LaJElegante-JSF/web/views/admin/clientes/crear.xhtml</file>
-            <file>file:/C:/Users/Pan/Documents/VSC/JAVA/JSF/LaJElegante-JSF/web/views/admin/clientes/editar.xhtml</file>
-            <file>file:/C:/Users/Pan/Documents/VSC/JAVA/JSF/LaJElegante-JSF/web/views/admin/clientes/index.xhtml</file>
-            <file>file:/C:/Users/Pan/Documents/VSC/JAVA/JSF/LaJElegante-JSF/web/views/admin/clientes/papelera/papelera.xhtml</file>
-            <file>file:/C:/Users/Pan/Documents/VSC/JAVA/JSF/LaJElegante-JSF/web/views/admin/clientes/pdf/pdf.xhtml</file>
-            <file>file:/C:/Users/Pan/Documents/VSC/JAVA/JSF/LaJElegante-JSF/web/views/admin/clientes/reportes/reporte.xhtml</file>
-            <file>file:/C:/Users/Pan/Documents/VSC/JAVA/JSF/LaJElegante-JSF/web/views/admin/dashboard/index.xhtml</file>
-            <file>file:/C:/Users/Pan/Documents/VSC/JAVA/JSF/LaJElegante-JSF/src/java/models/enums/Estado.java</file>
-            <file>file:/C:/Users/Pan/Documents/VSC/JAVA/JSF/LaJElegante-JSF/src/java/utils/Utils.java</file>
         </group>
     </open-files>
 </project-private>
