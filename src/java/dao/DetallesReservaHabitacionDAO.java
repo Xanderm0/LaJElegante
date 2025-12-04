@@ -13,7 +13,6 @@ public class DetallesReservaHabitacionDAO {
     private PreparedStatement ps;
     private ResultSet rs;
 
-    // Listar todos activos
     public List<DetallesReservaHabitacion> getAll() {
         List<DetallesReservaHabitacion> lista = new ArrayList<>();
 
@@ -33,7 +32,6 @@ public class DetallesReservaHabitacionDAO {
         return lista;
     }
 
-    // Buscar por ID
     public DetallesReservaHabitacion getById(int id) {
         DetallesReservaHabitacion d = null;
 
@@ -55,8 +53,7 @@ public class DetallesReservaHabitacionDAO {
 
         return d;
     }
-
-    // Crear
+    
     public void create(DetallesReservaHabitacion d) {
         try {
             String sql = "INSERT INTO detalles_reserva_habitacion ("
@@ -85,7 +82,6 @@ public class DetallesReservaHabitacionDAO {
         }
     }
 
-    // Actualizar
     public void update(DetallesReservaHabitacion d) {
         try {
             String sql = "UPDATE detalles_reserva_habitacion SET "
@@ -116,7 +112,6 @@ public class DetallesReservaHabitacionDAO {
         }
     }
 
-    // Soft delete
     public void delete(int id) {
         try {
             String sql = "UPDATE detalles_reserva_habitacion "
@@ -131,14 +126,12 @@ public class DetallesReservaHabitacionDAO {
         }
     }
 
-    // Mapeo a objeto del modelo
     private DetallesReservaHabitacion mapRow(ResultSet rs) throws SQLException {
 
         DetallesReservaHabitacion d = new DetallesReservaHabitacion();
 
         d.setIdDetalleReservaHab(rs.getInt("id_detalle_reserva_hab"));
 
-        // Habitación asociada (solo ID)
         Habitacion h = new Habitacion();
         h.setIdHabitacion(rs.getInt("id_habitacion"));
         d.setHabitacion(h);
@@ -153,7 +146,6 @@ public class DetallesReservaHabitacionDAO {
         d.setFechaInicio(rs.getDate("fecha_inicio"));
         d.setFechaFin(rs.getDate("fecha_fin"));
 
-        // Datos de ClaseBase
         d.setCreatedAt(rs.getTimestamp("created_at"));
         d.setUpdatedAt(rs.getTimestamp("updated_at"));
         d.setDeletedAt(rs.getTimestamp("deleted_at"));
@@ -161,3 +153,4 @@ public class DetallesReservaHabitacionDAO {
         return d;
     }
 }
+
