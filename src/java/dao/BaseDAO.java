@@ -9,9 +9,6 @@ public abstract class BaseDAO<T> {
     protected final Connection conn = ConectarBD.conectar();
     protected PreparedStatement ps;
 
-    /**
-     * Marca created_at y updated_at con NOW() al crear registros.
-     */
     protected void applyCreationTimestamps(String table, int id) {
         try {
             String sql = "UPDATE " + table +
@@ -27,9 +24,6 @@ public abstract class BaseDAO<T> {
         }
     }
 
-    /**
-     * Actualiza updated_at con NOW() en una tabla específica.
-     */
     protected void applyUpdateTimestamp(String table, int id) {
         try {
             String sql =
@@ -46,9 +40,6 @@ public abstract class BaseDAO<T> {
         }
     }
 
-    /**
-     * Soft delete (marca deleted_at con NOW()).
-     */
     protected void applySoftDelete(String table, int id) {
         try {
             String sql =
@@ -65,9 +56,6 @@ public abstract class BaseDAO<T> {
         }
     }
 
-    /**
-     * Restaurar soft delete (pone deleted_at en NULL).
-     */
     protected void restoreDeleted(String table, int id) {
         try {
             String sql =
@@ -84,3 +72,4 @@ public abstract class BaseDAO<T> {
         }
     }
 }
+
