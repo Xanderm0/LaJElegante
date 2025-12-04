@@ -17,9 +17,6 @@ public class ReservaHabitacionDAO {
     private final ClienteDAO clienteDAO = new ClienteDAO();
     private final DetallesReservaHabitacionDAO detalleDAO = new DetallesReservaHabitacionDAO();
 
-    // =====================================================
-    //  BUSCAR POR ID
-    // =====================================================
     public ReservaHabitacion getById(int id) {
         ReservaHabitacion r = null;
 
@@ -42,9 +39,6 @@ public class ReservaHabitacionDAO {
         return r;
     }
 
-    // =====================================================
-    //  LISTAR POR CLIENTE
-    // =====================================================
     public List<ReservaHabitacion> getByCliente(int idCliente) {
         List<ReservaHabitacion> lista = new ArrayList<>();
 
@@ -67,9 +61,6 @@ public class ReservaHabitacionDAO {
         return lista;
     }
 
-    // =====================================================
-    //  CREAR RESERVA
-    // =====================================================
     public void create(ReservaHabitacion r) {
 
         try {
@@ -89,9 +80,6 @@ public class ReservaHabitacionDAO {
         }
     }
 
-    // =====================================================
-    //  ACTUALIZAR RESERVA
-    // =====================================================
     public void update(ReservaHabitacion r) {
 
         try {
@@ -113,9 +101,6 @@ public class ReservaHabitacionDAO {
         }
     }
 
-    // =====================================================
-    //  SOFT DELETE
-    // =====================================================
     public void delete(int id) {
 
         try {
@@ -133,9 +118,6 @@ public class ReservaHabitacionDAO {
         }
     }
 
-    // =====================================================
-    //  MAPEO DE FILA → OBJETO
-    // =====================================================
     private ReservaHabitacion mapRow(ResultSet rs) throws SQLException {
 
         ReservaHabitacion r = new ReservaHabitacion();
@@ -162,3 +144,4 @@ public class ReservaHabitacionDAO {
         return r;
     }
 }
+
