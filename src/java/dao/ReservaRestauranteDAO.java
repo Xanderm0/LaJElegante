@@ -21,9 +21,6 @@ public class ReservaRestauranteDAO {
     private final ClienteDAO clienteDAO = new ClienteDAO();
     private final MesaDAO mesaDAO = new MesaDAO();
 
-    // =====================================================
-    //  OBTENER UNA RESERVA POR ID
-    // =====================================================
     public ReservaRestaurante getById(int id) {
 
         ReservaRestaurante r = null;
@@ -46,10 +43,7 @@ public class ReservaRestauranteDAO {
 
         return r;
     }
-
-    // =====================================================
-    //  LISTAR RESERVAS POR CLIENTE
-    // =====================================================
+    
     public List<ReservaRestaurante> getByCliente(int idCliente) {
 
         List<ReservaRestaurante> lista = new ArrayList<>();
@@ -73,9 +67,6 @@ public class ReservaRestauranteDAO {
         return lista;
     }
 
-    // =====================================================
-    //  CREAR RESERVA
-    // =====================================================
     public void create(ReservaRestaurante r) {
 
         try {
@@ -104,9 +95,6 @@ public class ReservaRestauranteDAO {
         }
     }
 
-    // =====================================================
-    //  ACTUALIZAR ESTADO Y ACTIVIDAD
-    // =====================================================
     public void updateEstado(ReservaRestaurante r) {
 
         try {
@@ -127,9 +115,6 @@ public class ReservaRestauranteDAO {
         }
     }
 
-    // =====================================================
-    //  SOFT DELETE
-    // =====================================================
     public void delete(int id) {
 
         try {
@@ -147,33 +132,26 @@ public class ReservaRestauranteDAO {
         }
     }
 
-    // =====================================================
-    //  MAPEO DE RESULTSET A OBJETO
-    // =====================================================
     private ReservaRestaurante mapRow(ResultSet rs) throws SQLException {
 
         ReservaRestaurante r = new ReservaRestaurante();
 
         r.setIdReserva(rs.getInt("id_reserva"));
 
-        // Relaciones completas
         Cliente cli = clienteDAO.getById(rs.getInt("id_cliente"));
         Mesa mesa = mesaDAO.getById(rs.getInt("id_mesa"));
 
         r.setCliente(cli);
         r.setMesa(mesa);
 
-        // Date & Time → LocalDate / LocalTime
         r.setFechaReserva(rs.getDate("fecha_reserva").toLocalDate());
         r.setHoraReserva(rs.getTime("hora_reserva").toLocalTime());
 
         r.setNumeroPersonas(rs.getInt("numero_personas"));
 
-        // Enums desde texto
         r.setEstadoReserva(EstadoReserva.valueOf(rs.getString("estado_reserva")));
         r.setEstado(Estado.valueOf(rs.getString("activo")));
 
-        // Timestamps → LocalDateTime (ClaseBase)
         r.setCreatedAt(rs.getTimestamp("created_at").toLocalDateTime());
         r.setUpdatedAt(rs.getTimestamp("updated_at").toLocalDateTime());
 
@@ -183,3 +161,4 @@ public class ReservaRestauranteDAO {
         return r;
     }
 }
+
