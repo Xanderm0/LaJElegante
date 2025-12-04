@@ -15,9 +15,6 @@ public class TarifaDAO {
     private PreparedStatement ps;
     private ResultSet rs;
 
-    // ------------------------------------------------------------
-    // Obtener tarifa por tipoHabitacion + temporada
-    // ------------------------------------------------------------
     public Tarifa getTarifa(int idTipoHabitacion, int idTemporada) {
         Tarifa tarifa = null;
 
@@ -43,9 +40,6 @@ public class TarifaDAO {
         return tarifa;
     }
 
-    // ------------------------------------------------------------
-    // Obtener todas las tarifas
-    // ------------------------------------------------------------
     public List<Tarifa> getAllTarifas() {
         List<Tarifa> lista = new ArrayList<>();
 
@@ -64,10 +58,7 @@ public class TarifaDAO {
         }
         return lista;
     }
-
-    // ------------------------------------------------------------
-    // Crear tarifa
-    // ------------------------------------------------------------
+    
     public void createTarifa(Tarifa t) {
         try {
             String sql = "INSERT INTO tarifas "
@@ -88,9 +79,6 @@ public class TarifaDAO {
         }
     }
 
-    // ------------------------------------------------------------
-    // Actualizar tarifa
-    // ------------------------------------------------------------
     public void updateTarifa(Tarifa t) {
         try {
             String sql = "UPDATE tarifas SET "
@@ -113,9 +101,6 @@ public class TarifaDAO {
         }
     }
 
-    // ------------------------------------------------------------
-    // Mapeo ResultSet → Tarifa
-    // ------------------------------------------------------------
     private Tarifa mapTarifa(ResultSet rs) throws SQLException {
 
         Tarifa t = new Tarifa();
@@ -143,3 +128,4 @@ public class TarifaDAO {
         return t;
     }
 }
+
