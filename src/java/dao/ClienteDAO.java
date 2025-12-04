@@ -18,7 +18,6 @@ public class ClienteDAO {
     private PreparedStatement ps;
     private ResultSet rs;
 
-    // Obtener todos los clientes activos
     public List<Cliente> getClientesActivos() {
         List<Cliente> listaClientes = new ArrayList<>();
 
@@ -43,7 +42,6 @@ public class ClienteDAO {
         return listaClientes;
     }
 
-    // Obtener cliente por ID
     public Cliente getClienteById(long id) {
         Cliente c = null;
 
@@ -68,7 +66,6 @@ public class ClienteDAO {
         return c;
     }
 
-    // Crear nuevo cliente
     public void createCliente(Cliente c) {
         try {
             String sql =
@@ -93,7 +90,6 @@ public class ClienteDAO {
         }
     }
 
-    // Actualizar cliente
     public void updateCliente(Cliente c) {
         try {
             String sql =
@@ -121,7 +117,6 @@ public class ClienteDAO {
         }
     }
 
-    // Eliminar cliente (marcar inactivo)
     public void deleteCliente(long id) {
         try {
             String sql =
@@ -136,9 +131,6 @@ public class ClienteDAO {
         }
     }
 
-    // --------------------------
-    // Método para mapear objeto
-    // --------------------------
     private Cliente mapCliente(ResultSet rs) throws SQLException {
         Cliente c = new Cliente();
 
@@ -150,11 +142,9 @@ public class ClienteDAO {
         c.setNumTel(rs.getString("numero_telefono"));
         c.setPrefijo(rs.getString("prefijo_telefono"));
 
-        // Enums
         c.setSaludo(Saludo.valueOf(rs.getString("saludo")));
         c.setEstado(Estado.valueOf(rs.getString("estado")));
 
-        // TipoCliente (solo ID y nombre)
         TipoCliente tipo = new TipoCliente();
         tipo.setIdTipoCliente(rs.getInt("id_tipo_cliente"));
         tipo.setNombre(rs.getString("tipo_nombre"));
@@ -164,6 +154,7 @@ public class ClienteDAO {
     }
 
     Cliente getById(int idCliente) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }
+
