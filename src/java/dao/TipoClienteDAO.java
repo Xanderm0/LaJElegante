@@ -15,9 +15,6 @@ public class TipoClienteDAO {
     private PreparedStatement ps;
     private ResultSet rs;
 
-    // ==========================
-    // LISTAR TODOS (ACTIVOS)
-    // ==========================
     public List<TipoCliente> getAllTiposClientes() {
         List<TipoCliente> lista = new ArrayList<>();
 
@@ -50,9 +47,6 @@ public class TipoClienteDAO {
         return lista;
     }
 
-    // ==========================
-    // BUSCAR POR ID
-    // ==========================
     public TipoCliente getTipoClienteById(int id) {
         TipoCliente t = null;
 
@@ -83,10 +77,7 @@ public class TipoClienteDAO {
 
         return t;
     }
-
-    // ==========================
-    // CREAR
-    // ==========================
+    
     public void createTipoCliente(TipoCliente t) {
         try {
             String sql = "INSERT INTO tipo_cliente (nombre_tipo, created_at, updated_at) VALUES (?, NOW(), NOW())";
@@ -99,9 +90,6 @@ public class TipoClienteDAO {
         }
     }
 
-    // ==========================
-    // ACTUALIZAR
-    // ==========================
     public void updateTipoCliente(TipoCliente t) {
         try {
             String sql = "UPDATE tipo_cliente SET nombre_tipo = ?, updated_at = NOW() WHERE id_tipo_cliente = ?";
@@ -115,9 +103,6 @@ public class TipoClienteDAO {
         }
     }
 
-    // ==========================
-    // BORRADO LÓGICO
-    // ==========================
     public void deleteTipoCliente(int id) {
         try {
             String sql = "UPDATE tipo_cliente SET deleted_at = NOW() WHERE id_tipo_cliente = ?";
@@ -130,3 +115,4 @@ public class TipoClienteDAO {
         }
     }
 }
+
