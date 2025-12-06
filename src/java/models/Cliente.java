@@ -62,12 +62,10 @@ public class Cliente extends ClaseBase {
         return nuevaContraseña;
     }
 
-    public void setNuevaPassword(String nuevaPassword) {
-        this.nuevaPassword = nuevaPassword;
+    public void setNuevaContraseña(String nuevaContraseña) {
+        this.nuevaContraseña = nuevaContraseña;
     }
     
-    
-
     public String getNombre() {
         return nombre;
     }
