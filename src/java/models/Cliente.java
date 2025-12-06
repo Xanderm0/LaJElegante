@@ -12,6 +12,8 @@ public class Cliente extends ClaseBase {
 
     private String contraseña;
     
+    private transient String nuevaContraseña; 
+    
     private String nombre;
 
     private String apellido;
@@ -55,6 +57,16 @@ public class Cliente extends ClaseBase {
     public void setContraseña(String contraseña) {
         this.contraseña = contraseña;
     }
+
+    public String getNuevaContraseña() {
+        return nuevaContraseña;
+    }
+
+    public void setNuevaPassword(String nuevaPassword) {
+        this.nuevaPassword = nuevaPassword;
+    }
+    
+    
 
     public String getNombre() {
         return nombre;
