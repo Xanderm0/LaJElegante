@@ -7,112 +7,154 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+
 import models.TipoCliente;
 
-public class TipoClienteDAO {
+public class TipoClienteDAO extends BaseDAO<TipoCliente> {
 
-    private final Connection conn = ConectarBD.conectar();
-    private PreparedStatement ps;
-    private ResultSet rs;
-
-    public List<TipoCliente> getAllTiposClientes() {
-        List<TipoCliente> lista = new ArrayList<>();
+    @Override
+    public void crear(TipoCliente t) {
+        Connection conn = null;
+        PreparedStatement ps = null;
 
         try {
-            String sql = "SELECT * FROM tipo_cliente WHERE deleted_at IS NULL";
+            conn = ConectarBD.conectar();
+            String sql = "INSERT INTO tipo_cliente "
+                       + "(nombre_tipo, created_at, updated_at) "
+                       + "VALUES (?, NOW(), NOW())";
+
             ps = conn.prepareStatement(sql);
-            rs = ps.executeQuery();
+            ps.setString(1, t.getNombreTipo());
 
-            while (rs.next()) {
-                TipoCliente t = new TipoCliente();
-
-                t.setIdTipoCliente(rs.getInt("id_tipo_cliente"));
-                t.setNombreTipo(rs.getString("nombre_tipo"));
-
-                // Manejo de fechas como LocalDateTime
-                Timestamp created = rs.getTimestamp("created_at");
-                Timestamp updated = rs.getTimestamp("updated_at");
-                Timestamp deleted = rs.getTimestamp("deleted_at");
-
-                t.setCreatedAt(created != null ? created.toLocalDateTime() : null);
-                t.setUpdatedAt(updated != null ? updated.toLocalDateTime() : null);
-                t.setDeletedAt(deleted != null ? deleted.toLocalDateTime() : null);
-
-                lista.add(t);
-            }
+            ps.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println("Error en TipoClienteDAO.crear: " + e.getMessage());
+        } finally {
+            cerrarRecursos(conn, ps);
         }
-
-        return lista;
     }
 
-    public TipoCliente getTipoClienteById(int id) {
-        TipoCliente t = null;
+    @Override
+    public TipoCliente buscar(int id) {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        TipoCliente tipo = null;
 
         try {
-            String sql = "SELECT * FROM tipo_cliente WHERE id_tipo_cliente = ?";
+            conn = ConectarBD.conectar();
+            String sql = "SELECT * FROM tipo_cliente "
+                       + "WHERE id_tipo_cliente = ? AND deleted_at IS NULL";
+
             ps = conn.prepareStatement(sql);
             ps.setInt(1, id);
             rs = ps.executeQuery();
 
             if (rs.next()) {
-                t = new TipoCliente();
-
-                t.setIdTipoCliente(rs.getInt("id_tipo_cliente"));
-                t.setNombreTipo(rs.getString("nombre_tipo"));
-
-                Timestamp created = rs.getTimestamp("created_at");
-                Timestamp updated = rs.getTimestamp("updated_at");
-                Timestamp deleted = rs.getTimestamp("deleted_at");
-
-                t.setCreatedAt(created != null ? created.toLocalDateTime() : null);
-                t.setUpdatedAt(updated != null ? updated.toLocalDateTime() : null);
-                t.setDeletedAt(deleted != null ? deleted.toLocalDateTime() : null);
+                tipo = mapearResultSet(rs);
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println("Error en TipoClienteDAO.buscar: " + e.getMessage());
+        } finally {
+            cerrarRecursos(conn, ps, rs);
         }
 
-        return t;
+        return tipo;
     }
-    
-    public void createTipoCliente(TipoCliente t) {
+
+    @Override
+    public List<TipoCliente> listar() {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        List<TipoCliente> lista = new ArrayList<>();
+
         try {
-            String sql = "INSERT INTO tipo_cliente (nombre_tipo, created_at, updated_at) VALUES (?, NOW(), NOW())";
+            conn = ConectarBD.conectar();
+            String sql = "SELECT * FROM tipo_cliente "
+                       + "WHERE deleted_at IS NULL ORDER BY id_tipo_cliente";
+
             ps = conn.prepareStatement(sql);
-            ps.setString(1, t.getNombreTipo());
-            ps.executeUpdate();
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                lista.add(mapearResultSet(rs));
+            }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println("Error en TipoClienteDAO.listar: " + e.getMessage());
+        } finally {
+            cerrarRecursos(conn, ps, rs);
         }
+
+        return lista;
     }
 
-    public void updateTipoCliente(TipoCliente t) {
+    @Override
+    public void actualizar(TipoCliente t) {
+        Connection conn = null;
+        PreparedStatement ps = null;
+
         try {
-            String sql = "UPDATE tipo_cliente SET nombre_tipo = ?, updated_at = NOW() WHERE id_tipo_cliente = ?";
+            conn = ConectarBD.conectar();
+            String sql = "UPDATE tipo_cliente SET "
+                       + "nombre_tipo = ?, updated_at = NOW() "
+                       + "WHERE id_tipo_cliente = ?";
+
             ps = conn.prepareStatement(sql);
             ps.setString(1, t.getNombreTipo());
             ps.setInt(2, t.getIdTipoCliente());
-            ps.executeUpdate();
+
+            int filas = ps.executeUpdate();
+            System.out.println(filas + " tipo_cliente actualizado(s)");
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println("Error en TipoClienteDAO.actualizar: " + e.getMessage());
+        } finally {
+            cerrarRecursos(conn, ps);
         }
     }
 
-    public void deleteTipoCliente(int id) {
+    @Override
+    public void eliminar(int id) {
+        Connection conn = null;
+        PreparedStatement ps = null;
+
         try {
-            String sql = "UPDATE tipo_cliente SET deleted_at = NOW() WHERE id_tipo_cliente = ?";
+            conn = ConectarBD.conectar();
+            String sql = "UPDATE tipo_cliente "
+                       + "SET deleted_at = NOW() "
+                       + "WHERE id_tipo_cliente = ?";
+
             ps = conn.prepareStatement(sql);
             ps.setInt(1, id);
-            ps.executeUpdate();
+
+            int filas = ps.executeUpdate();
+            System.out.println(filas + " tipo_cliente eliminado(s)");
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println("Error en TipoClienteDAO.eliminar: " + e.getMessage());
+        } finally {
+            cerrarRecursos(conn, ps);
         }
     }
-}
 
+    private TipoCliente mapearResultSet(ResultSet rs) throws SQLException {
+
+        TipoCliente t = new TipoCliente();
+
+        t.setIdTipoCliente(rs.getInt("id_tipo_cliente"));
+        t.setNombreTipo(rs.getString("nombre_tipo"));
+
+        Timestamp created = rs.getTimestamp("created_at");
+        Timestamp updated = rs.getTimestamp("updated_at");
+        Timestamp deleted = rs.getTimestamp("deleted_at");
+
+        t.setCreatedAt(created != null ? created.toLocalDateTime() : null);
+        t.setUpdatedAt(updated != null ? updated.toLocalDateTime() : null);
+        t.setDeletedAt(deleted != null ? deleted.toLocalDateTime() : null);
+
+        return t;
+    }
+}

@@ -11,133 +11,155 @@ import java.util.List;
 import models.TipoHabitacion;
 import models.enums.NombreTipoHabitacion;
 
-public class TipoHabitacionDAO {
-
-    private final Connection conn = ConectarBD.conectar();
-    private PreparedStatement ps;
-    private ResultSet rs;
-
-    public List<TipoHabitacion> getAllTiposHabitacion() {
-        List<TipoHabitacion> lista = new ArrayList<>();
+public class TipoHabitacionDAO extends BaseDAO<TipoHabitacion> {
+    
+    @Override
+    public void crear(TipoHabitacion t) {
+        Connection conn = null;
+        PreparedStatement ps = null;
 
         try {
-            String sql = "SELECT * FROM tipo_habitacion WHERE deleted_at IS NULL";
+            conn = ConectarBD.conectar();
+            String sql = "INSERT INTO tipo_habitacion "
+                       + "(nombre_tipo, descripcion, capacidad_maxima, created_at, updated_at) "
+                       + "VALUES (?, ?, ?, NOW(), NOW())";
+
             ps = conn.prepareStatement(sql);
-            rs = ps.executeQuery();
+            ps.setString(1, t.getNombreTipo().name());
+            ps.setString(2, t.getDescripcion());
+            ps.setInt(3, t.getCapacidadMaxima());
 
-            while (rs.next()) {
-                TipoHabitacion tipo = new TipoHabitacion();
-
-                tipo.setIdTipoHabitacion(rs.getInt("id_tipo_habitacion"));
-                tipo.setNombreTipo(
-                        NombreTipoHabitacion.valueOf(rs.getString("nombre_tipo"))
-                );
-                tipo.setDescripcion(rs.getString("descripcion"));
-                tipo.setCapacidadMaxima(rs.getInt("capacidad_maxima"));
-
-                Timestamp created = rs.getTimestamp("created_at");
-                Timestamp updated = rs.getTimestamp("updated_at");
-                Timestamp deleted = rs.getTimestamp("deleted_at");
-
-                tipo.setCreatedAt(created != null ? created.toLocalDateTime() : null);
-                tipo.setUpdatedAt(updated != null ? updated.toLocalDateTime() : null);
-                tipo.setDeletedAt(deleted != null ? deleted.toLocalDateTime() : null);
-
-                lista.add(tipo);
-            }
-
+            ps.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println("Error en TipoHabitacionDAO.crear: " + e.getMessage());
+        } finally {
+            cerrarRecursos(conn, ps);
         }
-
-        return lista;
     }
 
-    public TipoHabitacion getTipoHabitacionById(int id) {
+    @Override
+    public TipoHabitacion buscar(int id) {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
         TipoHabitacion tipo = null;
 
         try {
-            String sql = "SELECT * FROM tipo_habitacion WHERE id_tipo_habitacion = ?";
+            conn = ConectarBD.conectar();
+            String sql = "SELECT * FROM tipo_habitacion "
+                       + "WHERE id_tipo_habitacion = ? AND deleted_at IS NULL";
+
             ps = conn.prepareStatement(sql);
             ps.setInt(1, id);
             rs = ps.executeQuery();
 
             if (rs.next()) {
-                tipo = new TipoHabitacion();
-
-                tipo.setIdTipoHabitacion(rs.getInt("id_tipo_habitacion"));
-                tipo.setNombreTipo(
-                        NombreTipoHabitacion.valueOf(rs.getString("nombre_tipo"))
-                );
-                tipo.setDescripcion(rs.getString("descripcion"));
-                tipo.setCapacidadMaxima(rs.getInt("capacidad_maxima"));
-
-                Timestamp created = rs.getTimestamp("created_at");
-                Timestamp updated = rs.getTimestamp("updated_at");
-                Timestamp deleted = rs.getTimestamp("deleted_at");
-
-                tipo.setCreatedAt(created != null ? created.toLocalDateTime() : null);
-                tipo.setUpdatedAt(updated != null ? updated.toLocalDateTime() : null);
-                tipo.setDeletedAt(deleted != null ? deleted.toLocalDateTime() : null);
+                tipo = mapearResultSet(rs);
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println("Error en TipoHabitacionDAO.buscar: " + e.getMessage());
+        } finally {
+            cerrarRecursos(conn, ps, rs);
         }
-
         return tipo;
     }
 
-    public void createTipoHabitacion(TipoHabitacion tipo) {
+    @Override
+    public List<TipoHabitacion> listar() {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        List<TipoHabitacion> lista = new ArrayList<>();
+
         try {
-            String sql = "INSERT INTO tipo_habitacion "
-                    + "(nombre_tipo, descripcion, capacidad_maxima, created_at, updated_at) "
-                    + "VALUES (?, ?, ?, NOW(), NOW())";
+            conn = ConectarBD.conectar();
+            String sql = "SELECT * FROM tipo_habitacion "
+                       + "WHERE deleted_at IS NULL ORDER BY id_tipo_habitacion";
 
             ps = conn.prepareStatement(sql);
-            ps.setString(1, tipo.getNombreTipo().name());
-            ps.setString(2, tipo.getDescripcion());
-            ps.setInt(3, tipo.getCapacidadMaxima());
+            rs = ps.executeQuery();
 
-            ps.executeUpdate();
+            while (rs.next()) {
+                lista.add(mapearResultSet(rs));
+            }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println("Error en TipoHabitacionDAO.listar: " + e.getMessage());
+        } finally {
+            cerrarRecursos(conn, ps, rs);
         }
+        return lista;
     }
 
-    public void updateTipoHabitacion(TipoHabitacion tipo) {
+    @Override
+    public void actualizar(TipoHabitacion t) {
+        Connection conn = null;
+        PreparedStatement ps = null;
+
         try {
+            conn = ConectarBD.conectar();
             String sql = "UPDATE tipo_habitacion SET "
-                    + "nombre_tipo = ?, descripcion = ?, capacidad_maxima = ?, updated_at = NOW() "
-                    + "WHERE id_tipo_habitacion = ?";
+                       + "nombre_tipo = ?, descripcion = ?, capacidad_maxima = ?, "
+                       + "updated_at = NOW() "
+                       + "WHERE id_tipo_habitacion = ?";
 
             ps = conn.prepareStatement(sql);
-            ps.setString(1, tipo.getNombreTipo().name());
-            ps.setString(2, tipo.getDescripcion());
-            ps.setInt(3, tipo.getCapacidadMaxima());
-            ps.setInt(4, tipo.getIdTipoHabitacion());
+            ps.setString(1, t.getNombreTipo().name());
+            ps.setString(2, t.getDescripcion());
+            ps.setInt(3, t.getCapacidadMaxima());
+            ps.setInt(4, t.getIdTipoHabitacion());
 
             ps.executeUpdate();
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println("Error en TipoHabitacionDAO.actualizar: " + e.getMessage());
+        } finally {
+            cerrarRecursos(conn, ps);
         }
     }
-    public void deleteTipoHabitacion(int id) {
+
+    @Override
+    public void eliminar(int id) {
+        Connection conn = null;
+        PreparedStatement ps = null;
+
         try {
-            String sql = "UPDATE tipo_habitacion SET deleted_at = NOW() WHERE id_tipo_habitacion = ?";
+            conn = ConectarBD.conectar();
+            String sql = "UPDATE tipo_habitacion "
+                       + "SET deleted_at = NOW() "
+                       + "WHERE id_tipo_habitacion = ?";
+
             ps = conn.prepareStatement(sql);
             ps.setInt(1, id);
+
             ps.executeUpdate();
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println("Error en TipoHabitacionDAO.eliminar: " + e.getMessage());
+        } finally {
+            cerrarRecursos(conn, ps);
         }
     }
 
-    TipoHabitacion getById(int idTipoHab) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    private TipoHabitacion mapearResultSet(ResultSet rs) throws SQLException {
+
+        TipoHabitacion t = new TipoHabitacion();
+
+        t.setIdTipoHabitacion(rs.getInt("id_tipo_habitacion"));
+        t.setNombreTipo(NombreTipoHabitacion.valueOf(rs.getString("nombre_tipo")));
+        t.setDescripcion(rs.getString("descripcion"));
+        t.setCapacidadMaxima(rs.getInt("capacidad_maxima"));
+
+        // timestamps de ClaseBase
+        Timestamp created = rs.getTimestamp("created_at");
+        Timestamp updated = rs.getTimestamp("updated_at");
+        Timestamp deleted = rs.getTimestamp("deleted_at");
+
+        t.setCreatedAt(created != null ? created.toLocalDateTime() : null);
+        t.setUpdatedAt(updated != null ? updated.toLocalDateTime() : null);
+        t.setDeletedAt(deleted != null ? deleted.toLocalDateTime() : null);
+
+        return t;
     }
 }
-
