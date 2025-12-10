@@ -6,6 +6,7 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core">
 <h:head>
     <title>Reportes de Reservas</title>
+     <h:outputStylesheet library="bootstrap" name="css/bootstrap.min.css" />
 </h:head>
 <h:body>
     <h2>Reportes de Reservas de Habitaciones</h2>
@@ -78,6 +79,6 @@
         <p:commandButton value="Exportar a Excel" action="#{reporteBean.exportarExcel}" ajax="false" styleClass="btn btn-success"/>
         <p:commandButton value="Exportar a PDF" action="#{reporteBean.exportarPDF}" ajax="false" styleClass="btn btn-danger"/>
     </h:form>
-
+ <h:outputScript library="bootstrap" name="js/bootstrap.bundle.min.js" />
 </h:body>
 </html>

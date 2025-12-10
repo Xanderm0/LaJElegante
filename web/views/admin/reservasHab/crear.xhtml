@@ -5,6 +5,7 @@
       xmlns:p="http://primefaces.org/ui">
 <h:head>
     <title>Nueva Reserva</title>
+     <h:outputStylesheet library="bootstrap" name="css/bootstrap.min.css" />
 </h:head>
 <h:body>
     <h2>Nueva Reserva</h2>
@@ -72,5 +73,6 @@
         <p:commandButton value="Guardar" action="#{reservaBean.guardar}" update="@form"/>
         <p:commandButton value="Cancelar" action="listarReservas.xhtml?faces-redirect=true"/>
     </h:form>
+    <h:outputScript library="bootstrap" name="js/bootstrap.bundle.min.js" />
 </h:body>
 </html>
