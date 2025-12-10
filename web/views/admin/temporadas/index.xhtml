@@ -1,11 +1,113 @@
 <?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://java.sun.com/jsf/html">
-    <h:head>
-        <title>Facelet Title</title>
-    </h:head>
-    <h:body>
-        Hello from Facelets
-    </h:body>
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+<h:body>
+
+<h:form id="formTemporadas">
+
+    <h2>Listado de Temporadas</h2>
+
+    <p:messages id="msgs" closable="true" showDetail="true"/>
+
+    <p:dataTable value="#{temporadaBean.temporadas}" var="temp"
+                 emptyMessage="No hay temporadas registradas"
+                 responsiveLayout="scroll">
+
+        <p:column headerText="ID" style="width:60px">
+            <h:outputText value="#{temp.idTemporada}"/>
+        </p:column>
+
+        <p:column headerText="Nombre">
+            <h:outputText value="#{temp.nombre}"/>
+        </p:column>
+
+        <p:column headerText="Inicio">
+            <h:outputText value="#{temp.fechaInicio}">
+                <f:convertDateTime pattern="yyyy-MM-dd"/>
+            </h:outputText>
+        </p:column>
+
+        <p:column headerText="Fin">
+            <h:outputText value="#{temp.fechaFin}">
+                <f:convertDateTime pattern="yyyy-MM-dd"/>
+            </h:outputText>
+        </p:column>
+
+        <p:column headerText="Modificador">
+            <h:outputText value="#{temp.modificadorPrecio}"/> %
+        </p:column>
+
+        <p:column headerText="Acciones" style="width:160px">
+
+            <!-- Botón Editar -->
+            <p:commandButton value="Editar"
+                             update=":formEdit"
+                             oncomplete="PF('dlgEditar').show()"
+                             action="#{temporadaBean.cargarEditar(temp)}"
+                             styleClass="ui-button-primary ui-button-sm"/>
+
+            <!-- Botón Eliminar -->
+            <p:commandButton value="Eliminar"
+                             action="#{temporadaBean.eliminar(temp.idTemporada)}"
+                             update="formTemporadas msgs"
+                             confirm="true"
+                             icon="pi pi-trash"
+                             styleClass="ui-button-danger ui-button-sm">
+                <p:confirm header="Confirmar" message="¿Eliminar esta temporada?" icon="pi pi-info-circle"/>
+            </p:commandButton>
+
+        </p:column>
+
+    </p:dataTable>
+
+</h:form>
+
+
+<!-- DIALOG EDITAR -->
+<p:dialog header="Editar Temporada" modal="true" widgetVar="dlgEditar"
+          resizable="false" closeOnEscape="true">
+
+    <h:form id="formEdit">
+
+        <p:panelGrid columns="2">
+
+            <p:outputLabel value="Nombre:"/>
+            <p:selectOneMenu value="#{temporadaBean.temporadaEditar.nombre}" required="true">
+                <f:selectItem itemLabel="Alta" itemValue="alta"/>
+                <f:selectItem itemLabel="Media" itemValue="media"/>
+                <f:selectItem itemLabel="Baja" itemValue="baja"/>
+            </p:selectOneMenu>
+
+            <p:outputLabel value="Fecha Inicio:"/>
+            <p:datePicker value="#{temporadaBean.temporadaEditar.fechaInicio}" pattern="yyyy-MM-dd" required="true"/>
+
+            <p:outputLabel value="Fecha Fin:"/>
+            <p:datePicker value="#{temporadaBean.temporadaEditar.fechaFin}" pattern="yyyy-MM-dd" required="true"/>
+
+            <p:outputLabel value="Modificador (%):"/>
+            <p:inputNumber value="#{temporadaBean.temporadaEditar.modificadorPrecio}" required="true" decimalPlaces="2"/>
+
+        </p:panelGrid>
+
+        <br/>
+
+        <p:commandButton value="Guardar cambios"
+                         action="#{temporadaBean.actualizar()}"
+                         update="formTemporadas msgs"
+                         oncomplete="PF('dlgEditar').hide()"
+                         styleClass="ui-button-success"/>
+
+        <p:commandButton value="Cancelar"
+                         type="button"
+                         onclick="PF('dlgEditar').hide()"
+                         styleClass="ui-button-secondary"/>
+
+    </h:form>
+
+</p:dialog>
+
+</h:body>
 </html>

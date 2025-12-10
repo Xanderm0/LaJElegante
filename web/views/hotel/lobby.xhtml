@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+<h:head>
+    <title>Lobby - Hotel LJE</title>
+</h:head>
+<h:body>
+
+<h:form id="lobbyForm">
+
+    <!-- Carrusel del Lobby -->
+    <p:carousel value="#{lobbyBean.imagenes}" var="img" numVisible="1" circular="true" autoplayInterval="5000">
+        <p:panel style="text-align:center;">
+            <h:graphicImage value="#{img.ruta}" alt="#{img.alt}" />
+            <h:panelGroup layout="block">
+                <h2>#{img.titulo}</h2>
+                <h:outputText value="#{img.descripcion}" />
+            </h:panelGroup>
+        </p:panel>
+    </p:carousel>
+
+    <!-- Botones de navegación -->
+    <h:panelGrid columns="3" columnClasses="col1,col2,col3" style="margin-top:20px;">
+        <p:commandButton value="Restaurante" action="restaurante.xhtml?faces-redirect=true" />
+        <p:commandButton value="Habitaciones" action="habitaciones.xhtml?faces-redirect=true" />
+        <p:commandButton value="Términos & Condiciones" action="terminos.xhtml?faces-redirect=true" />
+    </h:panelGrid>
+
+</h:form>
+
+</h:body>
+</html>

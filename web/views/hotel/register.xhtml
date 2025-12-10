@@ -1,11 +1,58 @@
 <?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://java.sun.com/jsf/html">
-    <h:head>
-        <title>Facelet Title</title>
-    </h:head>
-    <h:body>
-        Hello from Facelets
-    </h:body>
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+<h:head>
+    <title>Registro - Hotel LJE</title>
+</h:head>
+<h:body>
+
+<h:form id="registroForm">
+
+    <h3>Crear Cuenta</h3>
+
+    <!-- Mensajes de error -->
+    <p:messages id="msgs" showDetail="true" autoUpdate="true" />
+
+    <h:panelGrid columns="2" columnClasses="col1,col2" cellpadding="5">
+
+        <h:outputLabel for="nombre" value="Nombre:" />
+        <p:inputText id="nombre" value="#{registroBean.nombre}" required="true" label="Nombre" />
+
+        <h:outputLabel for="apellido" value="Apellido:" />
+        <p:inputText id="apellido" value="#{registroBean.apellido}" required="true" label="Apellido" />
+
+        <h:outputLabel for="email" value="Correo electrónico:" />
+        <p:inputText id="email" value="#{registroBean.email}" required="true" label="Correo electrónico" />
+
+        <h:outputLabel for="saludo" value="Saludo:" />
+        <p:selectOneMenu id="saludo" value="#{registroBean.saludo}" required="true">
+            <f:selectItem itemLabel="Sr." itemValue="MR" />
+            <f:selectItem itemLabel="Sra." itemValue="MS" />
+            <f:selectItem itemLabel="Mx." itemValue="MX" />
+        </p:selectOneMenu>
+
+        <h:outputLabel for="prefijo" value="Prefijo:" />
+        <p:inputText id="prefijo" value="#{registroBean.prefijoTelefono}" required="true" />
+
+        <h:outputLabel for="telefono" value="Teléfono:" />
+        <p:inputText id="telefono" value="#{registroBean.numeroTelefono}" required="true" />
+
+        <h:outputLabel for="password" value="Contraseña:" />
+        <p:password id="password" value="#{registroBean.password}" required="true" feedback="true" label="Contraseña" />
+
+        <h:outputLabel for="confirmPassword" value="Confirmar Contraseña:" />
+        <p:password id="confirmPassword" value="#{registroBean.confirmPassword}" required="true" feedback="true" label="Confirmar Contraseña" />
+
+    </h:panelGrid>
+
+    <p:commandButton value="Registrar" action="#{registroBean.registrar}" update="msgs" />
+
+    <h:outputText value="¿Ya tienes cuenta? " />
+    <h:link value="Inicia sesión aquí" outcome="login.xhtml" />
+
+</h:form>
+
+</h:body>
 </html>

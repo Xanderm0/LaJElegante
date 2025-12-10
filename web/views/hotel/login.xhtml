@@ -1,11 +1,47 @@
 <?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://java.sun.com/jsf/html">
-    <h:head>
-        <title>Facelet Title</title>
-    </h:head>
-    <h:body>
-        Hello from Facelets
-    </h:body>
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+<h:head>
+    <title>Login - Hotel LJE</title>
+</h:head>
+<h:body>
+
+<h:form id="loginForm">
+
+    <h3>🔑 Iniciar Sesión</h3>
+
+    <!-- Mensajes de error -->
+    <p:messages id="mensajes" showDetail="true" autoUpdate="true" closable="true" />
+
+    <!-- Email -->
+    <p:outputLabel for="email" value="Correo electrónico" />
+    <p:inputText id="email" value="#{loginBean.email}" required="true" 
+                 label="Correo electrónico" />
+
+    <!-- Password -->
+    <p:outputLabel for="password" value="Contraseña" />
+    <p:password id="password" value="#{loginBean.password}" required="true" 
+                label="Contraseña" />
+
+    <!-- Botón de Login -->
+    <p:commandButton value="Ingresar" action="#{loginBean.login}" update="mensajes" />
+
+    <p:separator />
+
+    <!-- Links -->
+    <h:panelGroup>
+        <p:outputLabel value="¿No tienes cuenta? " />
+        <h:link value="Registrate acá" outcome="signup" />
+    </h:panelGroup>
+    <br />
+    <h:panelGroup>
+        <p:outputLabel value="¿Eres Empleado? " />
+        <h:link value="Entrar como empleado" outcome="empleadosLogin" />
+    </h:panelGroup>
+
+</h:form>
+
+</h:body>
 </html>
