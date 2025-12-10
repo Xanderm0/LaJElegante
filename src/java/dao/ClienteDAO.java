@@ -180,7 +180,7 @@ public class ClienteDAO extends BaseDAO<Cliente> {
 
         TipoCliente tipo = new TipoCliente();
         tipo.setIdTipoCliente(rs.getInt("id_tipo_cliente"));
-        tipo.setNombre(rs.getString("tipo_cliente_nombre"));
+        tipo.setNombreTipo(rs.getString("tipo_cliente_nombre"));
         c.setTipoCliente(tipo);
 
         c.setEmail(rs.getString("email_info"));
