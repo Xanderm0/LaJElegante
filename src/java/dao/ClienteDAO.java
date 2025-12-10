@@ -59,7 +59,7 @@ public class ClienteDAO extends BaseDAO<Cliente> {
         try {
             conn = ConectarBD.conectar();
 
-            String sql = "SELECT c.*, t.nombre AS tipo_cliente_nombre "
+            String sql = "SELECT c.*, t.nombre_tipo AS tipo_cliente_nombre "
                        + "FROM clientes c "
                        + "JOIN tipo_cliente t ON c.id_tipo_cliente = t.id_tipo_cliente "
                        + "WHERE c.id_cliente = ? AND c.deleted_at IS NULL";
@@ -91,11 +91,11 @@ public class ClienteDAO extends BaseDAO<Cliente> {
         try {
             conn = ConectarBD.conectar();
 
-            String sql = "SELECT c.*, t.nombre AS tipo_cliente_nombre "
-                       + "FROM clientes c "
-                       + "JOIN tipo_cliente t ON c.id_tipo_cliente = t.id_tipo_cliente "
-                       + "WHERE c.deleted_at IS NULL "
-                       + "ORDER BY c.nombre";
+        String sql = "SELECT c.*, t.nombre_tipo AS tipo_cliente_nombre "
+                   + "FROM clientes c "
+                   + "JOIN tipo_cliente t ON c.id_tipo_cliente = t.id_tipo_cliente "
+                   + "WHERE c.deleted_at IS NULL "
+                   + "ORDER BY c.nombre";
 
             ps = conn.prepareStatement(sql);
             rs = ps.executeQuery();
@@ -181,11 +181,11 @@ public class ClienteDAO extends BaseDAO<Cliente> {
         
         try {
             conn = ConectarBD.conectar();
-            String sql = "SELECT c.*, t.nombre AS tipo_cliente_nombre "
-                       + "FROM clientes c "
-                       + "JOIN tipo_cliente t ON c.id_tipo_cliente = t.id_tipo_cliente "
-                       + "WHERE c.deleted_at IS NOT NULL "
-                       + "ORDER BY c.deleted_at DESC";
+        String sql = "SELECT c.*, t.nombre_tipo AS tipo_cliente_nombre "
+                   + "FROM clientes c "
+                   + "JOIN tipo_cliente t ON c.id_tipo_cliente = t.id_tipo_cliente "
+                   + "WHERE c.deleted_at IS NOT NULL "
+                   + "ORDER BY c.deleted_at DESC";
             
             ps = conn.prepareStatement(sql);
             rs = ps.executeQuery();
@@ -232,10 +232,10 @@ public class ClienteDAO extends BaseDAO<Cliente> {
         
         try {
             conn = ConectarBD.conectar();
-            String sql = "SELECT c.*, t.nombre AS tipo_cliente_nombre "
+            String sql = "SELECT c.*, t.nombre_tipo AS tipo_cliente_nombre "
                        + "FROM clientes c "
                        + "JOIN tipo_cliente t ON c.id_tipo_cliente = t.id_tipo_cliente "
-                       + "WHERE c.id_cliente = ?";  // ← SIN deleted_at IS NULL
+                       + "WHERE c.id_cliente = ?";
             
             ps = conn.prepareStatement(sql);
             ps.setInt(1, id);
@@ -282,38 +282,55 @@ public class ClienteDAO extends BaseDAO<Cliente> {
         return false;
     }
     
-    private Cliente mapearResultSet(ResultSet rs) throws SQLException {
+private Cliente mapearResultSet(ResultSet rs) throws SQLException {
+    Cliente c = new Cliente();
+    c.setIdCliente(rs.getInt("id_cliente"));
 
-        Cliente c = new Cliente();
+    TipoCliente tipo = new TipoCliente();
+    tipo.setIdTipoCliente(rs.getInt("id_tipo_cliente"));
+    tipo.setNombreTipo(rs.getString("tipo_cliente_nombre"));
+    c.setTipoCliente(tipo);
 
-        c.setIdCliente(rs.getInt("id_cliente"));
+    c.setEmail(rs.getString("email_info"));
+    c.setContraseña(rs.getString("contrasena"));
+    c.setNombre(rs.getString("nombre"));
+    c.setApellido(rs.getString("apellido"));
 
-        TipoCliente tipo = new TipoCliente();
-        tipo.setIdTipoCliente(rs.getInt("id_tipo_cliente"));
-        tipo.setNombreTipo(rs.getString("tipo_cliente_nombre"));
-        c.setTipoCliente(tipo);
+    String saludoStr = rs.getString("saludo");
+    c.setSaludo(saludoStr != null ? Saludo.valueOf(saludoStr) : null);
 
-        c.setEmail(rs.getString("email_info"));
-        c.setContraseña(rs.getString("contrasena"));
-        c.setNombre(rs.getString("nombre"));
-        c.setApellido(rs.getString("apellido"));
+    c.setNumTel(rs.getString("numero_telefono"));
+    c.setPrefijo(rs.getString("prefijo_telefono"));
 
-        String saludoStr = rs.getString("saludo");
-        c.setSaludo(saludoStr != null ? Saludo.valueOf(saludoStr) : null);
+    String estadoStr = rs.getString("estado");
+    c.setEstado(convertirStringAEstado(estadoStr));
 
-        c.setNumTel(rs.getString("numero_telefono"));
-        c.setPrefijo(rs.getString("prefijo_telefono"));
+    Timestamp created = rs.getTimestamp("created_at");
+    Timestamp updated = rs.getTimestamp("updated_at");
+    Timestamp deleted = rs.getTimestamp("deleted_at");
 
-        c.setEstado(Estado.valueOf(rs.getString("estado")));
+    c.setCreatedAt(created != null ? created.toLocalDateTime() : null);
+    c.setUpdatedAt(updated != null ? updated.toLocalDateTime() : null);
+    c.setDeletedAt(deleted != null ? deleted.toLocalDateTime() : null);
 
-        Timestamp created = rs.getTimestamp("created_at");
-        Timestamp updated = rs.getTimestamp("updated_at");
-        Timestamp deleted = rs.getTimestamp("deleted_at");
+    return c;
+}
 
-        c.setCreatedAt(created != null ? created.toLocalDateTime() : null);
-        c.setUpdatedAt(updated != null ? updated.toLocalDateTime() : null);
-        c.setDeletedAt(deleted != null ? deleted.toLocalDateTime() : null);
+    private Estado convertirStringAEstado(String estadoStr) {
+        if (estadoStr == null) return null;
 
-        return c;
+        estadoStr = estadoStr.toUpperCase();
+
+        try {
+            return Estado.valueOf(estadoStr);
+        } catch (IllegalArgumentException e) {
+            
+            for (Estado estado : Estado.values()) {
+                if (estado.getValor().equalsIgnoreCase(estadoStr)) {
+                    return estado;
+                }
+            }
+            throw new IllegalArgumentException("Estado no válido: " + estadoStr);
+        }
     }
 }
