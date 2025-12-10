@@ -5,134 +5,96 @@ import dao.HabitacionDAO;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import javax.faces.view.ViewScoped;
-import javax.inject.Named;
-import javax.validation.ConstraintViolation;
-import javax.validation.Validation;
-import javax.validation.Validator;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ApplicationScoped;
 import models.DetallesReservaHabitacion;
 import models.Habitacion;
 
-@Named
-@ViewScoped
+@ManagedBean
+@ApplicationScoped
 public class DetallesReservaHabitacionBean implements Serializable {
-
-    private DetallesReservaHabitacion detalle = new DetallesReservaHabitacion();
-    private List<DetallesReservaHabitacion> listaDetalles = new ArrayList<>();
-    private List<DetallesReservaHabitacion> listaFiltrados = new ArrayList<>();
-    private List<Habitacion> listaHabitaciones = new ArrayList<>();
-
+    
+    public DetallesReservaHabitacion detalle = new DetallesReservaHabitacion();
+    public List<DetallesReservaHabitacion> lstDetalles = new ArrayList<>();
+    public List<DetallesReservaHabitacion> lstDetallesFiltrado;
+    public List<Habitacion> lstHabitaciones = new ArrayList<>();
+    
     private final DetallesReservaHabitacionDAO detalleDAO = new DetallesReservaHabitacionDAO();
-    private final HabitacionDAO habitacionDAO = new HabitacionDAO();
-
-    private final Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
-
+    
     public DetallesReservaHabitacionBean() {
-        listar();
-        cargarHabitaciones();
     }
-
-    public void listar() {
-        listaDetalles = detalleDAO.listar();
+    
+    public void listarDetalles() {
         detalle = new DetallesReservaHabitacion();
+        lstDetalles = detalleDAO.listar();
     }
-
+    
     public void buscar(int id) {
         detalle = detalleDAO.buscar(id);
     }
-
-    public void guardar() {
-        calcularPrecioTotal();
-        if (!validar(detalle)) return;
-
-        detalle.prePersist();
-        detalleDAO.guardar(detalle);
-        System.out.println("Detalle de reserva guardado correctamente.");
-        listar();
-    }
-
+    
     public void actualizar() {
+        
+        if (detalle.getIdDetalleReservaHab() == 0) {
+            System.out.println("Error: Seleccione un detalle primero");
+            return;
+        }
+        
         calcularPrecioTotal();
-        if (!validar(detalle)) return;
-
-        detalle.preUpdate();
         detalleDAO.actualizar(detalle);
-        System.out.println("Detalle de reserva actualizado correctamente.");
-        listar();
+        listarDetalles();
     }
-
+    
     public void eliminar(int id) {
-        DetallesReservaHabitacion d = detalleDAO.buscar(id);
-        if (d != null) {
-            d.softDelete();
-            detalleDAO.actualizar(d);
-            System.out.println("Detalle de reserva marcado como eliminado.");
-            listar();
-        }
+        detalleDAO.eliminar(id);
+        listarDetalles();
     }
-
-    public void restaurar(int id) {
-        DetallesReservaHabitacion d = detalleDAO.buscar(id);
-        if (d != null) {
-            d.restore();
-            detalleDAO.actualizar(d);
-            System.out.println("Detalle de reserva restaurado.");
-            listar();
-        }
-    }
-
-    private void calcularPrecioTotal() {
-        double total = (detalle.getPrecioNoche() * detalle.getCantidadNoches());
-        total -= detalle.getDescuentoAplicado();
-        total += detalle.getRecargoAplicado();
-        detalle.setPrecioReserva(total);
-    }
-
-    private boolean validar(DetallesReservaHabitacion det) {
-        var errores = validator.validate(det);
-        if (!errores.isEmpty()) {
-            for (ConstraintViolation<?> e : errores) {
-                System.out.println("ERROR VALIDACIÓN: " + e.getMessage());
-            }
-            return false;
-        }
-        return true;
-    }
-
+    
     public void cargarHabitaciones() {
-        listaHabitaciones = habitacionDAO.listar();
+        HabitacionDAO habitacionDAO = new HabitacionDAO();
+        lstHabitaciones = habitacionDAO.listar();
     }
+    
+    public void guardar() {
 
-    // Getters y Setters
-    public DetallesReservaHabitacion getDetalle() {
-        return detalle;
+        if (detalle.getHabitacion() == null || detalle.getHabitacion().getIdHabitacion() == 0) {
+            System.out.println("Error: Seleccione una habitación");
+            return;
+        }
+        
+        calcularPrecioTotal();
+        detalleDAO.crear(detalle);
+        listarDetalles();
     }
-
-    public void setDetalle(DetallesReservaHabitacion detalle) {
-        this.detalle = detalle;
+    
+    private void calcularPrecioTotal() {
+        if (detalle.getPrecioNoche() > 0 && detalle.getCantidadNoches() > 0) {
+            double total = (detalle.getPrecioNoche() * detalle.getCantidadNoches());
+            total -= detalle.getDescuentoAplicado();
+            total += detalle.getRecargoAplicado();
+            if (total < 0) total = 0;
+            detalle.setPrecioReserva(total);
+        }
     }
-
-    public List<DetallesReservaHabitacion> getListaDetalles() {
-        return listaDetalles;
+    
+    // GETTERS Y SETTERS (igual que ProductoBean)
+    public DetallesReservaHabitacion getDetalle() { return detalle; }
+    public void setDetalle(DetallesReservaHabitacion detalle) { this.detalle = detalle; }
+    
+    public List<DetallesReservaHabitacion> getLstDetalles() { return lstDetalles; }
+    public void setLstDetalles(List<DetallesReservaHabitacion> lstDetalles) { 
+        this.lstDetalles = lstDetalles; 
     }
-
-    public void setListaDetalles(List<DetallesReservaHabitacion> listaDetalles) {
-        this.listaDetalles = listaDetalles;
+    
+    public List<Habitacion> getLstHabitaciones() { return lstHabitaciones; }
+    public void setLstHabitaciones(List<Habitacion> lstHabitaciones) { 
+        this.lstHabitaciones = lstHabitaciones; 
     }
-
-    public List<DetallesReservaHabitacion> getListaFiltrados() {
-        return listaFiltrados;
+    
+    public List<DetallesReservaHabitacion> getLstDetallesFiltrado() { 
+        return lstDetallesFiltrado; 
     }
-
-    public void setListaFiltrados(List<DetallesReservaHabitacion> listaFiltrados) {
-        this.listaFiltrados = listaFiltrados;
-    }
-
-    public List<Habitacion> getListaHabitaciones() {
-        return listaHabitaciones;
-    }
-
-    public void setListaHabitaciones(List<Habitacion> listaHabitaciones) {
-        this.listaHabitaciones = listaHabitaciones;
+    public void setLstDetallesFiltrado(List<DetallesReservaHabitacion> lstDetallesFiltrado) { 
+        this.lstDetallesFiltrado = lstDetallesFiltrado; 
     }
 }

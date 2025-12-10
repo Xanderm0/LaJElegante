@@ -139,7 +139,84 @@ public class TipoClienteDAO extends BaseDAO<TipoCliente> {
             cerrarRecursos(conn, ps);
         }
     }
-
+    
+        @Override
+    public List<TipoCliente> listarEliminados() {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        List<TipoCliente> lista = new ArrayList<>();
+        
+        try {
+            conn = ConectarBD.conectar();
+            String sql = "SELECT * FROM tipo_cliente "
+                       + "WHERE deleted_at IS NOT NULL "
+                       + "ORDER BY deleted_at DESC";
+            
+            ps = conn.prepareStatement(sql);
+            rs = ps.executeQuery();
+            
+            while (rs.next()) {
+                lista.add(mapearResultSet(rs));
+            }
+            
+        } catch (SQLException e) {
+            System.err.println("Error en TipoClienteDAO.listarEliminados: " + e.getMessage());
+        } finally {
+            cerrarRecursos(conn, ps, rs);
+        }
+        return lista;
+    }
+    
+    @Override
+    public void restaurar(int id) {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        
+        try {
+            conn = ConectarBD.conectar();
+            String sql = "UPDATE tipo_cliente SET deleted_at = NULL, updated_at = NOW() "
+                       + "WHERE id_tipo_cliente = ?";
+            
+            ps = conn.prepareStatement(sql);
+            ps.setInt(1, id);
+            ps.executeUpdate();
+            
+        } catch (SQLException e) {
+            System.err.println("Error en TipoClienteDAO.restaurar: " + e.getMessage());
+        } finally {
+            cerrarRecursos(conn, ps);
+        }
+    }
+    
+    @Override
+    public TipoCliente buscarConTrash(int id) {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        TipoCliente tc = null;
+        
+        try {
+            conn = ConectarBD.conectar();
+            String sql = "SELECT * FROM tipo_cliente "
+                       + "WHERE id_tipo_cliente = ?";  // ← SIN deleted_at
+            
+            ps = conn.prepareStatement(sql);
+            ps.setInt(1, id);
+            rs = ps.executeQuery();
+            
+            if (rs.next()) {
+                tc = mapearResultSet(rs);
+            }
+            
+        } catch (SQLException e) {
+            System.err.println("Error en TipoClienteDAO.buscarConTrash: " + e.getMessage());
+        } finally {
+            cerrarRecursos(conn, ps, rs);
+        }
+        return tc;
+    }
+    
     private TipoCliente mapearResultSet(ResultSet rs) throws SQLException {
 
         TipoCliente t = new TipoCliente();

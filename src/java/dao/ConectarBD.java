@@ -15,7 +15,7 @@ public class ConectarBD {
             Driver drv = new Driver();
             DriverManager.registerDriver(drv);
             
-            String cad = "jdbc:mysql://localhost:3306/hotelLJE";
+            String cad = "jdbc:mysql://localhost:3306/hotellje";
             conn = DriverManager.getConnection(cad, "root", "");
         } catch (SQLException e) {
             System.out.println("Error en Conexión a Base de Datos");

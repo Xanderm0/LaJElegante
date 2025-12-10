@@ -59,7 +59,7 @@ public class ClienteDAO extends BaseDAO<Cliente> {
         try {
             conn = ConectarBD.conectar();
 
-            String sql = "SELECT c.*, t.nombre AS tipo_cliente_nombre "
+            String sql = "SELECT c.*, t.nombre_tipo AS tipo_cliente_nombre "
                        + "FROM clientes c "
                        + "JOIN tipo_cliente t ON c.id_tipo_cliente = t.id_tipo_cliente "
                        + "WHERE c.id_cliente = ? AND c.deleted_at IS NULL";
@@ -91,11 +91,11 @@ public class ClienteDAO extends BaseDAO<Cliente> {
         try {
             conn = ConectarBD.conectar();
 
-            String sql = "SELECT c.*, t.nombre AS tipo_cliente_nombre "
-                       + "FROM clientes c "
-                       + "JOIN tipo_cliente t ON c.id_tipo_cliente = t.id_tipo_cliente "
-                       + "WHERE c.deleted_at IS NULL "
-                       + "ORDER BY c.nombre";
+        String sql = "SELECT c.*, t.nombre_tipo AS tipo_cliente_nombre "
+                   + "FROM clientes c "
+                   + "JOIN tipo_cliente t ON c.id_tipo_cliente = t.id_tipo_cliente "
+                   + "WHERE c.deleted_at IS NULL "
+                   + "ORDER BY c.nombre";
 
             ps = conn.prepareStatement(sql);
             rs = ps.executeQuery();
@@ -171,39 +171,166 @@ public class ClienteDAO extends BaseDAO<Cliente> {
             cerrarRecursos(conn, ps);
         }
     }
-
-    private Cliente mapearResultSet(ResultSet rs) throws SQLException {
-
-        Cliente c = new Cliente();
-
-        c.setIdCliente(rs.getInt("id_cliente"));
-
-        TipoCliente tipo = new TipoCliente();
-        tipo.setIdTipoCliente(rs.getInt("id_tipo_cliente"));
-        tipo.setNombreTipo(rs.getString("tipo_cliente_nombre"));
-        c.setTipoCliente(tipo);
-
-        c.setEmail(rs.getString("email_info"));
-        c.setContraseña(rs.getString("contrasena"));
-        c.setNombre(rs.getString("nombre"));
-        c.setApellido(rs.getString("apellido"));
-
-        String saludoStr = rs.getString("saludo");
-        c.setSaludo(saludoStr != null ? Saludo.valueOf(saludoStr) : null);
-
-        c.setNumTel(rs.getString("numero_telefono"));
-        c.setPrefijo(rs.getString("prefijo_telefono"));
-
-        c.setEstado(Estado.valueOf(rs.getString("estado")));
-
-        Timestamp created = rs.getTimestamp("created_at");
-        Timestamp updated = rs.getTimestamp("updated_at");
-        Timestamp deleted = rs.getTimestamp("deleted_at");
-
-        c.setCreatedAt(created != null ? created.toLocalDateTime() : null);
-        c.setUpdatedAt(updated != null ? updated.toLocalDateTime() : null);
-        c.setDeletedAt(deleted != null ? deleted.toLocalDateTime() : null);
-
+    
+    @Override
+    public List<Cliente> listarEliminados() {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        List<Cliente> lista = new ArrayList<>();
+        
+        try {
+            conn = ConectarBD.conectar();
+        String sql = "SELECT c.*, t.nombre_tipo AS tipo_cliente_nombre "
+                   + "FROM clientes c "
+                   + "JOIN tipo_cliente t ON c.id_tipo_cliente = t.id_tipo_cliente "
+                   + "WHERE c.deleted_at IS NOT NULL "
+                   + "ORDER BY c.deleted_at DESC";
+            
+            ps = conn.prepareStatement(sql);
+            rs = ps.executeQuery();
+            
+            while (rs.next()) {
+                lista.add(mapearResultSet(rs));
+            }
+            
+        } catch (SQLException e) {
+            System.err.println("Error en ClienteDAO.listarEliminados: " + e.getMessage());
+        } finally {
+            cerrarRecursos(conn, ps, rs);
+        }
+        return lista;
+    }
+    
+    @Override
+    public void restaurar(int id) {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        
+        try {
+            conn = ConectarBD.conectar();
+            String sql = "UPDATE clientes SET deleted_at = NULL, updated_at = NOW() "
+                       + "WHERE id_cliente = ?";
+            
+            ps = conn.prepareStatement(sql);
+            ps.setInt(1, id);
+            ps.executeUpdate();
+            
+        } catch (SQLException e) {
+            System.err.println("Error en ClienteDAO.restaurar: " + e.getMessage());
+        } finally {
+            cerrarRecursos(conn, ps);
+        }
+    }
+    
+    @Override
+    public Cliente buscarConTrash(int id) {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        Cliente c = null;
+        
+        try {
+            conn = ConectarBD.conectar();
+            String sql = "SELECT c.*, t.nombre_tipo AS tipo_cliente_nombre "
+                       + "FROM clientes c "
+                       + "JOIN tipo_cliente t ON c.id_tipo_cliente = t.id_tipo_cliente "
+                       + "WHERE c.id_cliente = ?";
+            
+            ps = conn.prepareStatement(sql);
+            ps.setInt(1, id);
+            rs = ps.executeQuery();
+            
+            if (rs.next()) {
+                c = mapearResultSet(rs);
+            }
+            
+        } catch (SQLException e) {
+            System.err.println("Error en ClienteDAO.buscarConTrash: " + e.getMessage());
+        } finally {
+            cerrarRecursos(conn, ps, rs);
+        }
         return c;
+    }
+    
+    public boolean existeEmail(String email, int idExcluir) {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        
+        try {
+            conn = ConectarBD.conectar();
+            String sql = "SELECT COUNT(*) FROM clientes "
+                       + "WHERE email_info = ? "
+                       + "AND id_cliente != ? "
+                       + "AND deleted_at IS NULL";
+            
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, email);
+            ps.setInt(2, idExcluir);
+            rs = ps.executeQuery();
+            
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+            
+        } catch (SQLException e) {
+            System.err.println("Error en ClienteDAO.existeEmail: " + e.getMessage());
+        } finally {
+            cerrarRecursos(conn, ps, rs);
+        }
+        return false;
+    }
+    
+private Cliente mapearResultSet(ResultSet rs) throws SQLException {
+    Cliente c = new Cliente();
+    c.setIdCliente(rs.getInt("id_cliente"));
+
+    TipoCliente tipo = new TipoCliente();
+    tipo.setIdTipoCliente(rs.getInt("id_tipo_cliente"));
+    tipo.setNombreTipo(rs.getString("tipo_cliente_nombre"));
+    c.setTipoCliente(tipo);
+
+    c.setEmail(rs.getString("email_info"));
+    c.setContraseña(rs.getString("contrasena"));
+    c.setNombre(rs.getString("nombre"));
+    c.setApellido(rs.getString("apellido"));
+
+    String saludoStr = rs.getString("saludo");
+    c.setSaludo(saludoStr != null ? Saludo.valueOf(saludoStr) : null);
+
+    c.setNumTel(rs.getString("numero_telefono"));
+    c.setPrefijo(rs.getString("prefijo_telefono"));
+
+    String estadoStr = rs.getString("estado");
+    c.setEstado(convertirStringAEstado(estadoStr));
+
+    Timestamp created = rs.getTimestamp("created_at");
+    Timestamp updated = rs.getTimestamp("updated_at");
+    Timestamp deleted = rs.getTimestamp("deleted_at");
+
+    c.setCreatedAt(created != null ? created.toLocalDateTime() : null);
+    c.setUpdatedAt(updated != null ? updated.toLocalDateTime() : null);
+    c.setDeletedAt(deleted != null ? deleted.toLocalDateTime() : null);
+
+    return c;
+}
+
+    private Estado convertirStringAEstado(String estadoStr) {
+        if (estadoStr == null) return null;
+
+        estadoStr = estadoStr.toUpperCase();
+
+        try {
+            return Estado.valueOf(estadoStr);
+        } catch (IllegalArgumentException e) {
+            
+            for (Estado estado : Estado.values()) {
+                if (estado.getValor().equalsIgnoreCase(estadoStr)) {
+                    return estado;
+                }
+            }
+            throw new IllegalArgumentException("Estado no válido: " + estadoStr);
+        }
     }
 }
