@@ -1,11 +1,113 @@
 <?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://java.sun.com/jsf/html">
-    <h:head>
-        <title>Facelet Title</title>
-    </h:head>
-    <h:body>
-        Hello from Facelets
-    </h:body>
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+<h:head>
+    <title>Reporte de Habitaciones</title>
+</h:head>
+
+<h:body>
+
+<div style="padding:20px">
+
+    <h1>Reporte de Habitaciones</h1>
+
+    <!-- FORMULARIO DE FILTROS -->
+    <h:form id="formFiltros">
+
+        <p:panelGrid columns="4" columnClasses="col" style="width:100%" >
+
+            <!-- Estado -->
+            <p:outputLabel value="Estado:" />
+            <p:selectOneMenu value="#{reporteHabitacionesBean.estado}">
+                <f:selectItem itemValue="" itemLabel="Todas" />
+                <f:selectItem itemValue="en servicio" itemLabel="En servicio" />
+                <f:selectItem itemValue="ocupada" itemLabel="Ocupada" />
+                <f:selectItem itemValue="mantenimiento" itemLabel="Mantenimiento" />
+            </p:selectOneMenu>
+
+            <!-- Tipo -->
+            <p:outputLabel value="Tipo de habitación:" />
+            <p:selectOneMenu value="#{reporteHabitacionesBean.tipo}">
+                <f:selectItem itemValue="" itemLabel="Todos" />
+                <f:selectItems value="#{reporteHabitacionesBean.listaTipos}"
+                               var="t"
+                               itemValue="#{t.id}"
+                               itemLabel="#{t.nombre}" />
+            </p:selectOneMenu>
+
+            <!-- Fecha desde -->
+            <p:outputLabel value="Desde:" />
+            <p:calendar value="#{reporteHabitacionesBean.desde}" pattern="yyyy-MM-dd" />
+
+            <!-- Fecha hasta -->
+            <p:outputLabel value="Hasta:" />
+            <p:calendar value="#{reporteHabitacionesBean.hasta}" pattern="yyyy-MM-dd" />
+
+        </p:panelGrid>
+
+        <br/>
+
+        <!-- Botón filtrar -->
+        <p:commandButton value="Filtrar"
+                         icon="pi pi-search"
+                         update="tabla" 
+                         action="#{reporteHabitacionesBean.filtrar()}"
+                         style="margin-right:10px"/>
+
+        <!-- Botones exportación -->
+        <p:commandButton value="Exportar Excel"
+                         icon="pi pi-file-excel"
+                         ajax="false"
+                         action="#{reporteHabitacionesBean.exportarExcel()}"/>
+
+        <p:commandButton value="Exportar PDF"
+                         icon="pi pi-file-pdf"
+                         ajax="false"
+                         action="#{reporteHabitacionesBean.exportarPDF()}"
+                         styleClass="ui-button-danger" />
+
+    </h:form>
+
+
+    <br/>
+
+    <!-- TABLA DE RESULTADO -->
+    <h:panelGroup id="tabla">
+
+        <p:dataTable value="#{reporteHabitacionesBean.listaHabitaciones}"
+                     var="h"
+                     emptyMessage="No hay habitaciones que coincidan">
+
+            <p:column headerText="ID">
+                #{h.id}
+            </p:column>
+
+            <p:column headerText="Número">
+                #{h.numero}
+            </p:column>
+
+            <p:column headerText="Tipo">
+                #{h.tipo.nombre}
+            </p:column>
+
+            <p:column headerText="Estado">
+                #{h.estado}
+            </p:column>
+
+            <p:column headerText="Creada">
+                #{h.fechaCreacion}
+            </p:column>
+
+        </p:dataTable>
+
+    </h:panelGroup>
+
+</div>
+
+</h:body>
+
 </html>
