@@ -4,7 +4,10 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
-
+    <h:head>
+       
+        <h:outputStylesheet library="bootstrap" name="css/bootstrap.min.css" />
+    </h:head>
 <h:body>
 
     <h1 class="mb-4">Nueva Tarifa</h1>
@@ -59,6 +62,6 @@
                          action="tarifas.xhtml?faces-redirect=true"/>
 
     </h:form>
-
+<h:outputScript library="bootstrap" name="js/bootstrap.bundle.min.js" />
 </h:body>
 </html>

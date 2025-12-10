@@ -8,7 +8,7 @@
 
 <h:head>
     <title>Reservar Mesa</title>
-
+ <h:outputStylesheet library="bootstrap" name="css/bootstrap.min.css" />
     <style>
         .mesa-card {
             border-radius:10px;
@@ -140,6 +140,6 @@ function mostrarInfo(id, numero, activo, capacidad) {
     document.getElementById("formGuardar:mesaId").value = id;
 }
 </script>
-
+<h:outputScript library="bootstrap" name="js/bootstrap.bundle.min.js" />
 </h:body>
 </html>

@@ -3,8 +3,22 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Documents/VSC/JAVA/JSF/LaJElegante%20JSF-1/src/java/beans/PruebaBean.java</file>
-            <file>file:/C:/Documents/VSC/JAVA/JSF/LaJElegante%20JSF-1/nbproject/build-impl.xml</file>
+            <file>file:/C:/Users/javie/OneDrive/Desktop/Github-Javi/LaJElegante/web/views/admin/habitaciones/reportes/reporte.xhtml</file>
+            <file>file:/C:/Users/javie/OneDrive/Desktop/Github-Javi/LaJElegante/web/views/admin/habitaciones/pdf/pdf.xhtml</file>
+            <file>file:/C:/Users/javie/OneDrive/Desktop/Github-Javi/LaJElegante/web/views/admin/habitaciones/papelera/papelera.xhtml</file>
+            <file>file:/C:/Users/javie/OneDrive/Desktop/Github-Javi/LaJElegante/web/views/admin/empleados/index.xhtml</file>
+            <file>file:/C:/Users/javie/OneDrive/Desktop/Github-Javi/LaJElegante/web/views/admin/empleados/crear.xhtml</file>
+            <file>file:/C:/Users/javie/OneDrive/Desktop/Github-Javi/LaJElegante/web/views/admin/empleados/editar.xhtml</file>
+            <file>file:/C:/Users/javie/OneDrive/Desktop/Github-Javi/LaJElegante/web/views/admin/empleados/reportes/reporte.xhtml</file>
+            <file>file:/C:/Users/javie/OneDrive/Desktop/Github-Javi/LaJElegante/web/views/admin/empleados/pdf/pdf.xhtml</file>
+            <file>file:/C:/Users/javie/OneDrive/Desktop/Github-Javi/LaJElegante/web/views/admin/empleados/papelera/papelera.xhtml</file>
+            <file>file:/C:/Users/javie/OneDrive/Desktop/Github-Javi/LaJElegante/web/views/admin/dashboard/index.xhtml</file>
+            <file>file:/C:/Users/javie/OneDrive/Desktop/Github-Javi/LaJElegante/web/views/admin/clientes/index.xhtml</file>
+            <file>file:/C:/Users/javie/OneDrive/Desktop/Github-Javi/LaJElegante/web/views/admin/clientes/editar.xhtml</file>
+            <file>file:/C:/Users/javie/OneDrive/Desktop/Github-Javi/LaJElegante/web/views/admin/clientes/crear.xhtml</file>
+            <file>file:/C:/Users/javie/OneDrive/Desktop/Github-Javi/LaJElegante/web/views/admin/clientes/reportes/reporte.xhtml</file>
+            <file>file:/C:/Users/javie/OneDrive/Desktop/Github-Javi/LaJElegante/web/views/admin/clientes/pdf/pdf.xhtml</file>
+            <file>file:/C:/Users/javie/OneDrive/Desktop/Github-Javi/LaJElegante/web/views/admin/clientes/papelera/papelera.xhtml</file>
         </group>
     </open-files>
 </project-private>

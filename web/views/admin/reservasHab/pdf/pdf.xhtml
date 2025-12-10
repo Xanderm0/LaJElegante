@@ -6,6 +6,7 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core">
 <h:head>
     <title>Reporte de Reservas</title>
+     <h:outputStylesheet library="bootstrap" name="css/bootstrap.min.css" />
     <style>
         body { font-family: DejaVu Sans, sans-serif; font-size: 12px; }
         h2 { text-align: center; margin-bottom: 20px; }
@@ -42,5 +43,6 @@
         <p:commandButton value="Exportar a PDF" action="#{reporteBean.exportarPDF}" ajax="false" styleClass="btn btn-danger"/>
 
     </h:form>
+    <h:outputScript library="bootstrap" name="js/bootstrap.bundle.min.js" />
 </h:body>
 </html>

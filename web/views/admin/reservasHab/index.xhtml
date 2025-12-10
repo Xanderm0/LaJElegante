@@ -7,6 +7,7 @@
 
 <h:head>
     <title>Listado de Reservas de Habitaciones</title>
+     <h:outputStylesheet library="bootstrap" name="css/bootstrap.min.css" />
 </h:head>
 
 <h:body>
@@ -51,6 +52,6 @@
     </p:dataTable>
 
     <h:outputText rendered="#{empty reservaHabitacionBean.reservas}" value="No hay reservas registradas." styleClass="text-center" />
-
+ <h:outputScript library="bootstrap" name="js/bootstrap.bundle.min.js" />
 </h:body>
 </html>
