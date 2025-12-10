@@ -171,7 +171,117 @@ public class ClienteDAO extends BaseDAO<Cliente> {
             cerrarRecursos(conn, ps);
         }
     }
-
+    
+    @Override
+    public List<Cliente> listarEliminados() {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        List<Cliente> lista = new ArrayList<>();
+        
+        try {
+            conn = ConectarBD.conectar();
+            String sql = "SELECT c.*, t.nombre AS tipo_cliente_nombre "
+                       + "FROM clientes c "
+                       + "JOIN tipo_cliente t ON c.id_tipo_cliente = t.id_tipo_cliente "
+                       + "WHERE c.deleted_at IS NOT NULL "
+                       + "ORDER BY c.deleted_at DESC";
+            
+            ps = conn.prepareStatement(sql);
+            rs = ps.executeQuery();
+            
+            while (rs.next()) {
+                lista.add(mapearResultSet(rs));
+            }
+            
+        } catch (SQLException e) {
+            System.err.println("Error en ClienteDAO.listarEliminados: " + e.getMessage());
+        } finally {
+            cerrarRecursos(conn, ps, rs);
+        }
+        return lista;
+    }
+    
+    @Override
+    public void restaurar(int id) {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        
+        try {
+            conn = ConectarBD.conectar();
+            String sql = "UPDATE clientes SET deleted_at = NULL, updated_at = NOW() "
+                       + "WHERE id_cliente = ?";
+            
+            ps = conn.prepareStatement(sql);
+            ps.setInt(1, id);
+            ps.executeUpdate();
+            
+        } catch (SQLException e) {
+            System.err.println("Error en ClienteDAO.restaurar: " + e.getMessage());
+        } finally {
+            cerrarRecursos(conn, ps);
+        }
+    }
+    
+    @Override
+    public Cliente buscarConTrash(int id) {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        Cliente c = null;
+        
+        try {
+            conn = ConectarBD.conectar();
+            String sql = "SELECT c.*, t.nombre AS tipo_cliente_nombre "
+                       + "FROM clientes c "
+                       + "JOIN tipo_cliente t ON c.id_tipo_cliente = t.id_tipo_cliente "
+                       + "WHERE c.id_cliente = ?";  // ← SIN deleted_at IS NULL
+            
+            ps = conn.prepareStatement(sql);
+            ps.setInt(1, id);
+            rs = ps.executeQuery();
+            
+            if (rs.next()) {
+                c = mapearResultSet(rs);
+            }
+            
+        } catch (SQLException e) {
+            System.err.println("Error en ClienteDAO.buscarConTrash: " + e.getMessage());
+        } finally {
+            cerrarRecursos(conn, ps, rs);
+        }
+        return c;
+    }
+    
+    public boolean existeEmail(String email, int idExcluir) {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        
+        try {
+            conn = ConectarBD.conectar();
+            String sql = "SELECT COUNT(*) FROM clientes "
+                       + "WHERE email_info = ? "
+                       + "AND id_cliente != ? "
+                       + "AND deleted_at IS NULL";
+            
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, email);
+            ps.setInt(2, idExcluir);
+            rs = ps.executeQuery();
+            
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+            
+        } catch (SQLException e) {
+            System.err.println("Error en ClienteDAO.existeEmail: " + e.getMessage());
+        } finally {
+            cerrarRecursos(conn, ps, rs);
+        }
+        return false;
+    }
+    
     private Cliente mapearResultSet(ResultSet rs) throws SQLException {
 
         Cliente c = new Cliente();
