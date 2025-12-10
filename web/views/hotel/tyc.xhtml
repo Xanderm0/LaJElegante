@@ -1,11 +1,64 @@
 <?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://java.sun.com/jsf/html">
-    <h:head>
-        <title>Facelet Title</title>
-    </h:head>
-    <h:body>
-        Hello from Facelets
-    </h:body>
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+<h:head>
+    <title>Términos y Condiciones - Hotel LJE</title>
+</h:head>
+<h:body>
+
+<h:form id="formTerminos">
+
+    <h2>? Términos y Condiciones</h2>
+
+    <!-- Fila 1 -->
+    <p:panelGrid columns="4">
+        <p:panel>
+            <h:outputText value="Uso Responsable" />
+            <h:outputText value="Los huéspedes deben respetar las normas del hotel y a los demás clientes."/>
+        </p:panel>
+
+        <p:panel>
+            <h:outputText value="Reservas"/>
+            <h:outputText value="Las reservas deben confirmarse con 48h de anticipación."/>
+        </p:panel>
+
+        <p:panel>
+            <h:outputText value="Check-in"/>
+            <h:outputText value="Desde las 3:00 PM hasta las 11:00 AM (check-out)."/>
+        </p:panel>
+
+        <p:panel>
+            <h:outputText value="Cancelaciones"/>
+            <h:outputText value="Notificar mínimo con 24h de anticipación para evitar cargos."/>
+        </p:panel>
+    </p:panelGrid>
+
+    <!-- Fila 2 -->
+    <p:panelGrid columns="4">
+        <p:panel>
+            <h:outputText value="Mascotas"/>
+            <h:outputText value="Permitidas solo en áreas designadas del hotel."/>
+        </p:panel>
+
+        <p:panel>
+            <h:outputText value="Pagos"/>
+            <h:outputText value="Aceptamos tarjetas y efectivo en moneda local."/>
+        </p:panel>
+
+        <p:panel>
+            <h:outputText value="Responsabilidad"/>
+            <h:outputText value="El hotel no se hace responsable por objetos de valor no declarados."/>
+        </p:panel>
+
+        <p:panel>
+            <h:outputText value="Ruido"/>
+            <h:outputText value="Se prohíben ruidos fuertes después de las 10:00 PM."/>
+        </p:panel>
+    </p:panelGrid>
+
+</h:form>
+
+</h:body>
 </html>

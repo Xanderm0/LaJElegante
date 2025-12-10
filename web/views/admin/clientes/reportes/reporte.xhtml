@@ -1,11 +1,109 @@
 <?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://java.sun.com/jsf/html">
-    <h:head>
-        <title>Facelet Title</title>
-    </h:head>
-    <h:body>
-        Hello from Facelets
-    </h:body>
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+<h:head>
+    <title>Reporte de Clientes</title>
+</h:head>
+
+<h:body>
+
+<h:form id="formReporte">
+
+    <p:panel header="Filtros de búsqueda" style="margin-bottom:15px">
+
+        <p:panelGrid columns="4" columnClasses="label,value,label,value">
+
+            <p:outputLabel value="Estado"/>
+            <p:selectOneMenu value="#{clienteReportBean.estado}">
+                <f:selectItem itemLabel="Todos" itemValue=""/>
+                <f:selectItem itemLabel="Activo" itemValue="activo"/>
+                <f:selectItem itemLabel="Inactivo" itemValue="inactivo"/>
+            </p:selectOneMenu>
+
+            <p:outputLabel value="Tipo Cliente"/>
+            <p:selectOneMenu value="#{clienteReportBean.tipoCliente}">
+                <f:selectItem itemLabel="Todos" itemValue=""/>
+                <f:selectItems value="#{clienteReportBean.listaTipos}"
+                               var="tipo"
+                               itemValue="#{tipo.idTipo}"
+                               itemLabel="#{tipo.nombre}"/>
+            </p:selectOneMenu>
+
+            <p:outputLabel value="Fecha Desde"/>
+            <p:calendar value="#{clienteReportBean.desde}" pattern="yyyy-MM-dd" />
+
+            <p:outputLabel value="Fecha Hasta"/>
+            <p:calendar value="#{clienteReportBean.hasta}" pattern="yyyy-MM-dd" />
+
+        </p:panelGrid>
+
+        <p:commandButton value="Buscar"
+                         update="tablaClientes"
+                         actionListener="#{clienteReportBean.filtrar}"
+                         icon="pi pi-search"/>
+
+    </p:panel>
+
+
+    <p:commandButton value="Exportar Excel"
+                     ajax="false"
+                     icon="pi pi-file-excel"
+                     onclick="PrimeFaces.monitorDownload(start, stop)"
+                     actionListener="#{clienteReportBean.exportarExcel}" />
+
+    <p:commandButton value="Exportar PDF"
+                     ajax="false"
+                     icon="pi pi-file-pdf"
+                     onclick="PrimeFaces.monitorDownload(start, stop)"
+                     actionListener="#{clienteReportBean.exportarPDF}" />
+
+
+
+    <p:dataTable id="tablaClientes"
+                 value="#{clienteReportBean.clientes}"
+                 var="c"
+                 paginator="true"
+                 rows="10"
+                 emptyMessage="No hay resultados">
+
+        <p:column headerText="ID">
+            #{c.id}
+        </p:column>
+
+        <p:column headerText="Nombre Completo">
+            #{c.nombre} #{c.apellido}
+        </p:column>
+
+        <p:column headerText="Email">
+            #{c.email}
+        </p:column>
+
+        <p:column headerText="Tipo Cliente">
+            #{c.tipo.nombre}
+        </p:column>
+
+        <p:column headerText="Estado">
+            #{c.estado}
+        </p:column>
+
+        <p:column headerText="Fecha Registro">
+            <h:outputText value="#{c.fechaRegistro}">
+                <f:convertDateTime pattern="dd/MM/yyyy"/>
+            </h:outputText>
+        </p:column>
+
+    </p:dataTable>
+
+</h:form>
+
+<script>
+function start(){ PF('status').show(); }
+function stop(){ PF('status').hide(); }
+</script>
+
+</h:body>
 </html>

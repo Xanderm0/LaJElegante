@@ -1,11 +1,63 @@
 <?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://java.sun.com/jsf/html">
-    <h:head>
-        <title>Facelet Title</title>
-    </h:head>
-    <h:body>
-        Hello from Facelets
-    </h:body>
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+<h:body>
+
+<h:form id="formNuevaTemporada">
+
+    <h2>Nueva Temporada</h2>
+
+    <p:messages closable="true" showDetail="true" />
+
+    <p:panelGrid columns="2" columnClasses="label,value">
+
+        <!-- Nombre temporada -->
+        <p:outputLabel value="Nombre de la temporada" for="nombre" />
+        <p:selectOneMenu id="nombre"
+                         value="#{temporadaBean.temporadaNueva.nombre}"
+                         required="true">
+            <f:selectItem itemLabel="Alta" itemValue="alta"/>
+            <f:selectItem itemLabel="Media" itemValue="media"/>
+            <f:selectItem itemLabel="Baja" itemValue="baja"/>
+        </p:selectOneMenu>
+
+        <!-- Fecha inicio -->
+        <p:outputLabel value="Fecha inicio" for="ini" />
+        <p:datePicker id="ini"
+                      value="#{temporadaBean.temporadaNueva.fechaInicio}"
+                      pattern="yyyy-MM-dd"
+                      required="true"/>
+
+        <!-- Fecha fin -->
+        <p:outputLabel value="Fecha fin" for="fin" />
+        <p:datePicker id="fin"
+                      value="#{temporadaBean.temporadaNueva.fechaFin}"
+                      pattern="yyyy-MM-dd"
+                      required="true"/>
+
+        <!-- Modificador precio -->
+        <p:outputLabel value="Modificador de precio (%)" for="mod" />
+        <p:inputNumber id="mod"
+                       value="#{temporadaBean.temporadaNueva.modificadorPrecio}"
+                       decimalPlaces="2"
+                       required="true"/>
+    </p:panelGrid>
+
+    <br/>
+
+    <p:commandButton value="Guardar"
+                     action="#{temporadaBean.guardar()}"
+                     update="formNuevaTemporada msgs"
+                     styleClass="ui-button-success" />
+
+    <p:button value="Cancelar"
+              outcome="listarTemporadas"
+              styleClass="ui-button-secondary" />
+
+</h:form>
+
+</h:body>
 </html>

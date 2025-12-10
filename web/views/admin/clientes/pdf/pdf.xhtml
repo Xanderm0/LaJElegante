@@ -1,11 +1,55 @@
 <?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://java.sun.com/jsf/html">
-    <h:head>
-        <title>Facelet Title</title>
-    </h:head>
-    <h:body>
-        Hello from Facelets
-    </h:body>
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+<h:head>
+    <title>Reporte de Clientes</title>
+</h:head>
+
+<h:body>
+
+<h:form>
+
+    <p:panel header="Reporte de Clientes">
+
+        <p:dataTable value="#{reporteClientesBean.listaClientes}" var="c"
+                     paginator="true" rows="10"
+                     emptyMessage="No hay clientes">
+
+            <p:column headerText="ID">
+                #{c.idCliente}
+            </p:column>
+
+            <p:column headerText="Nombre completo">
+                #{c.nombre} #{c.apellido}
+            </p:column>
+
+            <p:column headerText="Email">
+                #{c.email}
+            </p:column>
+
+            <p:column headerText="Tipo Cliente">
+                #{c.tipo.nombreTipo}
+            </p:column>
+
+            <p:column headerText="Estado">
+                #{c.estado}
+            </p:column>
+
+            <p:column headerText="Creado">
+                <h:outputText value="#{c.fechaCreacion}">
+                    <f:convertDateTime pattern="dd/MM/yyyy"/>
+                </h:outputText>
+            </p:column>
+
+        </p:dataTable>
+
+    </p:panel>
+
+</h:form>
+
+</h:body>
 </html>

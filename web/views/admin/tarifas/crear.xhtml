@@ -1,11 +1,64 @@
 <?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://java.sun.com/jsf/html">
-    <h:head>
-        <title>Facelet Title</title>
-    </h:head>
-    <h:body>
-        Hello from Facelets
-    </h:body>
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+<h:body>
+
+    <h1 class="mb-4">Nueva Tarifa</h1>
+
+    <h:form id="formNuevaTarifa">
+
+        <p:panelGrid columns="2" styleClass="p-fluid">
+
+            <!-- Tarifa fija -->
+            <p:outputLabel value="Tarifa fija" for="tarifaFija"/>
+            <p:inputNumber id="tarifaFija"
+                           value="#{tarifaBean.tarifaNueva.tarifaFija}"
+                           mode="decimal"
+                           required="true" />
+
+            <!-- Precio final -->
+            <p:outputLabel value="Precio final" for="precioFinal"/>
+            <p:inputNumber id="precioFinal"
+                           value="#{tarifaBean.tarifaNueva.precioFinal}"
+                           mode="decimal"
+                           required="true" />
+
+            <!-- Estado -->
+            <p:outputLabel value="Estado" for="estado"/>
+            <p:selectOneMenu id="estado"
+                             value="#{tarifaBean.tarifaNueva.estado}">
+                <f:selectItem itemValue="vigente" itemLabel="Vigente"/>
+                <f:selectItem itemValue="inactiva" itemLabel="Inactiva"/>
+            </p:selectOneMenu>
+
+            <!-- Temporada -->
+            <p:outputLabel value="Temporada" for="temporada"/>
+            <p:selectOneMenu id="temporada"
+                             value="#{tarifaBean.tarifaNueva.idTemporada}">
+                <f:selectItems value="#{tarifaBean.listaTemporadas}"
+                               var="temp"
+                               itemValue="#{temp.idTemporada}"
+                               itemLabel="#{temp.nombre}"/>
+            </p:selectOneMenu>
+
+        </p:panelGrid>
+
+        <br/>
+
+        <p:commandButton value="Guardar"
+                         styleClass="p-button-success"
+                         action="#{tarifaBean.guardarNuevaTarifa}"
+                         update="@form"/>
+
+        <p:commandButton value="Cancelar"
+                         styleClass="p-button-secondary"
+                         action="tarifas.xhtml?faces-redirect=true"/>
+
+    </h:form>
+
+</h:body>
 </html>
