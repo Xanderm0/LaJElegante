@@ -17,4 +17,17 @@ public enum Rol {
     public String getValor() {
         return valor;
     }
+    
+    public static Rol fromValor(String valor) {
+        if (valor == null) return null;
+        
+        valor = valor.trim().toLowerCase();
+        
+        for (Rol rol : Rol.values()) {
+            if (rol.valor.equals(valor)) {
+                return rol;
+            }
+        }
+        throw new IllegalArgumentException("Rol no válido: " + valor);
+    }
 }

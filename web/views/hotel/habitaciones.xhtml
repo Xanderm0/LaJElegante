@@ -1,74 +1,88 @@
 <?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:p="http://primefaces.org/ui">
-<h:head>
-    <title>Habitaciones - Hotel LJE</title>
-    <h:outputStylesheet library="bootstrap" name="css/bootstrap.min.css" />
-</h:head>
-<h:body>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/views/hotel/layouts/header.xhtml">
+    
+    <ui:define name="title">Habitaciones - Hotel LJE</ui:define>
+    
+    <ui:define name="content">
+        <div class="container-fluid my-4">
+            <div class="row" style="min-height: 80vh;">
+                <!-- Columna izquierda: banner habitación especial -->
+                <div class="col-md-6 position-relative d-flex flex-column align-items-center justify-content-between text-center p-4 text-white overflow-hidden habitacion-card"
+                     style="background: url(&quot;#{resource['images:habitacionespecialHotel.png']}&quot;) no-repeat center center/cover; min-height: 80vh;">
+                    <div class="mb-auto">
+                        <h4 class="fw-bold">Descubre nuestras habitaciones</h4>
+                        <p>Confort y elegancia en cada detalle</p> 
+                    </div>
+                    <div class="mt-auto pb-3 z-2">
+                        <p:commandButton value="Hacer Reserva" 
+                                         styleClass="btn btn-reserva btn-lg px-5"/>
+                    </div>
 
-<h:form id="formHabitaciones">
+                    <div class="overlay d-flex flex-column justify-content-center align-items-center text-center">
+                        <h3 class="fw-bold">Habitación Especial</h3>
+                        <p class="lead">Confort exclusivo y lujo</p>
+                        <div class="circle-card-2 mt-2">$210.000 noche</div>
+                    </div>
+                </div>
 
-    <p:panelGrid columns="2" style="width:100%; gap:1em;">
-        <!-- Columna izquierda: habitación especial -->
-        <h:panelGroup style="position:relative; text-align:center; min-height:80vh; background-image:url('resources/images/habitacionespecialHotel.png'); background-size:cover; background-position:center;">
-            
-            <h:panelGroup>
-                <h4>Descubre nuestras habitaciones</h4>
-                <p>Confort y elegancia en cada detalle</p>
-            </h:panelGroup>
+                <!-- Columna derecha: grid habitaciones -->
+                <div class="col-md-6 ps-3">
+                    <div class="row g-3 h-100">
 
-            <p:commandButton value="Hacer Reserva" action="#{reservaBean.hacerReservaEspecial}" styleClass="ui-button-success ui-button-lg"/>
+                        <!-- Habitación 1: Básica -->
+                        <div class="col-md-6">
+                            <div class="room-card position-relative overflow-hidden h-100">
+                                <h:graphicImage library="images" name="habitacionbasicaHotel.png" 
+                                               styleClass="img-fluid w-100 h-100 object-fit-cover"
+                                               alt="Habitación 1"/>
+                                <div class="room-overlay d-flex flex-column justify-content-center align-items-center text-white">
+                                    <h5 class="fw-bold">Básica</h5>
+                                    <span class="badge bg-button-hab fs-6">$70.000</span>
+                                </div>
+                            </div>
+                        </div>
 
-            <h:panelGroup style="position:absolute; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); display:flex; flex-direction:column; justify-content:center; align-items:center; color:white;">
-                <h3>Habitación Especial</h3>
-                <p>Confort exclusivo y lujo</p>
-                <h:outputText value="$210.000 noche"/>
-            </h:panelGroup>
-        </h:panelGroup>
+                        <!-- Habitación 2: Familiar -->
+                        <div class="col-md-6">
+                            <div class="room-card position-relative overflow-hidden h-100">
+                                <h:graphicImage library="images" name="habitacionfamiliarHotel.png" 
+                                               styleClass="img-fluid w-100 h-100 object-fit-cover"
+                                               alt="Habitación 2"/>
+                                <div class="room-overlay d-flex flex-column justify-content-center align-items-center text-white">
+                                    <h5 class="fw-bold">Familiar</h5>
+                                    <span class="badge bg-button-hab fs-6">$170.000</span>
+                                </div>
+                            </div>
+                        </div>
 
-        <!-- Columna derecha: grid de habitaciones -->
-        <p:panelGrid columns="2" style="gap:1em;">
+                        <!-- Habitación 3: Pareja -->
+                        <div class="col-md-6">
+                            <div class="room-card position-relative overflow-hidden h-100">
+                                <h:graphicImage library="images" name="habitacionparejaHotel.png" 
+                                               styleClass="img-fluid w-100 h-100 object-fit-cover"
+                                               alt="Habitación 3"/>
+                                <div class="room-overlay d-flex flex-column justify-content-center align-items-center text-white">
+                                    <h5 class="fw-bold">Pareja</h5>
+                                    <span class="badge bg-button-hab fs-6">$120.000</span>
+                                </div>
+                            </div>
+                        </div>
 
-            <!-- Habitación Básica -->
-            <h:panelGroup style="position:relative; height:200px;">
-                <h:graphicImage value="resources/images/habitacionbasicaHotel.png" style="width:100%; height:100%; object-fit:cover;"/>
-                <h:panelGroup style="position:absolute; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.4); display:flex; flex-direction:column; justify-content:center; align-items:center; color:white;">
-                    <h5>Básica</h5>
-                    <h:outputText value="$70.000"/>
-                </h:panelGroup>
-            </h:panelGroup>
+                        <!-- Promoción -->
+                        <div class="col-md-6 d-flex justify-content-center align-items-center">
+                            <div class="circle-card-lg">
+                                <span class="fw-bold">20% por primera reserva</span>
+                            </div>
+                        </div>
 
-            <!-- Habitación Familiar -->
-            <h:panelGroup style="position:relative; height:200px;">
-                <h:graphicImage value="resources/images/habitacionfamiliarHotel.png" style="width:100%; height:100%; object-fit:cover;"/>
-                <h:panelGroup style="position:absolute; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.4); display:flex; flex-direction:column; justify-content:center; align-items:center; color:white;">
-                    <h5>Familiar</h5>
-                    <h:outputText value="$170.000"/>
-                </h:panelGroup>
-            </h:panelGroup>
-
-            <!-- Habitación Pareja -->
-            <h:panelGroup style="position:relative; height:200px;">
-                <h:graphicImage value="resources/images/habitacionparejaHotel.png" style="width:100%; height:100%; object-fit:cover;"/>
-                <h:panelGroup style="position:absolute; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.4); display:flex; flex-direction:column; justify-content:center; align-items:center; color:white;">
-                    <h5>Pareja</h5>
-                    <h:outputText value="$120.000"/>
-                </h:panelGroup>
-            </h:panelGroup>
-
-            <!-- Promo -->
-            <h:panelGroup style="display:flex; justify-content:center; align-items:center; background:#007bff; color:white; border-radius:50%; height:200px;">
-                <h:outputText value="20% por primera reserva"/>
-            </h:panelGroup>
-
-        </p:panelGrid>
-
-    </p:panelGrid>
-
-</h:form>
-<h:outputScript library="bootstrap" name="js/bootstrap.bundle.min.js" />
-</h:body>
-</html>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ui:define>
+</ui:composition>
