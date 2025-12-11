@@ -253,6 +253,35 @@ public class ClienteDAO extends BaseDAO<Cliente> {
         return c;
     }
     
+        public Cliente buscarPorEmail(String email) {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        Cliente c = null;
+
+        try {
+            conn = ConectarBD.conectar();
+            String sql = "SELECT c.*, t.nombre_tipo AS tipo_cliente_nombre "
+                       + "FROM clientes c "
+                       + "JOIN tipo_cliente t ON c.id_tipo_cliente = t.id_tipo_cliente "
+                       + "WHERE c.email_info = ? AND c.deleted_at IS NULL";
+
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, email);
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                c = mapearResultSet(rs);
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Error en ClienteDAO.buscarPorEmail: " + e.getMessage());
+        } finally {
+            cerrarRecursos(conn, ps, rs);
+        }
+        return c;
+    }
+    
     public boolean existeEmail(String email, int idExcluir) {
         Connection conn = null;
         PreparedStatement ps = null;
@@ -282,39 +311,39 @@ public class ClienteDAO extends BaseDAO<Cliente> {
         return false;
     }
     
-private Cliente mapearResultSet(ResultSet rs) throws SQLException {
-    Cliente c = new Cliente();
-    c.setIdCliente(rs.getInt("id_cliente"));
+    private Cliente mapearResultSet(ResultSet rs) throws SQLException {
+        Cliente c = new Cliente();
+        c.setIdCliente(rs.getInt("id_cliente"));
 
-    TipoCliente tipo = new TipoCliente();
-    tipo.setIdTipoCliente(rs.getInt("id_tipo_cliente"));
-    tipo.setNombreTipo(rs.getString("tipo_cliente_nombre"));
-    c.setTipoCliente(tipo);
+        TipoCliente tipo = new TipoCliente();
+        tipo.setIdTipoCliente(rs.getInt("id_tipo_cliente"));
+        tipo.setNombreTipo(rs.getString("tipo_cliente_nombre"));
+        c.setTipoCliente(tipo);
 
-    c.setEmail(rs.getString("email_info"));
-    c.setContraseña(rs.getString("contrasena"));
-    c.setNombre(rs.getString("nombre"));
-    c.setApellido(rs.getString("apellido"));
+        c.setEmail(rs.getString("email_info"));
+        c.setContraseña(rs.getString("contrasena"));
+        c.setNombre(rs.getString("nombre"));
+        c.setApellido(rs.getString("apellido"));
 
-    String saludoStr = rs.getString("saludo");
-    c.setSaludo(saludoStr != null ? Saludo.valueOf(saludoStr) : null);
+        String saludoStr = rs.getString("saludo");
+        c.setSaludo(saludoStr != null ? Saludo.valueOf(saludoStr) : null);
 
-    c.setNumTel(rs.getString("numero_telefono"));
-    c.setPrefijo(rs.getString("prefijo_telefono"));
+        c.setNumTel(rs.getString("numero_telefono"));
+        c.setPrefijo(rs.getString("prefijo_telefono"));
 
-    String estadoStr = rs.getString("estado");
-    c.setEstado(convertirStringAEstado(estadoStr));
+        String estadoStr = rs.getString("estado");
+        c.setEstado(convertirStringAEstado(estadoStr));
 
-    Timestamp created = rs.getTimestamp("created_at");
-    Timestamp updated = rs.getTimestamp("updated_at");
-    Timestamp deleted = rs.getTimestamp("deleted_at");
+        Timestamp created = rs.getTimestamp("created_at");
+        Timestamp updated = rs.getTimestamp("updated_at");
+        Timestamp deleted = rs.getTimestamp("deleted_at");
 
-    c.setCreatedAt(created != null ? created.toLocalDateTime() : null);
-    c.setUpdatedAt(updated != null ? updated.toLocalDateTime() : null);
-    c.setDeletedAt(deleted != null ? deleted.toLocalDateTime() : null);
+        c.setCreatedAt(created != null ? created.toLocalDateTime() : null);
+        c.setUpdatedAt(updated != null ? updated.toLocalDateTime() : null);
+        c.setDeletedAt(deleted != null ? deleted.toLocalDateTime() : null);
 
-    return c;
-}
+        return c;
+    }
 
     private Estado convertirStringAEstado(String estadoStr) {
         if (estadoStr == null) return null;
