@@ -1,65 +1,288 @@
 <?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:p="http://primefaces.org/ui">
-<h:head>
-    <title>Términos y Condiciones - Hotel LJE</title>
-    <h:outputStylesheet library="bootstrap" name="css/bootstrap.min.css" />
-</h:head>
-<h:body>
-
-<h:form id="formTerminos">
-
-    <h2>? Términos y Condiciones</h2>
-
-    <!-- Fila 1 -->
-    <p:panelGrid columns="4">
-        <p:panel>
-            <h:outputText value="Uso Responsable" />
-            <h:outputText value="Los huéspedes deben respetar las normas del hotel y a los demás clientes."/>
-        </p:panel>
-
-        <p:panel>
-            <h:outputText value="Reservas"/>
-            <h:outputText value="Las reservas deben confirmarse con 48h de anticipación."/>
-        </p:panel>
-
-        <p:panel>
-            <h:outputText value="Check-in"/>
-            <h:outputText value="Desde las 3:00 PM hasta las 11:00 AM (check-out)."/>
-        </p:panel>
-
-        <p:panel>
-            <h:outputText value="Cancelaciones"/>
-            <h:outputText value="Notificar mínimo con 24h de anticipación para evitar cargos."/>
-        </p:panel>
-    </p:panelGrid>
-
-    <!-- Fila 2 -->
-    <p:panelGrid columns="4">
-        <p:panel>
-            <h:outputText value="Mascotas"/>
-            <h:outputText value="Permitidas solo en áreas designadas del hotel."/>
-        </p:panel>
-
-        <p:panel>
-            <h:outputText value="Pagos"/>
-            <h:outputText value="Aceptamos tarjetas y efectivo en moneda local."/>
-        </p:panel>
-
-        <p:panel>
-            <h:outputText value="Responsabilidad"/>
-            <h:outputText value="El hotel no se hace responsable por objetos de valor no declarados."/>
-        </p:panel>
-
-        <p:panel>
-            <h:outputText value="Ruido"/>
-            <h:outputText value="Se prohíben ruidos fuertes después de las 10:00 PM."/>
-        </p:panel>
-    </p:panelGrid>
-
-</h:form>
-<h:outputScript library="bootstrap" name="js/bootstrap.bundle.min.js" />
-</h:body>
-</html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/views/hotel/layouts/header.xhtml">
+    
+    <ui:define name="title">Términos y Condiciones - Hotel LJE</ui:define>
+    
+    <style> 
+        /*TyC*/
+            .hover-card {
+                transition: all 0.3s ease;
+                cursor: default;
+                display: flex;
+                flex-direction: column;
+            }
+            .hover-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
+            }
+            .card-header {
+                font-weight: 600;
+                min-height: 60px;
+                display: flex;
+                align-items: center;
+            }
+            .card-body {
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+            }
+            .card-text {
+                flex: 1;
+            }
+            .icon-container {
+                min-height: 60px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            .icon-container i {
+                font-size: 2.5rem !important;
+                width: 60px;
+                height: 60px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            .text-white {
+                color: white !important;
+            }
+            .bg-primary { 
+                background: linear-gradient(135deg, #1a237e, #283593) !important; 
+            }
+            .bg-success { 
+                background: linear-gradient(135deg, #2e7d32, #388e3c) !important; 
+            }
+            .bg-danger { 
+                background: linear-gradient(135deg, #c62828, #d32f2f) !important; 
+            }
+            .bg-warning { 
+                background: linear-gradient(135deg, #f57c00, #ff9800) !important; 
+            }
+            .bg-info { 
+                background: linear-gradient(135deg, #0277bd, #0288d1) !important; 
+            }
+            .bg-secondary { 
+                background: linear-gradient(135deg, #455a64, #546e7a) !important; 
+            }
+            .bg-dark { 
+                background: linear-gradient(135deg, #212121, #424242) !important; 
+            }
+            
+            .card-header i.fs-5 {
+                font-size: 1.25rem !important;
+            }
+            
+            .row {
+                align-items: stretch;
+            }
+    </style>
+    
+    <ui:define name="content">
+        <div class="container my-5">
+            <!-- Encabezado simple -->
+            <div class="text-center mb-5">
+                <h1 class="fw-bold text-white mb-3">
+                    <i class="pi pi-info-circle text-info me-2"></i>
+                    Términos y Condiciones
+                </h1>
+                <p class="lead text-white">Información importante para tu estancia</p>
+            </div>
+            
+            <!-- Grid de términos en cards organizadas -->
+            <div class="row g-4">
+                
+                <!-- Reservas -->
+                <div class="col-md-6 col-lg-3">
+                    <div class="card h-100 border-0 shadow-sm hover-card">
+                        <div class="card-header bg-primary text-white d-flex align-items-center">
+                            <i class="pi pi-calendar fs-5 me-2"></i>
+                            <h5 class="mb-0 flex-grow-1">Reservas</h5>
+                        </div>
+                        <div class="card-body d-flex flex-column">
+                            <p class="card-text flex-grow-1">
+                                Confirmación con 48h de anticipación. Depósito del 30% al reservar.
+                            </p>
+                            <div class="text-center mt-3 icon-container">
+                                <i class="pi pi-clock text-warning"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Check-in/out -->
+                <div class="col-md-6 col-lg-3">
+                    <div class="card h-100 border-0 shadow-sm hover-card">
+                        <div class="card-header bg-success text-white d-flex align-items-center">
+                            <i class="pi pi-sign-in fs-5 me-2"></i>
+                            <h5 class="mb-0 flex-grow-1">Check-in/out</h5>
+                        </div>
+                        <div class="card-body d-flex flex-column">
+                            <div class="card-text flex-grow-1">
+                                <div class="mb-2">
+                                    <strong>Check-in:</strong><br/>
+                                    <span class="text-dark">3:00 PM</span>
+                                </div>
+                                <div class="mb-2">
+                                    <strong>Check-out:</strong><br/>
+                                    <span class="text-dark">11:00 AM</span>
+                                </div>
+                                <small class="text-muted d-block">Tardías generan cargos</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Cancelaciones -->
+                <div class="col-md-6 col-lg-3">
+                    <div class="card h-100 border-0 shadow-sm hover-card">
+                        <div class="card-header bg-danger text-white d-flex align-items-center">
+                            <i class="pi pi-times-circle fs-5 me-2"></i>
+                            <h5 class="mb-0 flex-grow-1">Cancelaciones</h5>
+                        </div>
+                        <div class="card-body d-flex flex-column">
+                            <p class="card-text flex-grow-1">
+                                Gratis con 24h de anticipación. Después se retiene el depósito.
+                            </p>
+                            <div class="text-center mt-3">
+                                <span class="badge bg-warning text-dark fs-6 p-2">24h gratis</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Pagos -->
+                <div class="col-md-6 col-lg-3">
+                    <div class="card h-100 border-0 shadow-sm hover-card">
+                        <div class="card-header bg-warning text-dark d-flex align-items-center">
+                            <i class="pi pi-credit-card fs-5 me-2"></i>
+                            <h5 class="mb-0 flex-grow-1">Pagos</h5>
+                        </div>
+                        <div class="card-body d-flex flex-column">
+                            <p class="card-text flex-grow-1">
+                                Aceptamos: Efectivo, tarjetas, transferencias. Moneda local.
+                            </p>
+                            <div class="d-flex justify-content-around mt-3 icon-container">
+                                <i class="pi pi-money-bill text-success"></i>
+                                <i class="pi pi-credit-card text-primary"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Mascotas -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100 border-0 shadow-sm hover-card">
+                        <div class="card-header bg-info text-white d-flex align-items-center">
+                            <i class="pi pi-paw fs-5 me-2"></i>
+                            <h5 class="mb-0 flex-grow-1">Mascotas</h5>
+                        </div>
+                        <div class="card-body d-flex flex-column">
+                            <p class="card-text flex-grow-1">
+                                Permitidas solo en áreas designadas. Se requiere previo aviso.
+                            </p>
+                            <div class="text-center mt-3 icon-container">
+                                <i class="pi pi-paw text-secondary"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Normas de Ruido -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100 border-0 shadow-sm hover-card">
+                        <div class="card-header bg-secondary text-white d-flex align-items-center">
+                            <i class="pi pi-volume-off fs-5 me-2"></i>
+                            <h5 class="mb-0 flex-grow-1">Horario de Silencio</h5>
+                        </div>
+                        <div class="card-body d-flex flex-column">
+                            <p class="card-text flex-grow-1">
+                                12:00 PM - 5:00 AM. Se prohíben ruidos fuertes en este horario.
+                            </p>
+                            <div class="text-center mt-3 icon-container">
+                                <i class="pi pi-moon text-warning"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Responsabilidad -->
+                <div class="col-md-12 col-lg-4">
+                    <div class="card h-100 border-0 shadow-sm hover-card">
+                        <div class="card-header bg-dark text-white d-flex align-items-center">
+                            <i class="pi pi-shield fs-5 me-2"></i>
+                            <h5 class="mb-0 flex-grow-1">Responsabilidad</h5>
+                        </div>
+                        <div class="card-body d-flex flex-column">
+                            <p class="card-text flex-grow-1">
+                                Objetos de valor no declarados no son responsabilidad del hotel.
+                                Disponemos de caja fuerte.
+                            </p>
+                            <div class="text-center mt-3 icon-container">
+                                <i class="pi pi-lock text-success"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+            
+            <!-- Sección de prohibiciones -->
+            <div class="row mt-5">
+                <div class="col-12">
+                    <div class="card border-danger">
+                        <div class="card-header bg-danger text-white d-flex align-items-center">
+                            <i class="pi pi-ban fs-5 me-2"></i>
+                            <h5 class="mb-0 flex-grow-1">Prohibiciones</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <p class="d-flex align-items-center mb-3">
+                                        <i class="pi pi-times text-danger me-3 fs-5"></i>
+                                        Fumar en habitaciones
+                                    </p>
+                                    <p class="d-flex align-items-center mb-3">
+                                        <i class="pi pi-times text-danger me-3 fs-5"></i>
+                                        Dañar propiedad del hotel
+                                    </p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p class="d-flex align-items-center mb-3">
+                                        <i class="pi pi-times text-danger me-3 fs-5"></i>
+                                        Ingresar personas no registradas
+                                    </p>
+                                    <p class="d-flex align-items-center mb-3">
+                                        <i class="pi pi-times text-danger me-3 fs-5"></i>
+                                        Uso de electrodomésticos personales
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Nota final simple -->
+            <div class="text-center mt-5">
+                <div class="alert alert-light border">
+                    <p class="mb-2">
+                        <i class="pi pi-exclamation-circle text-primary me-2 fs-5"></i>
+                        Para cualquier duda sobre estos términos, contacta a recepción.
+                    </p>
+                    <p class="mb-0 text-muted">
+                        <small>Estos términos están sujetos a cambios sin previo aviso.</small>
+                    </p>
+                </div>
+                <p:commandButton value="Volver al Inicio" 
+                               icon="pi pi-home"
+                               styleClass="btn btn-outline-light mt-3 px-4"
+                               action="lobby?faces-redirect=true"/>
+            </div>
+        </div>
+    </ui:define>
+</ui:composition>

@@ -1,59 +1,190 @@
 <?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:p="http://primefaces.org/ui">
-<h:head>
-    <title>Registro - Hotel LJE</title>
-    <h:outputStylesheet library="bootstrap" name="css/bootstrap.min.css" />
-</h:head>
-<h:body>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/views/hotel/layouts/header.xhtml">
+    
+    <ui:define name="title">Registro - Hotel LJE</ui:define>
+    
+    <h:outputStylesheet name="js/validacion_registro"/>
+    
+    <ui:define name="head">
+        <style>
+            .register-card {
+                border-radius: 20px;
+                background: rgba(255, 255, 255, 0.95);
+                backdrop-filter: blur(10px);
+            }
+            
+            .btn-register {
+                background: linear-gradient(135deg, #0d6efd, #0dcaf0);
+                border: none;
+                border-radius: 10px;
+                color: white;
+                font-weight: bold;
+                font-size: 1.1rem;
+                transition: all 0.3s;
+            }
+            
+            .btn-register:hover {
+                background: linear-gradient(135deg, #0b5ed7, #0bb5d8);
+                transform: translateY(-2px);
+                box-shadow: 0 5px 15px rgba(13, 110, 253, 0.3);
+            }
+            
+            /* Estilos para feedback de validación */
+            .feedback-message {
+                font-size: 0.85rem;
+                margin-top: 5px;
+                display: none;
+            }
+            
+            .feedback-success {
+                color: #198754;
+            }
+            
+            .feedback-error {
+                color: #dc3545;
+            }
+            
+            .register-input:focus {
+                border-color: #0d6efd;
+                box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+            }
+        </style>
+    </ui:define>
+    
+    <ui:define name="content">
+        <div class="container d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+            <div class="card shadow-lg p-4 border-0 register-card" style="max-width: 600px; width: 100%;">
+                <div class="text-center mb-4">
+                    <div class="register-icon mb-3">
+                        <i class="pi pi-user-plus" style="font-size: 3rem; color: #0d6efd;"></i>
+                    </div>
+                    <h3 class="fw-bold text-dark">Crear Cuenta</h3>
+                    <p class="text-muted">Regístrate para acceder a todos los servicios</p>
+                </div>
 
-<h:form id="registroForm">
+                <p:growl id="growl" showDetail="true" sticky="false" life="3000" />
 
-    <h3>Crear Cuenta</h3>
+                <h:form id="registerForm" prependId="false">
+                    <input type="hidden" name="id_tipo_cliente" value="1" />
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-semibold">Nombre *</label>
+                            <p:inputText id="nombre" value="#{registroBean.nombre}" 
+                                       styleClass="form-control register-input"
+                                       placeholder="Nombre"
+                                       required="true"
+                                       requiredMessage="El nombre es obligatorio"/>
+                            <h:message for="nombre" styleClass="text-danger small" />
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-semibold">Apellido *</label>
+                            <p:inputText id="apellido" value="#{registroBean.apellido}" 
+                                       styleClass="form-control register-input"
+                                       placeholder="Apellido"
+                                       required="true"
+                                       requiredMessage="El apellido es obligatorio"/>
+                            <h:message for="apellido" styleClass="text-danger small" />
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Correo electrónico *</label>
+                        <p:inputText id="email" value="#{registroBean.email}" 
+                                   styleClass="form-control register-input"
+                                   placeholder="ejemplo@gmail.com"
+                                   required="true"
+                                   requiredMessage="El email es obligatorio"/>
+                        <div id="emailFeedback" class="feedback-message"></div>
+                        <h:message for="email" styleClass="text-danger small" />
+                        <small class="text-muted d-block mt-1">Dominios permitidos: gmail.com, lje.com, hotmail.com, outlook.com, yahoo.com</small>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Saludo *</label>
+                        <p:selectOneMenu id="saludo" value="#{registroBean.saludo}" styleClass="form-select register-input" required="true">
+                            <f:selectItem itemValue="MR" itemLabel="Sr." />
+                            <f:selectItem itemValue="MS" itemLabel="Sra." />
+                            <f:selectItem itemValue="MX" itemLabel="Mx." />
+                        </p:selectOneMenu>
+                        <h:message for="saludo" styleClass="text-danger small" />
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label fw-semibold">Prefijo *</label>
+                            <p:inputText id="prefijoTelefono" value="#{registroBean.prefijoTelefono}" 
+                                       styleClass="form-control register-input"
+                                       placeholder="+57"
+                                       required="true"
+                                       requiredMessage="El prefijo es obligatorio"/>
+                            <h:message for="prefijoTelefono" styleClass="text-danger small" />
+                        </div>
+                        <div class="col-md-8 mb-3">
+                            <label class="form-label fw-semibold">Teléfono *</label>
+                            <p:inputText id="numeroTelefono" value="#{registroBean.numeroTelefono}" 
+                                       styleClass="form-control register-input"
+                                       placeholder="3001234567"
+                                       required="true"
+                                       requiredMessage="El teléfono es obligatorio"/>
+                            <h:message for="numeroTelefono" styleClass="text-danger small" />
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Contraseña *</label>
+                        <p:password id="password" value="#{registroBean.password}" 
+                                  styleClass="form-control register-input"
+                                  placeholder="Mínimo 8 caracteres"
+                                  required="true"
+                                  requiredMessage="La contraseña es obligatoria"
+                                  feedback="true"
+                                  promptLabel="Ingresa tu contraseña"
+                                  weakLabel="Débil"
+                                  goodLabel="Buena"
+                                  strongLabel="Fuerte"/>
+                        <div id="passwordFeedback" class="feedback-message"></div>
+                        <h:message for="password" styleClass="text-danger small" />
+                        <small class="text-muted d-block mt-1">Debe contener al menos 8 caracteres, una letra, un número y un símbolo (@$!%*#?&amp;)</small>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label class="form-label fw-semibold">Confirmar Contraseña *</label>
+                        <p:password id="confirmPassword" value="#{registroBean.confirmPassword}" 
+                                  styleClass="form-control register-input"
+                                  placeholder="Repite la contraseña"
+                                  required="true"
+                                  requiredMessage="Debes confirmar la contraseña"
+                                  feedback="false"/>
+                        <div id="confirmFeedback" class="feedback-message"></div>
+                        <h:message for="confirmPassword" styleClass="text-danger small" />
+                    </div>
+                    
+                    <p:commandButton value="Registrar" 
+                                   action="#{registroBean.registrar}"
+                                   styleClass="btn-register w-100 py-3"
+                                   icon="pi pi-check"
+                                   update="growl"
+                                   onclick="return validarFormularioCompleto();"
+                                   ajax="true"/>
+                </h:form>
 
-    <!-- Mensajes de error -->
-    <p:messages id="msgs" showDetail="true" autoUpdate="true" />
+                <hr class="my-4"/>
 
-    <h:panelGrid columns="2" columnClasses="col1,col2" cellpadding="5">
-
-        <h:outputLabel for="nombre" value="Nombre:" />
-        <p:inputText id="nombre" value="#{registroBean.nombre}" required="true" label="Nombre" />
-
-        <h:outputLabel for="apellido" value="Apellido:" />
-        <p:inputText id="apellido" value="#{registroBean.apellido}" required="true" label="Apellido" />
-
-        <h:outputLabel for="email" value="Correo electrónico:" />
-        <p:inputText id="email" value="#{registroBean.email}" required="true" label="Correo electrónico" />
-
-        <h:outputLabel for="saludo" value="Saludo:" />
-        <p:selectOneMenu id="saludo" value="#{registroBean.saludo}" required="true">
-            <f:selectItem itemLabel="Sr." itemValue="MR" />
-            <f:selectItem itemLabel="Sra." itemValue="MS" />
-            <f:selectItem itemLabel="Mx." itemValue="MX" />
-        </p:selectOneMenu>
-
-        <h:outputLabel for="prefijo" value="Prefijo:" />
-        <p:inputText id="prefijo" value="#{registroBean.prefijoTelefono}" required="true" />
-
-        <h:outputLabel for="telefono" value="Teléfono:" />
-        <p:inputText id="telefono" value="#{registroBean.numeroTelefono}" required="true" />
-
-        <h:outputLabel for="password" value="Contraseña:" />
-        <p:password id="password" value="#{registroBean.password}" required="true" feedback="true" label="Contraseña" />
-
-        <h:outputLabel for="confirmPassword" value="Confirmar Contraseña:" />
-        <p:password id="confirmPassword" value="#{registroBean.confirmPassword}" required="true" feedback="true" label="Confirmar Contraseña" />
-
-    </h:panelGrid>
-
-    <p:commandButton value="Registrar" action="#{registroBean.registrar}" update="msgs" />
-
-    <h:outputText value="¿Ya tienes cuenta? " />
-    <h:link value="Inicia sesión aquí" outcome="login.xhtml" />
-
-</h:form>
-<h:outputScript library="bootstrap" name="js/bootstrap.bundle.min.js" />
-</h:body>
-</html>
+                <div class="text-center">
+                    <p class="mb-2">
+                        ¿Ya tienes cuenta? 
+                        <h:link value="Inicia sesión aquí" outcome="/views/hotel/login.xhtml" 
+                               styleClass="text-decoration-none fw-bold text-primary"/>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </ui:define>
+</ui:composition>
