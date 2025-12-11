@@ -1,0 +1,295 @@
+@import url('https://fonts.googleapis.com/css2?family=Agdasima:wght@400;700&family=Exo+2:ital,wght@0,100..900;1,100..900&family=Josefin+Sans:ital,wght@0,100..700;1,100..700&family=Sora:wght@100..800&display=swap');
+:root{
+    --color1:#121619;
+    --color2:#4B1807;
+    --color3:#BD1E1E;
+    --color4:#FCB442;
+    --color5:#F2F3F4;
+}
+
+*{
+    padding: 0;
+    margin: 0;
+    font-family: "Sora", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 500;
+}
+
+.background-nav-hotel{
+    background-color: #1216198c
+}
+/*LOBBY*/
+.btn-color{
+    background-color: var(--color2);
+    border-radius: 5px;       
+    font-size: 1.2rem;         
+    padding: 15px 40px;       
+    transition: transform 0.2s ease;
+}
+
+.btn-color:hover {
+    transform: scale(1.05);  
+}
+/*RESTAURANTE*/
+.btn-reserva {
+    background: linear-gradient(135deg, var(--color2), #5f1e09, var(--color2));
+    background-size: 200% 200%;
+    background-position: left center;
+    color: var(--color5);
+    font-weight: 600;
+    border: none;
+    border-radius: 50px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    transition: all 0.5s ease, background-position 0.8s ease;
+}
+
+.btn-reserva:hover {
+    background-position: right center; /* Mueve el gradiente */
+    transform: scale(1.05);
+    color: var(--color5);
+    box-shadow: 0 6px 14px rgba(0,0,0,0.25);
+}
+
+.bg-prom{
+    background-color: var(--color1);
+}
+
+.plato-img {
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    width: 100%;
+    height: 100%;
+}
+
+.bg-prom {
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+
+.circle-card {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%; 
+    background-color: var(--color2);
+    color: white;
+    font-weight: 700;
+    transform: rotate(-35deg);
+    transition: transform 0.3s ease;
+    height: 100px;
+    width: 100px;
+    font-size: 1rem;
+}
+
+@media (min-width: 576px) {
+    .circle-card {
+        height: 120px;
+        width: 120px;
+        font-size: 1.25rem;
+    }
+}
+
+@media (min-width: 768px) {
+    .circle-card {
+        height: 140px;
+        width: 140px;
+        font-size: 1.5rem;
+    }
+}
+
+@media (min-width: 992px) {
+    .circle-card {
+        height: 200px;
+        width: 200px;
+        font-size: 1.75rem;
+    }
+}
+
+.circle-card:hover {
+    transform: rotate(0deg);
+}
+/*habitaciones*/
+.room-card img {
+    transition: transform 0.5s ease;
+}
+.room-card:hover img {
+    transform: scale(1.1);
+}
+.room-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    text-align: center;
+}
+.room-card:hover .room-overlay {
+    opacity: 1;
+}
+
+.circle-card-lg {
+    height: 180px;
+    width: 180px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--color2), #5f1e09);
+    color: var(--color5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: 1.2rem;
+    padding: 20px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+}
+
+.bg-button-hab{
+    background: linear-gradient(135deg, var(--color2), #5f1e09);
+}
+
+.habitacion-card {
+    position: relative;
+    background-size: cover;
+    background-position: center;
+    cursor: pointer;
+}
+
+.habitacion-card .overlay {
+    position: absolute;
+    inset: 0; /* cubre toda la tarjeta */
+    background: rgba(0,0,0,0.6);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    color: #fff;
+    padding: 20px;
+}
+
+.habitacion-card:hover .overlay {
+    opacity: 1;
+}
+
+.circle-card-2 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%; 
+    background: radial-gradient(circle at 30% 30%, var(--color4), var(--color2));
+    color: white;
+    font-weight: 700;
+    transform: rotate(-35deg);
+    transition: transform 0.3s ease, box-shadow 0.4s ease, background 0.4s ease;
+    height: 100px;
+    width: 100px;
+    font-size: 1rem;
+
+    box-shadow: 0 0 10px rgba(252, 181, 66, 0.11),
+                0 0 20px rgba(75, 24, 7, 0.5),
+                inset 0 0 10px rgba(252, 181, 66, 0.123);
+}
+
+@media (min-width: 576px) {
+    .circle-card-2 {
+        height: 120px;
+        width: 120px;
+        font-size: 1.25rem;
+    }
+}
+
+@media (min-width: 768px) {
+    .circle-card {
+        height: 140px;
+        width: 140px;
+        font-size: 1.5rem;
+    }
+}
+
+.circle-card-2:hover {
+    transform: rotate(0deg) scale(1.08);
+}
+/*Login*/
+.login-card {
+    background: rgba(255, 255, 255, 0.98);
+    border-radius: 15px;
+}
+.login-icon {
+    width: 70px;
+    height: 70px;
+    background: #f0f8ff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.login-icon i {
+    font-size: 2rem;
+    color: #2c3e50;
+}
+.login-input {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 10px 15px;
+}
+.login-input:focus {
+    border-color: #3498db;
+    box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+}
+.btn-login {
+    background: #2c3e50;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-weight: 600;
+    transition: background 0.3s;
+}
+.btn-login:hover {
+background: #34495e;
+}
+.focused .form-label {
+    color: #0d6efd;
+    transform: translateY(-5px);
+    transition: all 0.3s;
+}
+
+/* Animación para mensajes de feedback */
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.feedback-message {
+    animation: slideIn 0.3s ease-out;
+}
+
+.login-input.error {
+    border-color: #dc3545;
+    background-color: rgba(220, 53, 69, 0.05);
+}
+
+.login-input.success {
+    border-color: #198754;
+    background-color: rgba(25, 135, 84, 0.05);
+}
+
+.btn-login:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+.pi-spin {
+    animation: spin 1s linear infinite;
+    margin-right: 8px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
