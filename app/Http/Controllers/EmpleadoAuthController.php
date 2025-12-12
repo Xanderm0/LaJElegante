@@ -56,10 +56,14 @@ class EmpleadoAuthController extends Controller
 
     // Logout de empleados
     public function logout(Request $request)
-    {
-        Auth::logout();
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-        return redirect()->route('hotel.empleados.login.index');
-    }
+{
+    Auth::logout();
+    $request->session()->invalidate();
+    $request->session()->regenerateToken();
+
+    // Agregar mensaje de éxito
+    return redirect()->route('hotel.empleados.login.index')
+                     ->with('success', 'Sesión cerrada correctamente.');
+}
+
 }

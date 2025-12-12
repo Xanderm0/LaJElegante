@@ -18,7 +18,7 @@ class MesaController extends Controller
 
     public function create()
     {
-        return view('administrador.mesas.create');
+        return view('administrador.mesas.gestion.create');
     }
 
     public function store(Request $request)
@@ -39,13 +39,13 @@ class MesaController extends Controller
     public function show($id)
     {
         $mesa = Mesa::findOrFail($id);
-        return view('administrador.mesas.show', compact('mesa'));
+        return view('administrador.mesas.gestion.show', compact('mesa'));
     }
 
     public function edit($id)
     {
         $mesa = Mesa::findOrFail($id);
-        return view('administrador.mesas.edit', compact('mesa'));
+        return view('administrador.mesas.gestion.edit', compact('mesa'));
     }
 
     public function update(Request $request, $id)

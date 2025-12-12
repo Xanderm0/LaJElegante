@@ -1,11 +1,11 @@
-@extends('layouts.app')
+@extends('administrador.layouts.app')
 
 @section('content')
 <div class="container">
     <h1>Listado de Mesas</h1>
 
     {{-- Botón para crear nueva mesa --}}
-    <a href="{{ route('mesas.create') }}" class="btn btn-success mb-3">Nueva Mesa</a>
+    <a href="{{ route('mesas.gestion.create') }}" class="btn btn-success mb-3">Nueva Mesa</a>
 
     <a href="{{ route('mesas.exportExcel') }}" class="btn btn-primary mb-3">Exportar Excel</a>
     <a href="{{ route('mesas.exportPDF') }}" class="btn btn-danger mb-3">Exportar PDF</a>
@@ -44,8 +44,8 @@
                     <td>{{ $mesa->ubicacion }}</td>
                     <td>{{ $mesa->activo ? 'Sí' : 'No' }}</td>
                     <td>
-                        <a href="{{ route('mesas.show', $mesa->id_mesa) }}" class="btn btn-info btn-sm">Ver</a>
-                        <a href="{{ route('mesas.edit', $mesa->id_mesa) }}" class="btn btn-warning btn-sm">Editar</a>
+                        <a href="{{ route('mesas.gestion.show', $mesa->id_mesa) }}" class="btn btn-info btn-sm">Ver</a>
+                        <a href="{{ route('mesas.gestion.edit', $mesa->id_mesa) }}" class="btn btn-warning btn-sm">Editar</a>
 
                         {{-- Eliminar (papelera) --}}
                         @if($mesa->activo)

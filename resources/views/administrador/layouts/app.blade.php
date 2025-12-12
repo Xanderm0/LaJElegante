@@ -50,8 +50,15 @@
             <li><a href="{{ route('tipo_habitacion.gestion.index') }}" class="nav-link">Tipos de Habitación</a></li>
             <li><a href="{{ route('tarifas.gestion.index') }}" class="nav-link">Tarifas</a></li>
             <li><a href="{{ route('temporadas.gestion.index') }}" class="nav-link">Temporadas</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ route('mesas.gestion.index') }}">Mesas</a></li>
             <li><a href="{{ route('reservasr.gestion.index') }}" class="nav-link">Reservas Restaurante</a></li>
         </ul>
+
+        <hr>
+            <form action="{{ route('hotel.empleados.logout') }}" method="POST">
+                @csrf
+                <button type="submit" class="btn btn-danger w-100">Salir</button>
+            </form>
     </div>
 
     <div class="content">
@@ -85,9 +92,37 @@
                 <li class="nav-item"><a class="nav-link" href="{{ route('mesas.gestion.index') }}">Mesas</a></li>
                 <li class="nav-item"><a class="nav-link" href="{{ route('reservasr.gestion.index') }}">Reservas Restaurante</a></li>
             </ul>
+
+            <hr>
+                <form action="{{ route('hotel.empleados.logout') }}" method="POST">
+                    @csrf
+                    <button type="submit" class="btn btn-danger w-100">Salir</button>
+                </form>
         </div>
-    </div>
+
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+    <div id="logoutToast" class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body">
+                Sesión cerrada correctamente.
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Cerrar"></button>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    @if(session('success'))
+        var toastEl = document.getElementById('logoutToast');
+        var toast = new bootstrap.Toast(toastEl);
+        toast.show();
+    @endif
+});
+</script>
+
 </body>
 </html>

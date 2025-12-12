@@ -29,6 +29,9 @@ use Barryvdh\DomPDF\Facade\Pdf;
 
 // Exports
 use App\Exports\ReservasRestauranteExport;
+use App\Exports\MesasExport;
+
+
 
 // Modelos
 use App\Models\ReservaRestaurante;
@@ -134,12 +137,31 @@ Route::prefix('tipo_habitacion')->name('tipo_habitacion.')->group(function () {
 | MESAS
 |--------------------------------------------------------------------------
 */
-    Route::prefix('mesas')->name('mesas.')->group(function () {
-        Route::get('papelera', [MesaController::class, 'index'])->name('papelera');
-        Route::patch('{id}/ocultar', [MesaController::class, 'ocultar'])->name('ocultar');
-        Route::patch('{id}/mostrar', [MesaController::class, 'mostrar'])->name('mostrar');
-        Route::resource('gestion', MesaController::class)->parameters(['gestion' => 'mesa']);
-    });
+Route::prefix('mesas')->name('mesas.')->group(function () {
+    // Ocultar y mostrar mesas
+    Route::patch('{id}/ocultar', [MesaController::class, 'ocultar'])->name('ocultar');
+    Route::patch('{id}/mostrar', [MesaController::class, 'mostrar'])->name('mostrar');
+
+    // CRUD de mesas, excepto destroy
+    Route::resource('gestion', MesaController::class)->except(['destroy']);
+
+    // Reportes
+    Route::get('export-excel', function () {
+        return Excel::download(new MesasExport, 'mesas.xlsx');
+    })->name('exportExcel');
+
+    Route::get('export-pdf', function () {
+        $mesas = \App\Models\Mesa::all();
+        $pdf = Pdf::loadView('administrador.mesas.pdf', compact('mesas'));
+        return $pdf->download('mesas.pdf');
+    })->name('exportPDF');
+
+    // Vistas y acciones extras si llegas a necesitarlas
+    // Ejemplo: mesas disponibles para reservas
+    Route::get('disponibles', [MesaController::class, 'mesasDisponibles'])->name('disponibles');
+    Route::post('reservar', [MesaController::class, 'reservarMesa'])->name('reservar');
+});
+
 
 /*
 |--------------------------------------------------------------------------
@@ -218,6 +240,7 @@ Route::prefix('hotel')->name('hotel.')->group(function () {
     Route::post('/empleados/login', [EmpleadoAuthController::class, 'login'])->name('empleados.login.process');
     Route::post('/empleados/logout', [EmpleadoAuthController::class, 'logout'])->name('empleados.logout');
 });
+
 
 /*
 |--------------------------------------------------------------------------

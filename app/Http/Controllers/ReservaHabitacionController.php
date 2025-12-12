@@ -14,14 +14,14 @@ class ReservaHabitacionController extends Controller
     public function index()
     {
         $reservas = ReservaHabitacion::with(['cliente', 'detalle.habitacion'])->get();
-        return view('administrador.reservas.index', compact('reservas'));
+        return view('administrador.reservash.index', compact('reservas'));
     }
 
     public function create()
     {
         $clientes = Cliente::all();
         $habitaciones = Habitacion::all();
-        return view('administrador.reservas.create', compact('clientes', 'habitaciones'));
+        return view('administrador.reservash.create', compact('clientes', 'habitaciones'));
     }
 
     public function store(Request $request)
@@ -106,7 +106,7 @@ class ReservaHabitacionController extends Controller
     public function papelera()
     {
         $reservas = ReservaHabitacion::onlyTrashed()->with(['cliente', 'detalle'])->get();
-        return view('administrador.reservas.papelera', compact('reservas'));
+        return view('administrador.reservash.papelera', compact('reservas'));
     }
 
     public function restaurar($id)
