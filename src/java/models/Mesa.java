@@ -62,6 +62,4 @@ public class Mesa extends ClaseBase {
     public void setEstado(Estado estado) {
         this.estado = estado;
     }
-    
-    
 }
