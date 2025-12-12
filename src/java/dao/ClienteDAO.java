@@ -7,11 +7,11 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
-
+import utils.MessageUtil;
 import models.Cliente;
-import models.TipoCliente;
 import models.enums.Estado;
 import models.enums.Saludo;
+import models.TipoCliente;
 
 public class ClienteDAO extends BaseDAO<Cliente> {
 
@@ -43,6 +43,7 @@ public class ClienteDAO extends BaseDAO<Cliente> {
             ps.executeUpdate();
 
         } catch (SQLException e) {
+            MessageUtil.createError("cliente");
             System.err.println("Error en ClienteDAO.crear: " + e.getMessage());
         } finally {
             cerrarRecursos(conn, ps);
@@ -73,6 +74,7 @@ public class ClienteDAO extends BaseDAO<Cliente> {
             }
 
         } catch (SQLException e) {
+            MessageUtil.error("Error al buscar cliente: " + e.getMessage());
             System.err.println("Error en ClienteDAO.buscar: " + e.getMessage());
         } finally {
             cerrarRecursos(conn, ps, rs);
@@ -105,6 +107,7 @@ public class ClienteDAO extends BaseDAO<Cliente> {
             }
 
         } catch (SQLException e) {
+            MessageUtil.error("Error al listar clientes: " + e.getMessage());
             System.err.println("Error en ClienteDAO.listar: " + e.getMessage());
         } finally {
             cerrarRecursos(conn, ps, rs);
@@ -143,6 +146,7 @@ public class ClienteDAO extends BaseDAO<Cliente> {
             ps.executeUpdate();
 
         } catch (SQLException e) {
+            MessageUtil.updateError("cliente");
             System.err.println("Error en ClienteDAO.actualizar: " + e.getMessage());
         } finally {
             cerrarRecursos(conn, ps);
@@ -166,6 +170,7 @@ public class ClienteDAO extends BaseDAO<Cliente> {
             ps.executeUpdate();
 
         } catch (SQLException e) {
+            MessageUtil.deleteError("cliente");
             System.err.println("Error en ClienteDAO.eliminar: " + e.getMessage());
         } finally {
             cerrarRecursos(conn, ps);
@@ -195,6 +200,7 @@ public class ClienteDAO extends BaseDAO<Cliente> {
             }
             
         } catch (SQLException e) {
+            MessageUtil.error("Error al listar clientes eliminados: " + e.getMessage());
             System.err.println("Error en ClienteDAO.listarEliminados: " + e.getMessage());
         } finally {
             cerrarRecursos(conn, ps, rs);
@@ -217,6 +223,7 @@ public class ClienteDAO extends BaseDAO<Cliente> {
             ps.executeUpdate();
             
         } catch (SQLException e) {
+            MessageUtil.error("Error al restaurar cliente: " + e.getMessage());
             System.err.println("Error en ClienteDAO.restaurar: " + e.getMessage());
         } finally {
             cerrarRecursos(conn, ps);
@@ -246,6 +253,7 @@ public class ClienteDAO extends BaseDAO<Cliente> {
             }
             
         } catch (SQLException e) {
+            MessageUtil.error("Error al buscar cliente (con papelera): " + e.getMessage());
             System.err.println("Error en ClienteDAO.buscarConTrash: " + e.getMessage());
         } finally {
             cerrarRecursos(conn, ps, rs);
@@ -275,6 +283,7 @@ public class ClienteDAO extends BaseDAO<Cliente> {
             }
 
         } catch (SQLException e) {
+            MessageUtil.error("Error al buscar cliente por email: " + e.getMessage());
             System.err.println("Error en ClienteDAO.buscarPorEmail: " + e.getMessage());
         } finally {
             cerrarRecursos(conn, ps, rs);
@@ -304,6 +313,7 @@ public class ClienteDAO extends BaseDAO<Cliente> {
             }
             
         } catch (SQLException e) {
+            MessageUtil.error("Error al verificar email: " + e.getMessage());
             System.err.println("Error en ClienteDAO.existeEmail: " + e.getMessage());
         } finally {
             cerrarRecursos(conn, ps, rs);
