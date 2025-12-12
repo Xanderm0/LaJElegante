@@ -12,6 +12,7 @@ import java.util.List;
 import models.TipoHabitacion;
 import models.enums.EstadoHabitacion;
 import models.enums.NombreTipoHabitacion;
+import utils.MessageUtil;
 
 public class DetallesReservaHabitacionDAO extends BaseDAO<DetallesReservaHabitacion> {
 
@@ -44,8 +45,9 @@ public class DetallesReservaHabitacionDAO extends BaseDAO<DetallesReservaHabitac
             ps.setDate(10, new java.sql.Date(d.getFechaFin().getTime()));
 
             ps.executeUpdate();
-
+            MessageUtil.createSuccess("detalles reserva habitacion");
         } catch (SQLException e) {
+            MessageUtil.createError("detalles reserva habitacion");
             System.err.println("Error en DetallesReservaHabitacionDAO.crear: " + e.getMessage());
         } finally {
             cerrarRecursos(conn, ps);
@@ -81,6 +83,7 @@ public class DetallesReservaHabitacionDAO extends BaseDAO<DetallesReservaHabitac
             }
 
         } catch (SQLException e) {
+            MessageUtil.error("Error al buscar detalles reserva habitacion: " + e.getMessage());
             System.err.println("Error en DetallesReservaHabitacionDAO.buscar: " + e.getMessage());
         } finally {
             cerrarRecursos(conn, ps, rs);
@@ -118,6 +121,7 @@ public class DetallesReservaHabitacionDAO extends BaseDAO<DetallesReservaHabitac
             }
 
         } catch (SQLException e) {
+            MessageUtil.error("Error al listar detalles reserva habitacion: " + e.getMessage());
             System.err.println("Error en DetallesReservaHabitacionDAO.listar: " + e.getMessage());
         } finally {
             cerrarRecursos(conn, ps, rs);
@@ -158,8 +162,9 @@ public class DetallesReservaHabitacionDAO extends BaseDAO<DetallesReservaHabitac
             ps.setInt(11, d.getIdDetalleReservaHab());
 
             ps.executeUpdate();
-
+            MessageUtil.updateSuccess("cliente");
         } catch (SQLException e) {
+            MessageUtil.updateError("detalles reservas habitacion");
             System.err.println("Error en DetallesReservaHabitacionDAO.actualizar: " + e.getMessage());
         } finally {
             cerrarRecursos(conn, ps);
@@ -181,8 +186,9 @@ public class DetallesReservaHabitacionDAO extends BaseDAO<DetallesReservaHabitac
             ps.setInt(1, id);
 
             ps.executeUpdate();
-
+            MessageUtil.deleteSuccess("cliente");
         } catch (SQLException e) {
+            MessageUtil.deleteError("detalles reserva habitacion");
             System.err.println("Error en DetallesReservaHabitacionDAO.eliminar: " + e.getMessage());
         } finally {
             cerrarRecursos(conn, ps);
@@ -215,6 +221,7 @@ public class DetallesReservaHabitacionDAO extends BaseDAO<DetallesReservaHabitac
             }
             
         } catch (SQLException e) {
+             MessageUtil.error("Error al listar detalles reserva habitacion eliminados: " + e.getMessage());
             System.err.println("Error en DetallesReservaHabitacionDAO.listarEliminados: " + e.getMessage());
         } finally {
             cerrarRecursos(conn, ps, rs);
@@ -235,8 +242,9 @@ public class DetallesReservaHabitacionDAO extends BaseDAO<DetallesReservaHabitac
             ps = conn.prepareStatement(sql);
             ps.setInt(1, id);
             ps.executeUpdate();
-            
+            MessageUtil.success("Cliente restaurado correctamente");
         } catch (SQLException e) {
+            MessageUtil.error("Error al restaurar detalles reserva habitacion: " + e.getMessage());
             System.err.println("Error en DetallesReservaHabitacionDAO.restaurar: " + e.getMessage());
         } finally {
             cerrarRecursos(conn, ps);
@@ -270,6 +278,7 @@ public class DetallesReservaHabitacionDAO extends BaseDAO<DetallesReservaHabitac
             }
             
         } catch (SQLException e) {
+            MessageUtil.error("Error al buscar detalles reserva habitacion (con papelera): " + e.getMessage());
             System.err.println("Error en DetallesReservaHabitacionDAO.buscarConTrash: " + e.getMessage());
         } finally {
             cerrarRecursos(conn, ps, rs);
@@ -300,6 +309,7 @@ public class DetallesReservaHabitacionDAO extends BaseDAO<DetallesReservaHabitac
             }
             
         } catch (SQLException e) {
+            MessageUtil.error("Error al listar reservas por ID: " + e.getMessage());
             System.err.println("Error en DetallesReservaHabitacionDAO.listarPorReserva: " + e.getMessage());
         } finally {
             cerrarRecursos(conn, ps, rs);
