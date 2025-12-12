@@ -162,7 +162,7 @@ public class DetallesReservaHabitacionDAO extends BaseDAO<DetallesReservaHabitac
             ps.setInt(11, d.getIdDetalleReservaHab());
 
             ps.executeUpdate();
-            MessageUtil.updateSuccess("cliente");
+            MessageUtil.updateSuccess("detalles reserva habitacion");
         } catch (SQLException e) {
             MessageUtil.updateError("detalles reservas habitacion");
             System.err.println("Error en DetallesReservaHabitacionDAO.actualizar: " + e.getMessage());
@@ -186,7 +186,7 @@ public class DetallesReservaHabitacionDAO extends BaseDAO<DetallesReservaHabitac
             ps.setInt(1, id);
 
             ps.executeUpdate();
-            MessageUtil.deleteSuccess("cliente");
+            MessageUtil.deleteSuccess("detalles reserva habitacion");
         } catch (SQLException e) {
             MessageUtil.deleteError("detalles reserva habitacion");
             System.err.println("Error en DetallesReservaHabitacionDAO.eliminar: " + e.getMessage());
@@ -242,7 +242,7 @@ public class DetallesReservaHabitacionDAO extends BaseDAO<DetallesReservaHabitac
             ps = conn.prepareStatement(sql);
             ps.setInt(1, id);
             ps.executeUpdate();
-            MessageUtil.success("Cliente restaurado correctamente");
+            MessageUtil.success("detalles reserva habitacion restaurado correctamente");
         } catch (SQLException e) {
             MessageUtil.error("Error al restaurar detalles reserva habitacion: " + e.getMessage());
             System.err.println("Error en DetallesReservaHabitacionDAO.restaurar: " + e.getMessage());
