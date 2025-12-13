@@ -5,19 +5,19 @@ import dao.TipoClienteDAO;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import javax.faces.application.FacesMessage;
-import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ApplicationScoped;
-import javax.faces.context.FacesContext;
+import javax.faces.bean.ManagedBean;
 import models.Cliente;
 import models.enums.Estado;
 import models.enums.Saludo;
 import models.TipoCliente;
+import utils.MessageUtil;
 
 @ManagedBean
 @ApplicationScoped
 public class ClienteBean implements Serializable {
-
+    private static final long serialVersionUID = 1L; // Identificador de versión para serialización (objetos a bytes)
+    
     public Cliente cliente = new Cliente();
     public List<Cliente> listaClientes = new ArrayList<>();
     public List<TipoCliente> listaTipos = new ArrayList<>();
@@ -27,68 +27,73 @@ public class ClienteBean implements Serializable {
     private final ClienteDAO clienteDAO = new ClienteDAO();
     private final TipoClienteDAO tipoClienteDAO = new TipoClienteDAO();
     
-    public ClienteBean() {
-    }
-
     public void listar() {
-        listaClientes = clienteDAO.listar();
-        cliente = new Cliente();
+        try {
+            listaClientes = clienteDAO.listar();
+        } catch (Exception e) {
+            MessageUtil.error("Error al listar clientes: " + e.getMessage());
+        }
     }
-
+    
     public void buscar(int id) {
         cliente = clienteDAO.buscar(id);
         if (cliente == null) {
-            addMessage("Error", "Cliente no encontrado");
+            MessageUtil.notFoundError("Cliente", String.valueOf(id));
             cliente = new Cliente();
         }
     }
-
+    
     public void guardar() {
-        if (cliente.getNombre() == null || cliente.getNombre().trim().isEmpty()) {
-            addMessage("Error", "El nombre es requerido");
-            return;
-        }
+        if (!validarCliente()) return;
         
         if (clienteDAO.existeEmail(cliente.getEmail(), 0)) {
-            addMessage("Error", "El email ya está registrado");
+            MessageUtil.duplicateError("email", cliente.getEmail());
             return;
         }
         
         clienteDAO.crear(cliente);
-        addMessage("Éxito", "Cliente creado correctamente");
+        MessageUtil.createSuccess("Cliente");
         listar();
+        cliente = new Cliente();
     }
-
+    
     public void actualizar() {
         if (cliente.getIdCliente() == 0) {
-            addMessage("Error", "Seleccione un cliente primero");
+            MessageUtil.validationError("Seleccione un cliente primero");
             return;
         }
         
+        if (!validarCliente()) return;
+        
         if (clienteDAO.existeEmail(cliente.getEmail(), cliente.getIdCliente())) {
-            addMessage("Error", "El email ya está registrado");
+            MessageUtil.duplicateError("email", cliente.getEmail());
             return;
         }
-
+        
         clienteDAO.actualizar(cliente);
-        addMessage("Éxito", "Cliente actualizado");
+        MessageUtil.updateSuccess("Cliente");
         listar();
     }
-
+    
     public void eliminar(int id) {
         clienteDAO.eliminar(id);
-        addMessage("Éxito", "Cliente eliminado");
+        MessageUtil.deleteSuccess("Cliente");
         listar();
     }
     
     public void listarPapelera() {
-        listaPapelera = clienteDAO.listarEliminados();
+        try {
+            listaPapelera = clienteDAO.listarEliminados();
+        } catch (Exception e) {
+            MessageUtil.error("Error al listar papelera: " + e.getMessage());
+        }
     }
     
     public void restaurar(int id) {
-        clienteDAO.restaurar(id); 
-        addMessage("Éxito", "Cliente restaurado");
+        clienteDAO.restaurar(id);
+        MessageUtil.success("Cliente restaurado correctamente");
         listarPapelera();
+        listar();
     }
     
     public void cambiarEstado(int id, Estado nuevoEstado) {
@@ -96,62 +101,67 @@ public class ClienteBean implements Serializable {
         if (cli != null) {
             cli.setEstado(nuevoEstado);
             clienteDAO.actualizar(cli);
-            addMessage("Éxito", "Estado cambiado a " + nuevoEstado);
+            MessageUtil.success("Estado cambiado a " + nuevoEstado.getValor());
             listar();
         }
     }
-
+    
     public void listarTiposCliente() {
-        listaTipos = tipoClienteDAO.listar();
-    }
-
-    private void addMessage(String summary, String detail) {
-        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, summary, detail);
-        FacesContext.getCurrentInstance().addMessage(null, message);
-    }
-
-    // Getters y Setters
-    public Cliente getCliente() {
-        return cliente;
-    }
-
-    public void setCliente(Cliente cliente) {
-        this.cliente = cliente;
-    }
-
-    public List<Cliente> getListaClientes() {
-        return listaClientes;
-    }
-
-    public void setListaClientes(List<Cliente> listaClientes) {
-        this.listaClientes = listaClientes;
-    }
-
-    public List<TipoCliente> getListaTipos() {
-        return listaTipos;
-    }
-
-    public void setListaTipos(List<TipoCliente> listaTipos) {
-        this.listaTipos = listaTipos;
-    }
-
-    public List<Cliente> getListaFiltro() {
-        return listaFiltro;
-    }
-
-    public void setListaFiltro(List<Cliente> listaFiltro) {
-        this.listaFiltro = listaFiltro;
+        try {
+            listaTipos = tipoClienteDAO.listar();
+        } catch (Exception e) {
+            MessageUtil.error("Error al listar tipos de cliente: " + e.getMessage());
+        }
     }
     
-    public List<Cliente> getListaPapelera() {
-        return listaPapelera;
+    private boolean validarCliente() {
+        if (cliente.getNombre() == null || cliente.getNombre().trim().isEmpty()) {
+            MessageUtil.validationError("El nombre es requerido");
+            return false;
+        }
+        
+        if (cliente.getEmail() == null || cliente.getEmail().trim().isEmpty()) {
+            MessageUtil.validationError("El email es requerido");
+            return false;
+        }
+        
+        if (cliente.getTipoCliente() == null || cliente.getTipoCliente().getIdTipoCliente() == 0) {
+            MessageUtil.validationError("Seleccione un tipo de cliente");
+            return false;
+        }
+        
+        if (!cliente.getEmail().contains("@")) {
+            MessageUtil.validationError("Email inválido");
+            return false;
+        }
+        
+        return true;
     }
 
-    public Saludo[] getSaludos() {
-        return Saludo.values();
+    public void cargarTiposCliente() {
+        try {
+            listaTipos = tipoClienteDAO.listar();
+        } catch (Exception e) {
+            MessageUtil.error("Error al cargar tipos de cliente: " + e.getMessage());
+        }
     }
-
-    public Estado[] getEstados() {
-        return Estado.values();
-    }
+    
+    // Getters y Setters
+    public Cliente getCliente() { return cliente; }
+    public void setCliente(Cliente cliente) { this.cliente = cliente; }
+    
+    public List<Cliente> getListaClientes() { return listaClientes; }
+    public void setListaClientes(List<Cliente> listaClientes) { this.listaClientes = listaClientes; }
+    
+    public List<TipoCliente> getListaTipos() { return listaTipos; }
+    public void setListaTipos(List<TipoCliente> listaTipos) { this.listaTipos = listaTipos; }
+    
+    public List<Cliente> getListaFiltro() { return listaFiltro; }
+    public void setListaFiltro(List<Cliente> listaFiltro) { this.listaFiltro = listaFiltro; }
+    
+    public List<Cliente> getListaPapelera() { return listaPapelera; }
+    public void setListaPapelera(List<Cliente> listaPapelera) { this.listaPapelera = listaPapelera; }
+    
+    public Saludo[] getSaludos() { return Saludo.values(); }
+    public Estado[] getEstados() { return Estado.values(); }
 }
