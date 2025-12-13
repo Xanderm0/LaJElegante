@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
-
+import utils.MessageUtil;
 import models.Empleado;
 import models.enums.Rol;
 
@@ -31,8 +31,9 @@ public class EmpleadoDAO extends BaseDAO<Empleado> {
             ps.setString(4, emp.getRol().getValor());
 
             ps.executeUpdate();
-
+            MessageUtil.createSuccess("empleado");
         } catch (SQLException e) {
+            MessageUtil.createError("empleado");
             System.err.println("Error en EmpleadoDAO.crear: " + e.getMessage());
         } finally {
             cerrarRecursos(conn, ps);
@@ -59,6 +60,7 @@ public class EmpleadoDAO extends BaseDAO<Empleado> {
             }
 
         } catch (SQLException e) {
+            MessageUtil.error("Error al buscar empleado: " + e.getMessage());
             System.err.println("Error en EmpleadoDAO.buscar: " + e.getMessage());
         } finally {
             cerrarRecursos(conn, ps, rs);
@@ -86,6 +88,7 @@ public class EmpleadoDAO extends BaseDAO<Empleado> {
             }
 
         } catch (SQLException e) {
+            MessageUtil.error("Error al listar empleados: " + e.getMessage());
             System.err.println("Error en EmpleadoDAO.listar: " + e.getMessage());
         } finally {
             cerrarRecursos(conn, ps, rs);
@@ -114,8 +117,9 @@ public class EmpleadoDAO extends BaseDAO<Empleado> {
             ps.setInt(5, emp.getId());
 
             ps.executeUpdate();
-
+            MessageUtil.updateSuccess("empleado");
         } catch (SQLException e) {
+            MessageUtil.updateError("empleado");
             System.err.println("Error en EmpleadoDAO.actualizar: " + e.getMessage());
         } finally {
             cerrarRecursos(conn, ps);
@@ -135,8 +139,9 @@ public class EmpleadoDAO extends BaseDAO<Empleado> {
             ps.setInt(1, id);
 
             ps.executeUpdate();
-
+            MessageUtil.deleteSuccess("empleado");
         } catch (SQLException e) {
+            MessageUtil.deleteError("empleado");
             System.err.println("Error en EmpleadoDAO.eliminar: " + e.getMessage());
         } finally {
             cerrarRecursos(conn, ps);
@@ -162,6 +167,7 @@ public class EmpleadoDAO extends BaseDAO<Empleado> {
             }
             
         } catch (SQLException e) {
+            MessageUtil.error("Error al listar empleados eliminados: " + e.getMessage());
             System.err.println("Error en EmpleadoDAO.listarEliminados: " + e.getMessage());
         } finally {
             cerrarRecursos(conn, ps, rs);
@@ -181,8 +187,9 @@ public class EmpleadoDAO extends BaseDAO<Empleado> {
             ps = conn.prepareStatement(sql);
             ps.setInt(1, id);
             ps.executeUpdate();
-            
+            MessageUtil.success("Empleado restaurado correctamente");
         } catch (SQLException e) {
+            MessageUtil.error("Error al restaurar empleado: " + e.getMessage());
             System.err.println("Error en EmpleadoDAO.restaurar: " + e.getMessage());
         } finally {
             cerrarRecursos(conn, ps);
@@ -209,6 +216,7 @@ public class EmpleadoDAO extends BaseDAO<Empleado> {
             }
             
         } catch (SQLException e) {
+            MessageUtil.error("Error al buscar empleado (con papelera): " + e.getMessage());
             System.err.println("Error en EmpleadoDAO.buscarConTrash: " + e.getMessage());
         } finally {
             cerrarRecursos(conn, ps, rs);
@@ -235,6 +243,7 @@ public class EmpleadoDAO extends BaseDAO<Empleado> {
             }
 
         } catch (SQLException e) {
+            MessageUtil.error("Error al buscar empleado por email: " + e.getMessage());
             System.err.println("Error en EmpleadoDAO.buscarPorEmail: " + e.getMessage());
         } finally {
             cerrarRecursos(conn, ps, rs);
@@ -264,6 +273,7 @@ public class EmpleadoDAO extends BaseDAO<Empleado> {
             }
             
         } catch (SQLException e) {
+            MessageUtil.error("Error al verificar email de empleado: " + e.getMessage());
             System.err.println("Error en EmpleadoDAO.existeEmail: " + e.getMessage());
         } finally {
             cerrarRecursos(conn, ps, rs);
@@ -290,6 +300,7 @@ public class EmpleadoDAO extends BaseDAO<Empleado> {
             }
             
         } catch (SQLException e) {
+            MessageUtil.error("Error al listar empleados por rol: " + e.getMessage());
             System.err.println("Error en EmpleadoDAO.listarPorRol: " + e.getMessage());
         } finally {
             cerrarRecursos(conn, ps, rs);
@@ -307,7 +318,7 @@ public class EmpleadoDAO extends BaseDAO<Empleado> {
                 return rol;
             }
         }
-        
+        MessageUtil.error("Rol no reconocido: " + rolStr);
         System.err.println("Rol no reconocido: " + rolStr);
         return Rol.RECEPCIONISTA;
     }
