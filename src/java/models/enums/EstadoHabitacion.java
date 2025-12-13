@@ -14,4 +14,18 @@ public enum EstadoHabitacion {
     public String getValor() {
         return valor;
     }
+    
+    public static EstadoHabitacion fromString(String valor) {
+        if (valor == null) return null;
+        
+        valor = valor.trim().toLowerCase();
+        
+        for (EstadoHabitacion estadoHabitacion : EstadoHabitacion.values()) {
+            if (estadoHabitacion.valor.equals(valor)) {
+                return estadoHabitacion;
+            }
+        }
+        
+        throw new IllegalArgumentException("Estado de habitacion no válido: " + valor);
+    }
 }
