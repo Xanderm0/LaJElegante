@@ -14,4 +14,18 @@ public enum EstadoReserva {
     public String getValor() {
         return valor;
     }
+    
+    public static EstadoReserva fromString(String valor) {
+        if (valor == null) return null;
+        
+        valor = valor.trim().toLowerCase();
+        
+        for (EstadoReserva estadoReserva : EstadoReserva.values()) {
+            if (estadoReserva.valor.equals(valor)) {
+                return estadoReserva;
+            }
+        }
+        
+        throw new IllegalArgumentException("Estado de Reserva no válido: " + valor);
+    }
 }
