@@ -1,0 +1,67 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+<h:head>
+    <title>Papelera Habitaciones</title>
+     <h:outputStylesheet library="bootstrap" name="css/bootstrap.min.css" />
+</h:head>
+
+<h:body>
+
+<div style="padding:20px">
+
+    <h1>Papelera de Habitaciones</h1>
+
+    <h:form id="formTabla">
+
+        <p:dataTable value="#{papeleraHabitacionesBean.habitacionesEliminadas}"
+                     var="h"
+                     emptyMessage="No hay habitaciones en la papelera."
+                     paginator="true"
+                     rows="10"
+                     style="width:100%">
+
+            <p:column headerText="#">
+                #{h.id_habitacion}
+            </p:column>
+
+            <p:column headerText="Número">
+                #{h.numero_habitacion}
+            </p:column>
+
+            <p:column headerText="Tipo">
+                #{h.tipoHabitacion.nombre_tipo}
+            </p:column>
+
+            <p:column headerText="Estado">
+                #{h.estado_habitacion}
+            </p:column>
+
+            <p:column headerText="Acciones">
+                <p:commandButton value="Restaurar"
+                                 icon="pi pi-refresh"
+                                 action="#{papeleraHabitacionesBean.restaurar(h.id_habitacion)}"
+                                 update="formTabla"
+                                 styleClass="ui-button-success" />
+            </p:column>
+
+        </p:dataTable>
+
+        <br/>
+
+        <p:commandButton value="Volver al listado"
+                         icon="pi pi-arrow-left"
+                         ajax="false"
+                         action="#{papeleraHabitacionesBean.regresar()}"
+                         styleClass="ui-button-secondary" />
+
+    </h:form>
+
+</div>
+<h:outputScript library="bootstrap" name="js/bootstrap.bundle.min.js" />
+</h:body>
+</html>

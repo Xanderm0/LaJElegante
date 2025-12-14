@@ -1,0 +1,73 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+<h:head>
+    <title>Nueva Habitación</title>
+     <h:outputStylesheet library="bootstrap" name="css/bootstrap.min.css" />
+</h:head>
+
+<h:body>
+
+<h:form id="formHabitacion">
+    <h1 class="title">Nueva Habitación</h1>
+
+    <p:panel header="Registro de Habitación">
+
+        <p:messages />
+
+        <!-- Número -->
+        <p:outputLabel for="numero" value="Número de Habitación" />
+        <p:inputText id="numero"
+                     maxlength="3"
+                     required="true"
+                     value="#{habitacionBean.habitacion.numero}" />
+        <br /><br />
+
+        <!-- Tipo -->
+        <p:outputLabel for="tipo" value="Tipo de Habitación" />
+        <p:selectOneMenu id="tipo"
+                         value="#{habitacionBean.habitacion.tipo.id}"
+                         required="true">
+            <f:selectItem noSelectionOption="true"
+                          itemLabel="Seleccione..." itemValue="" />
+
+            <f:selectItems value="#{habitacionBean.listaTipos}"
+                           var="t"
+                           itemLabel="#{t.nombre}"
+                           itemValue="#{t.id}" />
+        </p:selectOneMenu>
+        <br /><br />
+
+        <!-- Estado -->
+        <p:outputLabel for="estado" value="Estado" />
+        <p:selectOneMenu id="estado"
+                         value="#{habitacionBean.habitacion.estado}"
+                         required="true">
+            <f:selectItem itemValue="en servicio" itemLabel="En servicio" />
+            <f:selectItem itemValue="mantenimiento" itemLabel="Mantenimiento" />
+            <f:selectItem itemValue="inactiva" itemLabel="Inactiva" />
+        </p:selectOneMenu>
+
+        <br/><br/>
+
+        <p:commandButton value="Guardar"
+                         icon="pi pi-check"
+                         action="#{habitacionBean.guardar()}"
+                         update="@form" />
+
+        <p:commandButton value="Cancelar"
+                         icon="pi pi-times"
+                         styleClass="ui-button-secondary"
+                         immediate="true"
+                         action="#{habitacionBean.irListado()}" />
+
+    </p:panel>
+
+</h:form>
+<h:outputScript library="bootstrap" name="js/bootstrap.bundle.min.js" />
+</h:body>
+</html>

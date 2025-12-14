@@ -1,0 +1,62 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+       
+        <h:outputStylesheet library="bootstrap" name="css/bootstrap.min.css" />
+    </h:head>
+<h:body>
+
+    <h2>Papelera de Temporadas</h2>
+
+    <!-- Equivalente a session('success') -->
+    <p:messages id="msg" closable="true" />
+
+    <p:dataTable value="#{temporadaBean.temporadasEliminadas}" var="t" emptyMessage="No hay temporadas eliminadas">
+        <p:column headerText="ID">
+            <h:outputText value="#{t.idTemporada}" />
+        </p:column>
+
+        <p:column headerText="Nombre">
+            <h:outputText value="#{t.nombre}" />
+        </p:column>
+
+        <p:column headerText="Inicio">
+            <h:outputText value="#{t.fechaInicio}" />
+        </p:column>
+
+        <p:column headerText="Fin">
+            <h:outputText value="#{t.fechaFin}" />
+        </p:column>
+
+        <p:column headerText="Modificador">
+            <h:outputText value="#{t.modificadorPrecio}%" />
+        </p:column>
+
+        <p:column headerText="Acciones">
+            <h:form>
+                <p:commandButton 
+                    value="Restaurar"
+                    styleClass="p-button-success p-button-sm"
+                    action="#{temporadaBean.restaurar(t.idTemporada)}"
+                    update="msg tabla"
+                />
+            </h:form>
+        </p:column>
+
+    </p:dataTable>
+
+    <br/>
+
+    <h:form>
+        <p:commandButton 
+            value="Volver al listado"
+            styleClass="p-button-secondary"
+            action="listarTemporadas.xhtml?faces-redirect=true" />
+    </h:form>
+<h:outputScript library="bootstrap" name="js/bootstrap.bundle.min.js" />
+</h:body>
+</html>

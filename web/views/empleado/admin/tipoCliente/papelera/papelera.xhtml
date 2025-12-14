@@ -1,0 +1,53 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+<h:body>
+    <h:head>
+        <title>papelera</title>
+        <h:outputStylesheet library="bootstrap" name="css/bootstrap.min.css" />
+    </h:head>
+<h:form id="form">
+
+    <h2>Papelera de Tipos de Cliente</h2>
+
+    <p:messages id="msgs" closable="true" showDetail="true"/>
+
+    <p:dataTable value="#{tipoClienteBean.listaEliminados}" var="tipo" 
+                 emptyMessage="No hay tipos de cliente en la papelera."
+                 responsiveLayout="scroll">
+
+        <p:column headerText="ID" style="width:80px">
+            <h:outputText value="#{tipo.idTipoCliente}" />
+        </p:column>
+
+        <p:column headerText="Nombre Tipo">
+            <h:outputText value="#{tipo.nombreTipo}" />
+        </p:column>
+
+        <p:column headerText="Eliminado en">
+            <h:outputText value="#{tipo.fechaEliminacion}">
+                <f:convertDateTime pattern="dd/MM/yyyy HH:mm"/>
+            </h:outputText>
+        </p:column>
+
+        <p:column headerText="Acciones" style="width:120px;">
+            <p:commandButton value="Restaurar"
+                             update="form:msgs form"
+                             action="#{tipoClienteBean.restaurar(tipo.idTipoCliente)}"
+                             styleClass="ui-button-success ui-button-sm"/>
+        </p:column>
+
+    </p:dataTable>
+
+    <br/>
+
+    <p:commandButton value="Volver al listado"
+                     action="#{tipoClienteBean.volverListado}"
+                     styleClass="ui-button-secondary"/>
+
+</h:form>
+<h:outputScript library="bootstrap" name="js/bootstrap.bundle.min.js" />
+</h:body>
+</html>

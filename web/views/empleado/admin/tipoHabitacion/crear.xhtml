@@ -1,0 +1,73 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+<h:head>
+    <title>Nuevo Tipo de Habitación</title>
+    <h:outputStylesheet library="bootstrap" name="css/bootstrap.min.css" />
+</h:head>
+
+<h:body>
+
+<h:form id="formTipoHab">
+
+    <h2>Nuevo Tipo de Habitación</h2>
+
+    <p:panel header="Registrar Tipo de Habitación" style="width: 40%">
+
+        <p:messages/>
+
+        <!-- Nombre -->
+        <p:outputLabel value="Nombre" for="nombre"/>
+
+        <p:selectOneMenu id="nombre"
+                         value="#{tipoHabitacionBean.tipoHabitacion.nombre_tipo}"
+                         required="true">
+            <f:selectItem itemLabel="Seleccione..." itemValue=""/>
+
+            <f:selectItem itemLabel="Familiar" itemValue="familiar"/>
+            <f:selectItem itemLabel="Pareja" itemValue="pareja"/>
+            <f:selectItem itemLabel="Básica" itemValue="basica"/>
+            <f:selectItem itemLabel="Especial" itemValue="especial"/>
+        </p:selectOneMenu>
+
+        <br/><br/>
+
+        <!-- Descripción -->
+        <p:outputLabel value="Descripción" for="descripcion"/>
+
+        <p:inputTextarea id="descripcion"
+                         rows="3"
+                         value="#{tipoHabitacionBean.tipoHabitacion.descripcion}"/>
+        <br/><br/>
+
+        <!-- Capacidad Máxima -->
+        <p:outputLabel value="Capacidad Máxima" for="capacidad"/>
+
+        <p:inputNumber id="capacidad"
+                       value="#{tipoHabitacionBean.tipoHabitacion.capacidad_maxima}"
+                       required="true"/>
+        <br/><br/>
+
+        <!-- Botones -->
+        <p:commandButton value="Guardar"
+                         icon="pi pi-check"
+                         action="#{tipoHabitacionBean.guardar}"
+                         update="@form"/>
+
+        <p:commandButton value="Cancelar"
+                         icon="pi pi-times"
+                         styleClass="ui-button-secondary"
+                         immediate="true"
+                         action="#{tipoHabitacionBean.irListado}"/>
+
+    </p:panel>
+
+</h:form>
+<h:outputScript library="bootstrap" name="js/bootstrap.bundle.min.js" />
+</h:body>
+</html>

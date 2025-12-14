@@ -1,0 +1,108 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    
+    <h:head>
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        
+        <title>
+            <ui:insert name="title">Hotel La J Elegante</ui:insert>
+        </title>
+        
+        <h:outputStylesheet name="bootstrap/css/bootstrap.min.css"/>
+        
+        <h:outputStylesheet name="css/index.css"/>
+        
+        <link rel="icon" href="#{resource['images:icons/logoHotel.png']}"/>
+
+        <style>
+            body{
+                background:linear-gradient(rgba(0,0,0,0.35), rgba(0,0,0,0.35)),url("#{resource['images:hotel.png']}");;
+                background-repeat: none;
+                background-size: cover;
+            }
+            /*RESTAURANTE*/
+            .bg-restaurant{
+                background:linear-gradient(rgba(0,0,0,0.35), rgba(0,0,0,0.35)),url("#{resource['images:restauranteHotel.png']}");
+                background-repeat: none;
+                background-size: cover;
+            }
+        </style>
+    </h:head>
+    
+    <h:body>
+        <nav class="navbar navbar-expand-lg background-nav-hotel navbar-dark py-3">
+            <div class="container-fluid">
+                
+                <button class="navbar-toggler" type="button" 
+                        data-bs-toggle="collapse" 
+                        data-bs-target="#navbarHotel">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                
+                <div class="collapse navbar-collapse" id="navbarHotel">
+                    <ul class="navbar-nav w-100 d-flex justify-content-between text-center">
+
+                        <li class="nav-item flex-fill">
+                            <h:link outcome="/views/hotel/lobby.xhtml"
+                                   styleClass="nav-link d-flex flex-column align-items-center">
+                                <h:graphicImage library="images" name="icons/lobby.png" 
+                                             alt="Lobby" style="width:50px; height:50px;"/>
+                                <span class="mt-1">Lobby</span>
+                            </h:link>
+                        </li>
+
+                        <li class="nav-item flex-fill">
+                            <h:link outcome="/views/hotel/restaurante.xhtml" 
+                                   styleClass="nav-link d-flex flex-column align-items-center">
+                                <h:graphicImage library="images" name="icons/restaurante.png" 
+                                             alt="Restaurante" style="width:50px; height:50px;"/>
+                                <span class="mt-1">Restaurante</span>
+                            </h:link>
+                        </li>
+
+                        <li class="nav-item flex-fill">
+                            <h:link outcome="/views/hotel/habitaciones.xhtml" 
+                                   styleClass="nav-link d-flex flex-column align-items-center">
+                                <h:graphicImage library="images" name="icons/habitaciones.png" 
+                                             alt="Habitaciones" style="width:50px; height:50px;"/>
+                                <span class="mt-1">Habitaciones</span>
+                            </h:link>
+                        </li>
+
+                        <li class="nav-item flex-fill">
+                            <h:link outcome="/views/hotel/tyc.xhtml" 
+                                   styleClass="nav-link d-flex flex-column align-items-center">
+                                <h:graphicImage library="images" name="icons/terminos.png" 
+                                             alt="Términos" style="width:50px; height:50px;"/>
+                                <span class="mt-1">T&amp;C</span>
+                            </h:link>
+                        </li>
+
+                        <li class="nav-item flex-fill">
+                            <h:link outcome="/views/hotel/login.xhtml" 
+                                   styleClass="nav-link d-flex flex-column align-items-center">
+                                <h:graphicImage library="images" name="icons/login.png" 
+                                             alt="Login" style="width:50px; height:50px;"/>
+                                <span class="mt-1">Login</span>
+                            </h:link>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <main class="container mt-4">
+            <ui:insert name="content">
+                <p>Contenido principal de la página</p>
+            </ui:insert>
+        </main>
+
+        <h:outputScript name="bootstrap/js/bootstrap.bundle.min.js"/>
+    </h:body>
+</html>

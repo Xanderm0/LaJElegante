@@ -1,44 +1,89 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:p="http://primefaces.org/ui">
-
-<h:head>
-    <title>Lobby - Hotel LJE</title>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="/views/hotel/layouts/header.xhtml">
     
-    <!-- Bootstrap CSS -->
-    <h:outputStylesheet library="bootstrap" name="css/bootstrap.min.css" />
-</h:head>
+    <ui:define name="title">
+        Lobby - Hotel LJE
+    </ui:define>
+    
+    <ui:define name="content">
+        <div class="container text-center">
+            
+            <!-- Carrusel Bootstrap -->
+            <div id="carouselLobby" class="carousel slide w-100 mx-auto mb-4" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    
+                    <!-- Slide 1 -->
+                    <div class="carousel-item active position-relative">
+                        <h:graphicImage library="images" name="hotel2.png" 
+                                     alt="Lobby 1" 
+                                     styleClass="d-block w-100 rounded"/>
+                        <div class="carousel-caption d-flex flex-column justify-content-center h-100">
+                            <h2 class="text-white fw-bold">Bienvenido al Hotel La J Elegante</h2>
+                            <p class="lead">Tu descanso y confort en un solo lugar</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Slide 2 -->
+                    <div class="carousel-item position-relative">
+                        <h:graphicImage library="images" name="restauranteHotel2.png" 
+                                     alt="Lobby 2" 
+                                     styleClass="d-block w-100 rounded"/>
+                        <div class="carousel-caption d-flex flex-column justify-content-center h-100">
+                            <h2 class="text-white fw-bold">Experiencias únicas</h2>
+                            <p class="lead">Restaurante gourmet y servicio exclusivo</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Slide 3 -->
+                    <div class="carousel-item position-relative">
+                        <h:graphicImage library="images" name="fondologinHotel.png" 
+                                     alt="Lobby 3" 
+                                     styleClass="d-block w-100 rounded"/>
+                        <div class="carousel-caption d-flex flex-column justify-content-center h-100">
+                            <h2 class="text-white fw-bold">Relájate en nuestras habitaciones</h2>
+                            <p class="lead">Comodidad y estilo al alcance de tu mano</p>
+                        </div>
+                    </div>
+                </div>
 
-<h:body>
+                <!-- Controles del carrusel -->
+                <button class="carousel-control-prev" type="button" 
+                        data-bs-target="#carouselLobby" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon"></span>
+                </button>
+                <button class="carousel-control-next" type="button" 
+                        data-bs-target="#carouselLobby" data-bs-slide="next">
+                    <span class="carousel-control-next-icon"></span>
+                </button>
+            </div>
 
-<h:form id="lobbyForm">
-
-    <!-- Carrusel del Lobby -->
-    <p:carousel value="#{lobbyBean.imagenes}" var="img" numVisible="1" circular="true" autoplayInterval="5000">
-        <p:panel styleClass="text-center">
-            <h:graphicImage value="#{img.ruta}" alt="#{img.alt}" class="img-fluid" />
-            <h:panelGroup layout="block">
-                <h2>#{img.titulo}</h2>
-                <h:outputText value="#{img.descripcion}" />
-            </h:panelGroup>
-        </p:panel>
-    </p:carousel>
-
-    <!-- Botones de navegación con clases Bootstrap -->
-    <div class="d-flex justify-content-center mt-4">
-        <p:commandButton value="Restaurante" action="restaurante.xhtml?faces-redirect=true" styleClass="btn btn-primary mx-2" />
-        <p:commandButton value="Habitaciones" action="habitaciones.xhtml?faces-redirect=true" styleClass="btn btn-success mx-2" />
-       <p:commandButton value="Términos &amp; Condiciones" action="terminos.xhtml?faces-redirect=true" />
-
-    </div>
-
-</h:form>
-
-<!-- Bootstrap JS -->
-<h:outputScript library="bootstrap" name="js/bootstrap.bundle.min.js" />
-
-</h:body>
-</html>
-
+            <!-- Botones de navegación -->
+            <div class="row justify-content-center mt-3">
+                <div class="col-md-4 mb-4">
+                    <h:link outcome="/views/hotel/restaurante.xhtml" 
+                           styleClass="btn btn-color btn-lg w-100 text-white">
+                        Restaurante
+                    </h:link>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <h:link outcome="/views/hotel/habitaciones.xhtml" 
+                           styleClass="btn btn-color btn-lg w-100 text-white">
+                        Habitaciones
+                    </h:link>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <h:link outcome="/views/hotel/tyc.xhtml" 
+                           styleClass="btn btn-color btn-lg w-100 text-white">
+                        Términos &amp; Condiciones
+                    </h:link>
+                </div>
+            </div>
+            
+        </div>
+    </ui:define>
+</ui:composition>

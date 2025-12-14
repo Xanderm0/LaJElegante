@@ -1,0 +1,95 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+    <title>Nueva Reserva</title>
+     <h:outputStylesheet library="bootstrap" name="css/bootstrap.min.css" />
+</h:head>
+
+<h:body>
+
+    <h:form id="formReserva">
+
+        <p:panel header="Nueva Reserva" style="width:650px; margin:auto;">
+
+            <p:messages id="msgs" autoUpdate="true" closable="true" />
+
+            <!-- SELECT CLIENTES -->
+            <p:outputLabel value="Cliente:" for="cliente" />
+            <p:selectOneMenu id="cliente" value="#{reservaController.idCliente}" required="true" style="width:100%;">
+                <f:selectItem itemLabel="Seleccione un cliente" itemValue="" />
+                <f:selectItems value="#{reservaController.listaClientes}"
+                               var="cli"
+                               itemLabel="#{cli.nombre} #{cli.apellido}"
+                               itemValue="#{cli.idCliente}" />
+            </p:selectOneMenu>
+
+            <br/><br/>
+
+            <!-- SELECT MESAS -->
+            <p:outputLabel value="Mesa:" for="mesa" />
+            <p:selectOneMenu id="mesa" value="#{reservaController.idMesa}" required="true" style="width:100%;">
+                <f:selectItem itemLabel="Seleccione una mesa" itemValue="" />
+                <f:selectItems value="#{reservaController.listaMesas}"
+                               var="m"
+                               itemLabel="Mesa #{m.numeroMesa} - Cap: #{m.capacidad}"
+                               itemValue="#{m.idMesa}" />
+            </p:selectOneMenu>
+
+            <br/><br/>
+
+            <!-- FECHA -->
+            <p:outputLabel value="Fecha reserva:" for="fecha" />
+            <p:calendar id="fecha" value="#{reservaController.fecha}" pattern="yyyy-MM-dd" required="true" />
+
+            <br/><br/>
+
+            <!-- HORA -->
+            <p:outputLabel value="Hora reserva:" for="hora" />
+            <p:calendar id="hora" value="#{reservaController.hora}" pattern="HH:mm" timeOnly="true" required="true" />
+
+            <br/><br/>
+
+            <!-- NÚMERO DE PERSONAS -->
+            <p:outputLabel value="Número personas:" for="personas" />
+            <p:spinner id="personas" value="#{reservaController.numeroPersonas}" min="1" required="true" />
+
+            <br/><br/>
+
+            <!-- ESTADO -->
+            <p:outputLabel value="Estado:" for="estado" />
+            <p:selectOneMenu id="estado" value="#{reservaController.estadoReserva}" required="true">
+                <f:selectItem itemLabel="Pendiente" itemValue="pendiente"/>
+                <f:selectItem itemLabel="Confirmada" itemValue="confirmada"/>
+                <f:selectItem itemLabel="Cancelada" itemValue="cancelada"/>
+            </p:selectOneMenu>
+
+            <br/><br/>
+
+            <!-- ACTIVO -->
+            <p:outputLabel value="Activo:" for="activo" />
+            <p:selectOneMenu id="activo" value="#{reservaController.activo}" required="true">
+                <f:selectItem itemLabel="Sí" itemValue="1"/>
+                <f:selectItem itemLabel="No" itemValue="0"/>
+            </p:selectOneMenu>
+
+            <br/><br/>
+
+            <p:commandButton value="Guardar"
+                             action="#{reservaController.guardar()}"
+                             update="formReserva"
+                             styleClass="ui-button-success" />
+
+            <p:commandButton value="Cancelar"
+                             action="#{reservaController.irListado()}"
+                             styleClass="ui-button-secondary" />
+
+        </p:panel>
+
+    </h:form>
+<h:outputScript library="bootstrap" name="js/bootstrap.bundle.min.js" />
+</h:body>
+</html>

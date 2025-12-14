@@ -1,0 +1,124 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+       
+        <h:outputStylesheet library="bootstrap" name="css/bootstrap.min.css" />
+    </h:head>
+<h:body>
+
+    <h1>Listado de Tarifas</h1>
+
+    <!-- Mensaje tipo session success -->
+    <p:messages id="msg" closable="true" />
+
+    <h:form>
+        <p:commandButton
+                value="Nueva tarifa"
+                styleClass="p-button-primary"
+                action="#{tarifaBean.nueva()}" />
+    </h:form>
+
+    <p:dataTable id="tablaTarifas"
+                 value="#{tarifaBean.tarifas}"
+                 var="tarifa"
+                 emptyMessage="No hay tarifas registradas">
+
+        <p:column headerText="ID">
+            <h:outputText value="#{tarifa.idTarifa}"/>
+        </p:column>
+
+        <p:column headerText="Tarifa fija">
+            <h:outputText value="#{tarifa.tarifaFija}"/>
+        </p:column>
+
+        <p:column headerText="Precio final">
+            <h:outputText value="#{tarifa.precioFinal}"/>
+        </p:column>
+
+        <p:column headerText="Estado">
+            <h:outputText value="#{tarifa.estado}"/>
+        </p:column>
+
+        <p:column headerText="Temporada">
+            <h:outputText value="#{tarifa.temporada.nombre != null ? tarifa.temporada.nombre : 'N/A'}"/>
+        </p:column>
+
+        <p:column headerText="Acciones">
+
+            <!-- Botón editar que abre modal -->
+            <p:commandButton
+                    value="Editar"
+                    icon="pi pi-pencil"
+                    styleClass="p-button-warning p-button-sm"
+                    oncomplete="PF('dlgEditar').show()"
+                    update=":formEditar"
+                    actionListener="#{tarifaBean.cargarEditar(tarifa)}"/>
+
+            <!-- Botón eliminar -->
+            <p:commandButton
+                    value="Eliminar"
+                    icon="pi pi-trash"
+                    styleClass="p-button-danger p-button-sm"
+                    update="tablaTarifas msg"
+                    actionListener="#{tarifaBean.eliminar(tarifa.idTarifa)}"
+                    onclick="return confirm('¿Eliminar esta tarifa?')"/>
+        </p:column>
+
+    </p:dataTable>
+
+
+    <!-- ------- MODAL DE EDICIÓN -------- -->
+
+    <p:dialog id="dialogEditar" header="Editar tarifa" widgetVar="dlgEditar" modal="true">
+
+        <h:form id="formEditar">
+
+            <h3>Editar tarifa</h3>
+
+            <p:panelGrid columns="2" styleClass="p-fluid">
+
+                <p:outputLabel value="Tarifa fija"/>
+                <p:inputNumber value="#{tarifaBean.tarifaSeleccionada.tarifaFija}" mode="decimal" />
+
+                <p:outputLabel value="Precio final"/>
+                <p:inputNumber value="#{tarifaBean.tarifaSeleccionada.precioFinal}" mode="decimal" />
+
+                <p:outputLabel value="Estado"/>
+                <p:selectOneMenu value="#{tarifaBean.tarifaSeleccionada.estado}">
+                    <f:selectItem itemValue="vigente" itemLabel="Vigente"/>
+                    <f:selectItem itemValue="inactiva" itemLabel="Inactiva"/>
+                </p:selectOneMenu>
+
+                <p:outputLabel value="Temporada"/>
+                <p:selectOneMenu value="#{tarifaBean.tarifaSeleccionada.temporada.idTemporada}">
+                    <f:selectItems value="#{tarifaBean.temporadas}"
+                                   var="temp"
+                                   itemValue="#{temp.idTemporada}"
+                                   itemLabel="#{temp.nombre}" />
+                </p:selectOneMenu>
+
+            </p:panelGrid>
+
+            <br/>
+
+            <p:commandButton value="Actualizar"
+                             styleClass="p-button-success"
+                             update="tablaTarifas msg"
+                             action="#{tarifaBean.actualizar()}"
+                             oncomplete="PF('dlgEditar').hide()" />
+
+            <p:commandButton value="Cancelar"
+                             styleClass="p-button-secondary"
+                             onclick="PF('dlgEditar').hide()"
+                             type="button" />
+
+        </h:form>
+
+    </p:dialog>
+<h:outputScript library="bootstrap" name="js/bootstrap.bundle.min.js" />
+</h:body>
+</html>
