@@ -35,7 +35,6 @@
                              value="#{clienteBean.cliente.saludo}"
                              required="true"
                              styleClass="form-select">
-
                 <f:selectItem itemLabel="Seleccione un saludo" itemValue="#{null}" />
                 <f:selectItems value="#{clienteBean.saludos}"
                                var="s"
@@ -71,19 +70,17 @@
                          styleClass="form-control" />
         </div>
 
-        <!-- TIPO DE CLIENTE -->
+        <!-- TIPO DE CLIENTE (SIN CONVERTER) -->
         <div class="mb-3">
             <p:outputLabel for="tipo" value="Tipo de Cliente" />
             <p:selectOneMenu id="tipo"
-                             value="#{clienteBean.cliente.tipoCliente}"
-                             converter="tipoClienteConverter"
+                             value="#{clienteBean.idTipoClienteSeleccionado}"
                              required="true"
                              styleClass="form-select">
-
                 <f:selectItem itemLabel="Seleccione un tipo" itemValue="#{null}" />
                 <f:selectItems value="#{clienteBean.listaTipos}"
                                var="t"
-                               itemValue="#{t}"
+                               itemValue="#{t.idTipoCliente}"
                                itemLabel="#{t.nombreTipo}" />
             </p:selectOneMenu>
         </div>

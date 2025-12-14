@@ -12,18 +12,16 @@
 <h:body>
 
 <f:metadata>
-    <f:event type="preRenderView"
-             listener="#{clienteBean.initReporte}" />
+    <f:event type="preRenderView" listener="#{clienteReporteBean.init}" />
 </f:metadata>
-    
-    <!-- BOTÓN PARA VOLVER -->
+
+<!-- BOTÓN PARA VOLVER -->
 <div class="mb-3">
     <p:button value="Volver al Listado"
               icon="pi pi-arrow-left"
               outcome="index"
               styleClass="btn btn-secondary"/>
 </div>
-
 
 <div class="container mt-4">
 
@@ -35,37 +33,36 @@
         <!-- ESTADO -->
         <div class="col-md-3">
             <h:outputLabel value="Estado" styleClass="form-label"/>
-            <h:selectOneMenu value="#{clienteBean.estadoFiltro}"
+            <h:selectOneMenu value="#{clienteReporteBean.estadoFiltro}"
                              styleClass="form-select">
                 <f:selectItem itemLabel="Todos" itemValue="#{null}"/>
-                <f:selectItems value="#{clienteBean.estados}"
+                <f:selectItems value="#{clienteReporteBean.estados}"
                                var="e"
                                itemLabel="#{e.valor}"
                                itemValue="#{e}"/>
             </h:selectOneMenu>
         </div>
 
-        <!-- TIPO CLIENTE -->
+        <!-- TIPO CLIENTE (SIN CONVERTER) -->
         <div class="col-md-3">
             <h:outputLabel value="Tipo Cliente" styleClass="form-label"/>
-            <h:selectOneMenu value="#{clienteBean.tipoClienteFiltro}"
-                             converter="tipoClienteConverter"
+            <h:selectOneMenu value="#{clienteReporteBean.idTipoClienteFiltro}"
                              styleClass="form-select">
                 <f:selectItem itemLabel="Todos" itemValue="#{null}"/>
-                <f:selectItems value="#{clienteBean.listaTipos}"
+                <f:selectItems value="#{clienteReporteBean.listaTipos}"
                                var="t"
                                itemLabel="#{t.nombreTipo}"
-                               itemValue="#{t}"/>
+                               itemValue="#{t.idTipoCliente}"/>
             </h:selectOneMenu>
         </div>
 
         <!-- FECHAS -->
         <div class="col-md-3">
             <h:outputLabel value="Rango de fechas" styleClass="form-label"/>
-            <p:datePicker value="#{clienteBean.fechaDesde}"
+            <p:datePicker value="#{clienteReporteBean.fechaDesde}"
                           pattern="yyyy-MM-dd"
                           styleClass="form-control"/>
-            <p:datePicker value="#{clienteBean.fechaHasta}"
+            <p:datePicker value="#{clienteReporteBean.fechaHasta}"
                           pattern="yyyy-MM-dd"
                           styleClass="form-control mt-1"/>
         </div>
@@ -73,7 +70,7 @@
         <!-- BOTÓN FILTRAR -->
         <div class="col-md-3 d-flex align-items-end">
             <p:commandButton value="Filtrar"
-                             action="#{clienteBean.filtrarReporte}"
+                             action="#{clienteReporteBean.filtrarReporte}"
                              update="tablaReporte mensajes"
                              styleClass="btn btn-primary"/>
         </div>
@@ -110,9 +107,9 @@
 
     <!-- ================== TABLA ================== -->
     <p:dataTable id="tablaReporte"
-                 value="#{clienteBean.listaReporte}"
+                 value="#{clienteReporteBean.listaReporte}"
                  var="c"
-                 rendered="#{not empty clienteBean.listaReporte}"
+                 rendered="#{not empty clienteReporteBean.listaReporte}"
                  styleClass="table table-bordered">
 
         <p:column headerText="ID">
@@ -141,7 +138,7 @@
 
     </p:dataTable>
 
-    <h:panelGroup rendered="#{empty clienteBean.listaReporte}">
+    <h:panelGroup rendered="#{empty clienteReporteBean.listaReporte}">
         <div class="alert alert-info">
             No hay clientes que coincidan con los filtros.
         </div>

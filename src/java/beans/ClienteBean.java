@@ -3,7 +3,6 @@ package beans;
 import dao.ClienteDAO;
 import dao.TipoClienteDAO;
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import javax.faces.view.ViewScoped;
@@ -27,24 +26,20 @@ public class ClienteBean implements Serializable {
     private Integer idClienteSeleccionado;
     private boolean cargado = false;
 
+    // ===== AUX PARA TIPO CLIENTE (SIN CONVERTER) =====
+    private Integer idTipoClienteSeleccionado;
+
     // ===== LISTAS =====
     private List<Cliente> listaClientes = new ArrayList<>();
     private List<TipoCliente> listaTipos = new ArrayList<>();
     private List<Cliente> listaFiltro = new ArrayList<>();
     private List<Cliente> listaPapelera = new ArrayList<>();
 
-    // ===== REPORTE =====
-    private Estado estadoFiltro;
-    private TipoCliente tipoClienteFiltro;
-    private LocalDate fechaDesde;
-    private LocalDate fechaHasta;
-    private List<Cliente> listaReporte = new ArrayList<>();
-
     // ===== DAOS =====
     private final ClienteDAO clienteDAO = new ClienteDAO();
     private final TipoClienteDAO tipoClienteDAO = new TipoClienteDAO();
 
-    // ===== INIT =====
+    // ===== INIT EDITAR =====
     public void initEditar() {
         if (!cargado && idClienteSeleccionado != null) {
             cliente = clienteDAO.buscar(idClienteSeleccionado);
@@ -52,17 +47,15 @@ public class ClienteBean implements Serializable {
             if (cliente == null) {
                 MessageUtil.notFoundError("Cliente", String.valueOf(idClienteSeleccionado));
                 cliente = new Cliente();
+            } else {
+                if (cliente.getTipoCliente() != null) {
+                    idTipoClienteSeleccionado = cliente.getTipoCliente().getIdTipoCliente();
+                }
             }
 
             cargarTiposCliente();
             cargado = true;
         }
-    }
-
-    // ===== INIT REPORTE =====
-    public void initReporte() {
-        cargarTiposCliente();
-        filtrarReporte();
     }
 
     // ===== CRUD =====
@@ -78,10 +71,15 @@ public class ClienteBean implements Serializable {
             return;
         }
 
+        TipoCliente tipo = tipoClienteDAO.buscar(idTipoClienteSeleccionado);
+        cliente.setTipoCliente(tipo);
+
         clienteDAO.crear(cliente);
         MessageUtil.createSuccess("Cliente");
         listar();
+
         cliente = new Cliente();
+        idTipoClienteSeleccionado = null;
     }
 
     public void actualizar() {
@@ -102,6 +100,9 @@ public class ClienteBean implements Serializable {
             cliente.setContraseña(cliente.getNuevaContraseña());
         }
 
+        TipoCliente tipo = tipoClienteDAO.buscar(idTipoClienteSeleccionado);
+        cliente.setTipoCliente(tipo);
+
         clienteDAO.actualizar(cliente);
         MessageUtil.updateSuccess("Cliente");
         listar();
@@ -113,14 +114,15 @@ public class ClienteBean implements Serializable {
         listar();
     }
 
-    // ===== REPORTE =====
-    public void filtrarReporte() {
-        listaReporte = clienteDAO.listarReporte(
-                estadoFiltro,
-                tipoClienteFiltro,
-                fechaDesde,
-                fechaHasta
-        );
+    // ===== PAPELERA =====
+    public void listarPapelera() {
+        listaPapelera = clienteDAO.listarEliminados();
+    }
+
+    public void restaurar(int id) {
+        clienteDAO.restaurar(id);
+        MessageUtil.success("Cliente restaurado correctamente");
+        listarPapelera();
     }
 
     // ===== AUX =====
@@ -137,49 +139,55 @@ public class ClienteBean implements Serializable {
             MessageUtil.validationError("Email inválido");
             return false;
         }
-        if (cliente.getTipoCliente() == null) {
+        if (idTipoClienteSeleccionado == null) {
             MessageUtil.validationError("Seleccione un tipo de cliente");
             return false;
         }
         return true;
     }
 
-    // ===== PAPELERA =====
-    public void listarPapelera() {
-        listaPapelera = clienteDAO.listarEliminados();
-    }
-
-    public void restaurar(int id) {
-        clienteDAO.restaurar(id);
-        MessageUtil.success("Cliente restaurado correctamente");
-        listarPapelera();
-    }
-
     // ===== GETTERS / SETTERS =====
-    public Cliente getCliente() { return cliente; }
-    public Integer getIdClienteSeleccionado() { return idClienteSeleccionado; }
-    public void setIdClienteSeleccionado(Integer id) { this.idClienteSeleccionado = id; }
-
-    public List<Cliente> getListaClientes() { return listaClientes; }
-    public List<TipoCliente> getListaTipos() { return listaTipos; }
-    public List<Cliente> getListaFiltro() { return listaFiltro; }
-    public List<Cliente> getListaPapelera() { return listaPapelera; }
-    public List<Cliente> getListaReporte() { return listaReporte; }
-
-    public Estado getEstadoFiltro() { return estadoFiltro; }
-    public void setEstadoFiltro(Estado estadoFiltro) { this.estadoFiltro = estadoFiltro; }
-
-    public TipoCliente getTipoClienteFiltro() { return tipoClienteFiltro; }
-    public void setTipoClienteFiltro(TipoCliente tipoClienteFiltro) {
-        this.tipoClienteFiltro = tipoClienteFiltro;
+    public Cliente getCliente() {
+        return cliente;
     }
 
-    public LocalDate getFechaDesde() { return fechaDesde; }
-    public void setFechaDesde(LocalDate fechaDesde) { this.fechaDesde = fechaDesde; }
+    public Integer getIdClienteSeleccionado() {
+        return idClienteSeleccionado;
+    }
 
-    public LocalDate getFechaHasta() { return fechaHasta; }
-    public void setFechaHasta(LocalDate fechaHasta) { this.fechaHasta = fechaHasta; }
+    public void setIdClienteSeleccionado(Integer id) {
+        this.idClienteSeleccionado = id;
+    }
 
-    public Saludo[] getSaludos() { return Saludo.values(); }
-    public Estado[] getEstados() { return Estado.values(); }
+    public Integer getIdTipoClienteSeleccionado() {
+        return idTipoClienteSeleccionado;
+    }
+
+    public void setIdTipoClienteSeleccionado(Integer idTipoClienteSeleccionado) {
+        this.idTipoClienteSeleccionado = idTipoClienteSeleccionado;
+    }
+
+    public List<Cliente> getListaClientes() {
+        return listaClientes;
+    }
+
+    public List<TipoCliente> getListaTipos() {
+        return listaTipos;
+    }
+
+    public List<Cliente> getListaFiltro() {
+        return listaFiltro;
+    }
+
+    public List<Cliente> getListaPapelera() {
+        return listaPapelera;
+    }
+
+    public Saludo[] getSaludos() {
+        return Saludo.values();
+    }
+
+    public Estado[] getEstados() {
+        return Estado.values();
+    }
 }
