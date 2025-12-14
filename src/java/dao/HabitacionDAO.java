@@ -105,6 +105,60 @@ public class HabitacionDAO extends BaseDAO<Habitacion> {
 
         return habitaciones;
     }
+//contar habitaciones
+ public int contarHabitaciones() {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        try {
+            conn = ConectarBD.conectar();
+            if (conn == null) return 0;
+
+            String sql = "SELECT COUNT(*) FROM habitaciones";
+            ps = conn.prepareStatement(sql);
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            ConectarBD.cerrarConexion(conn, ps, rs);
+        }
+        return 0;
+    }
+ //contar habitaciones ocupadas 
+ public int contarHabitacionesOcupadas() {
+    Connection conn = null;
+    PreparedStatement ps = null;
+    ResultSet rs = null;
+
+    try {
+        conn = ConectarBD.conectar();
+        if (conn == null) return 0;
+
+        String sql =
+            "SELECT COUNT(*) FROM habitaciones " +
+            "WHERE estado = 'OCUPADA' AND deleted_at IS NULL";
+
+        ps = conn.prepareStatement(sql);
+        rs = ps.executeQuery();
+
+        if (rs.next()) {
+            return rs.getInt(1);
+        }
+
+    } catch (Exception e) {
+        e.printStackTrace();
+    } finally {
+        ConectarBD.cerrarConexion(conn, ps, rs);
+    }
+
+    return 0;
+}
 
     @Override
     public void actualizar(Habitacion h) {
