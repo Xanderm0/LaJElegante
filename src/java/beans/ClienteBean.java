@@ -5,15 +5,15 @@ import dao.TipoClienteDAO;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import javax.faces.view.ViewScoped;
-import javax.inject.Named;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
 import models.Cliente;
 import models.TipoCliente;
 import models.enums.Estado;
 import models.enums.Saludo;
 import utils.MessageUtil;
 
-@Named
+@ManagedBean
 @ViewScoped
 public class ClienteBean implements Serializable {
 
