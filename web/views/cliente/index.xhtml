@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+    <title>Listado de Clientes</title>
+    <h:outputStylesheet library="bootstrap" name="css/bootstrap.min.css" />
+</h:head>
+
+<h:body>
+
+<f:metadata>
+    <!-- Cargar clientes al entrar -->
+    <f:event type="preRenderView"
+             listener="#{clienteBean.listar}" />
+</f:metadata>
+
+<div class="container mt-4">
+
+    <h1>Listado de Clientes</h1>
+    
+    <div class="mb-3 d-flex gap-2">
+
+        <!-- NUEVO CLIENTE -->
+        <p:button value="Nuevo Cliente"
+                  icon="pi pi-plus"
+                  outcome="create"
+                  styleClass="btn btn-primary" />
+
+        <!-- PAPELERA -->
+        <p:button value="Papelera"
+                  icon="pi pi-trash"
+                  outcome="papelera"
+                  styleClass="btn btn-secondary" />
+
+        <!-- IR A REPORTES -->
+        <p:button value="Ir a Reportes"
+                  icon="pi pi-file"
+                  outcome="reportes"
+                  styleClass="btn btn-success" />
+
+    </div>
+
+    <!-- MENSAJES -->
+    <p:messages closable="true">
+        <p:autoUpdate />
+    </p:messages>
+
+    <h:form id="formClientes">
+
+        <!-- TABLA -->
+        <p:dataTable value="#{clienteBean.listaClientes}"
+                     var="c"
+                     paginator="true"
+                     rows="10"
+                     styleClass="table table-bordered">
+
+            <p:column headerText="ID">
+                #{c.idCliente}
+            </p:column>
+
+            <p:column headerText="Nombre completo">
+                #{c.nombre} #{c.apellido}
+            </p:column>
+
+            <p:column headerText="Email">
+                #{c.email}
+            </p:column>
+
+            <p:column headerText="Teléfono">
+                #{c.prefijo} #{c.numTel}
+            </p:column>
+
+            <p:column headerText="Tipo Cliente">
+                #{c.tipoCliente.nombreTipo}
+            </p:column>
+
+            <p:column headerText="Estado">
+                #{c.estado.valor}
+            </p:column>
+
+            <p:column headerText="Acciones" style="width:180px">
+
+                <!-- EDITAR -->
+                <p:button icon="pi pi-pencil"
+                          title="Editar"
+                          outcome="edit">
+                    <f:param name="id" value="#{c.idCliente}" />
+                </p:button>
+
+                <!-- ELIMINAR -->
+                <p:commandButton icon="pi pi-trash"
+                                 title="Eliminar"
+                                 action="#{clienteBean.eliminar(c.idCliente)}"
+                                 update="formClientes"
+                                 styleClass="btn btn-danger"
+                                 onclick="return confirm('¿Seguro que deseas eliminar este cliente?')" />
+            </p:column>
+
+        </p:dataTable>
+
+    </h:form>
+
+</div>
+
+<h:outputScript library="bootstrap" name="js/bootstrap.bundle.min.js" />
+
+</h:body>
+</html>

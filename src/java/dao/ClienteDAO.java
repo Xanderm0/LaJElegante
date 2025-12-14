@@ -1,5 +1,6 @@
 package dao;
 
+import java.time.LocalDate;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -401,6 +402,65 @@ public class ClienteDAO extends BaseDAO<Cliente> {
         return null;
     }
     
+    public List<Cliente> listarReporte(
+        Estado estado,
+        TipoCliente tipo,
+        LocalDate desde,
+        LocalDate hasta
+) {
+    Connection conn = null;
+    PreparedStatement ps = null;
+    ResultSet rs = null;
+    List<Cliente> lista = new ArrayList<>();
+
+    try {
+        conn = ConectarBD.conectar();
+
+        StringBuilder sql = new StringBuilder(
+            "SELECT c.*, t.nombre_tipo AS tipo_cliente_nombre " +
+            "FROM clientes c " +
+            "JOIN tipo_cliente t ON c.id_tipo_cliente = t.id_tipo_cliente " +
+            "WHERE c.deleted_at IS NULL "
+        );
+
+        if (estado != null) {
+            sql.append("AND c.estado = ? ");
+        }
+        if (tipo != null) {
+            sql.append("AND c.id_tipo_cliente = ? ");
+        }
+        if (desde != null) {
+            sql.append("AND DATE(c.created_at) >= ? ");
+        }
+        if (hasta != null) {
+            sql.append("AND DATE(c.created_at) <= ? ");
+        }
+
+        ps = conn.prepareStatement(sql.toString());
+
+        int index = 1;
+        if (estado != null) ps.setString(index++, estado.name());
+        if (tipo != null) ps.setInt(index++, tipo.getIdTipoCliente());
+        if (desde != null) ps.setDate(index++, java.sql.Date.valueOf(desde));
+        if (hasta != null) ps.setDate(index++, java.sql.Date.valueOf(hasta));
+
+        rs = ps.executeQuery();
+
+        while (rs.next()) {
+            lista.add(mapearResultSet(rs));
+        }
+
+    } catch (SQLException e) {
+        MessageUtil.error("Error al generar reporte de clientes");
+        System.err.println("ClienteDAO.listarReporte: " + e.getMessage());
+    } finally {
+        cerrarRecursos(conn, ps, rs);
+    }
+
+    return lista;
+}
+
+    
     private Cliente mapearResultSet(ResultSet rs) throws SQLException {
         Cliente c = new Cliente();
         c.setIdCliente(rs.getInt("id_cliente"));
@@ -453,3 +513,4 @@ public class ClienteDAO extends BaseDAO<Cliente> {
         }
     }
 }
+
