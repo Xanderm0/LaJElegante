@@ -82,6 +82,34 @@ public class ClienteDAO extends BaseDAO<Cliente> {
 
         return c;
     }
+    //conatr clientes activos 
+public int contarClientes() {
+    Connection conn = null;
+    PreparedStatement ps = null;
+    ResultSet rs = null;
+    int total = 0;
+
+    try {
+        conn = ConectarBD.conectar();
+        if (conn == null) return 0;
+
+        String sql = "SELECT COUNT(*) FROM clientes WHERE estado = 'activo'";
+        ps = conn.prepareStatement(sql);
+        rs = ps.executeQuery();
+
+        if (rs.next()) {
+            total = rs.getInt(1);
+        }
+
+    } catch (SQLException e) {
+        e.printStackTrace();
+    } finally {
+        ConectarBD.cerrarConexion(conn, ps, rs);
+    }
+
+    return total;
+}
+
 
     @Override
     public List<Cliente> listar() {
@@ -400,6 +428,7 @@ public class ClienteDAO extends BaseDAO<Cliente> {
         }
         return null;
     }
+
     
     private Cliente mapearResultSet(ResultSet rs) throws SQLException {
         Cliente c = new Cliente();

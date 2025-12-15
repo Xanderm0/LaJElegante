@@ -102,6 +102,67 @@ public class ReservaHabitacionDAO extends BaseDAO<ReservaHabitacion> {
 
         return lista;
     }
+    //contar reservas 
+ public int contarReservasActivas() {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        try {
+            conn = ConectarBD.conectar();
+            if (conn == null) return 0;
+
+            String sql = "SELECT COUNT(*) FROM reserva_habitacion WHERE estado = 'ACTIVA'";
+            ps = conn.prepareStatement(sql);
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            ConectarBD.cerrarConexion(conn, ps, rs);
+        }
+        return 0;
+    }
+ //reservas por mes 
+ public List<Object[]> reservasPorMes() {
+    List<Object[]> lista = new ArrayList<>();
+    Connection conn = null;
+    PreparedStatement ps = null;
+    ResultSet rs = null;
+
+    try {
+        conn = ConectarBD.conectar();
+        if (conn == null) return lista;
+
+        String sql =
+            "SELECT MONTH(fecha_reserva) AS mes, COUNT(*) AS total " +
+            "FROM reservas_habitacion " +
+            "WHERE deleted_at IS NULL " +
+            "GROUP BY MONTH(fecha_reserva) " +
+            "ORDER BY mes";
+
+        ps = conn.prepareStatement(sql);
+        rs = ps.executeQuery();
+
+        while (rs.next()) {
+            lista.add(new Object[]{
+                rs.getInt("mes"),
+                rs.getInt("total")
+            });
+        }
+
+    } catch (Exception e) {
+        e.printStackTrace();
+    } finally {
+        ConectarBD.cerrarConexion(conn, ps, rs);
+    }
+
+    return lista;
+}
 
     @Override
     public void actualizar(ReservaHabitacion r) {
