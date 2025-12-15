@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    
+    <title><ui:insert name="title">Hotel La J Elegante - Cliente</ui:insert></title>
+    
+    <link rel="icon" href="#{resource['images:icons/logoHotel.png']}"/>
+    
+    <!-- Bootstrap 5 -->
+    <h:outputStylesheet library="bootstrap" name="css/bootstrap.min.css"/>
+    
+     <h:outputStylesheet library="css" name="dashboardCliente.css"/>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+    
+    
+</h:head>
+
+<h:body>
+    <!-- Header Principal -->
+    <header class="main-header">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <h1 class="hotel-logo">
+                        <i class="fas fa-hotel"></i>Hotel La J Elegante
+                    </h1>
+                    <p class="welcome-text">
+                        <i class="fas fa-user-circle me-2"></i>
+                        Bienvenido a su portal de cliente
+                    </p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <h:form>
+                        <h:commandLink action="#{loginBean.logout()}" 
+                                     styleClass="btn btn-light btn-lg">
+                            <i class="fas fa-sign-out-alt me-2"></i> Cerrar Sesión
+                        </h:commandLink>
+                    </h:form>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Contenido Principal -->
+        <main>
+            <ui:insert name="content">
+                <!-- Contenido se insertará aquí -->
+            </ui:insert>
+        </main>
+
+        <!-- Footer -->
+        <footer class="guest-footer">
+            <div class="container text-center">
+                <div class="footer-links mb-3">
+                    <a href="#"><i class="fas fa-question-circle me-1"></i> Ayuda</a>
+                    <a href="#"><i class="fas fa-phone me-1"></i> Contacto</a>
+                    <a href="#"><i class="fas fa-info-circle me-1"></i> Términos</a>
+                </div>
+            </div>
+        </footer>
+    </div>
+</h:body>
+</html>
