@@ -1,310 +1,199 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:p="http://primefaces.org/ui">
-
-<h:head>
-    <title>Dashboard Admin - Sistema de Reservas</title>
-
-    <!-- Bootstrap 5 -->
-    <h:outputStylesheet name="bootstrap/css/bootstrap.min.css"/>
-
-    <!-- Font Awesome para iconos -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
-
-    <!-- Estilos Personalizados -->
-     <h:outputStylesheet name="css/dashboardAdmin.css"/>
-     
-     <!-- JS Personalizado -->
-     <h:outputStylesheet name="js/dashboard_admin.css"/>
-</h:head>
-
-<h:body>
-    <!-- Sidebar Fijo -->
-    <div class="sidebar d-none d-lg-block">
-        <div class="sidebar-header">
-            <h4><i class="fas fa-hotel hotel-icon"></i> Sistema Hotel</h4>
-        </div>
-        
-        <nav class="sidebar-nav">
-            <ul class="nav flex-column">
-                <li class="nav-item">
-                    <h:link outcome="/views/empleado/admin/dashboard.xhtml" styleClass="nav-link active">
-                        <i class="fas fa-tachometer-alt"></i> Dashboard
-                    </h:link>
-                </li>
-                <li class="nav-item">
-                    <h:link outcome="/views/empleado/admin/clientes/index.xhtml" styleClass="nav-link">
-                        <i class="fas fa-users"></i> Clientes
-                    </h:link>
-                </li>
-                <li class="nav-item">
-                    <h:link outcome="/views/empleado/admin/empleados/index.xhtml" styleClass="nav-link">
-                        <i class="fas fa-user-tie"></i> Empleados
-                    </h:link>
-                </li>
-                <li class="nav-item">
-                    <h:link outcome="/views/empleado/admin/habitaciones/index.xhtml" styleClass="nav-link">
-                        <i class="fas fa-bed"></i> Habitaciones
-                    </h:link>
-                </li>
-                <li class="nav-item">
-                    <h:link outcome="/views/empleado/admin/reservasHab/index.xhtml" styleClass="nav-link">
-                        <i class="fas fa-calendar-check"></i> Reservas Habitación
-                    </h:link>
-                </li>
-                <li class="nav-item">
-                    <h:link outcome="/views/empleado/admin/tipoCliente/index.xhtml" styleClass="nav-link">
-                        <i class="fas fa-user-tag"></i> Tipos de Cliente
-                    </h:link>
-                </li>
-                <li class="nav-item">
-                    <h:link outcome="/views/empleado/admin/tipoHabitacion/index.xhtml" styleClass="nav-link">
-                        <i class="fas fa-home"></i> Tipos de Habitación
-                    </h:link>
-                </li>
-                <li class="nav-item">
-                    <h:link outcome="/views/empleado/admin/tarifas/index.xhtml" styleClass="nav-link">
-                        <i class="fas fa-tags"></i> Tarifas
-                    </h:link>
-                </li>
-                <li class="nav-item">
-                    <h:link outcome="/views/empleado/admin/temporadas/index.xhtml" styleClass="nav-link">
-                        <i class="fas fa-calendar-alt"></i> Temporadas
-                    </h:link>
-                </li>
-                <li class="nav-item">
-                    <h:link outcome="/views/empleado/admin/mesas/index.xhtml" styleClass="nav-link">
-                        <i class="fas fa-utensils"></i> Mesas
-                    </h:link>
-                </li>
-                <li class="nav-item">
-                    <h:link outcome="/views/empleado/admin/reservasRes/index.xhtml" styleClass="nav-link">
-                        <i class="fas fa-concierge-bell"></i> Reservas Restaurante
-                    </h:link>
-                </li>
-            </ul>
-        </nav>
-        
-        <div class="sidebar-footer">
-            <h:form>
-                <h:commandLink action="#{loginBean.logout()}" styleClass="btn btn-danger w-100">
-                    <i class="fas fa-sign-out-alt me-2"></i> Cerrar Sesión
-                </h:commandLink>
-            </h:form>
-        </div>
-    </div>
-
-    <!-- Navbar Móvil -->
-    <nav class="navbar mobile-navbar navbar-dark fixed-top d-lg-none">
-        <div class="container-fluid">
-            <button class="sidebar-toggle" type="button" onclick="toggleSidebar()">
-                <i class="fas fa-bars"></i>
-            </button>
-            <span class="navbar-brand ms-2">Sistema Hotel</span>
-        </div>
-    </nav>
-
-    <!-- Contenido Principal -->
-    <div class="main-content">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/views/empleado/admin/layouts/sidebar.xhtml">
+    
+    <ui:define name="title">Dashboard - Sistema de Reservas</ui:define>
+    
+    <ui:define name="page-title">Panel de Administración</ui:define>
+    <ui:define name="page-subtitle">Bienvenido al sistema de gestión hotelera</ui:define>
+    
+    <ui:define name="content">
         <h:form id="formDashboard">
-            <div class="container-fluid">
-                <!-- Header del Dashboard -->
-                <div class="d-flex justify-content-between align-items-center mb-4">
-                    <div>
-                        <h1 class="h3 mb-1 text-dark">Panel de Administración</h1>
-                        <p class="text-muted mb-0">Bienvenido al sistema de gestión hotelera</p>
-                    </div>
-                    <div class="d-none d-md-block">
-                        <span class="badge bg-primary p-2">
-                            <i class="fas fa-calendar-day me-1"></i> #{dashboardBean.fechaActual}
-                        </span>
-                    </div>
-                </div>
-
-                <!-- Tarjetas de Estadísticas -->
-                <div class="row mb-4">
-                    <div class="col-xl-3 col-md-6 mb-4 fade-in">
-                        <div class="stat-card card-primary shadow">
-                            <div class="card-body position-relative">
-                                <i class="fas fa-users stat-card-icon"></i>
-                                <h6 class="stat-title">Clientes</h6>
-                                <h2 class="stat-number">#{dashboardBean.clientesCount}</h2>
-                                <p class="stat-subtitle mb-0">Total registrados</p>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="col-xl-3 col-md-6 mb-4 fade-in" style="animation-delay: 0.1s">
-                        <div class="stat-card card-success shadow">
-                            <div class="card-body position-relative">
-                                <i class="fas fa-user-tie stat-card-icon"></i>
-                                <h6 class="stat-title">Empleados</h6>
-                                <h2 class="stat-number">#{dashboardBean.usuariosCount}</h2>
-                                <p class="stat-subtitle mb-0">Activos en el sistema</p>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="col-xl-3 col-md-6 mb-4 fade-in" style="animation-delay: 0.2s">
-                        <div class="stat-card card-warning shadow">
-                            <div class="card-body position-relative">
-                                <i class="fas fa-bed stat-card-icon"></i>
-                                <h6 class="stat-title">Habitaciones</h6>
-                                <h2 class="stat-number">#{dashboardBean.habitacionesCount}</h2>
-                                <p class="stat-subtitle mb-0">Disponibles</p>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="col-xl-3 col-md-6 mb-4 fade-in" style="animation-delay: 0.3s">
-                        <div class="stat-card card-danger shadow">
-                            <div class="card-body position-relative">
-                                <i class="fas fa-calendar-check stat-card-icon"></i>
-                                <h6 class="stat-title">Reservas Activas</h6>
-                                <h2 class="stat-number">#{dashboardBean.reservasActivas}</h2>
-                                <p class="stat-subtitle mb-0">En curso hoy</p>
-                            </div>
+            <!-- Tarjetas de Estadísticas -->
+            <div class="row mb-4">
+                <div class="col-xl-3 col-md-6 mb-4 fade-in">
+                    <div class="stat-card card-primary shadow">
+                        <div class="card-body position-relative">
+                            <i class="fas fa-users stat-card-icon"></i>
+                            <h6 class="stat-title">Clientes</h6>
+                            <h2 class="stat-number">#{dashboardBean.clientesCount}</h2>
+                            <p class="stat-subtitle mb-0">Total registrados</p>
                         </div>
                     </div>
                 </div>
-
-                <!-- Segunda Fila de Tarjetas -->
-                <div class="row mb-4">
-                    <div class="col-xl-2 col-md-4 col-sm-6 mb-3">
-                        <h:link outcome="/views/empleado/admin/tarifas/index.xhtml" styleClass="text-decoration-none">
-                            <div class="stat-card card-secondary shadow h-100">
-                                <div class="card-body text-center">
-                                    <i class="fas fa-tags fa-2x mb-3"></i>
-                                    <h6>Tarifas</h6>
-                                    <small>Gestionar tarifas</small>
-                                </div>
-                            </div>
-                        </h:link>
-                    </div>
-                    
-                    <div class="col-xl-2 col-md-4 col-sm-6 mb-3">
-                        <h:link outcome="/views/empleado/admin/temporadas/index.xhtml" styleClass="text-decoration-none">
-                            <div class="stat-card card-info shadow h-100">
-                                <div class="card-body text-center">
-                                    <i class="fas fa-calendar-alt fa-2x mb-3"></i>
-                                    <h6>Temporadas</h6>
-                                    <small>Gestionar temporadas</small>
-                                </div>
-                            </div>
-                        </h:link>
-                    </div>
-                    
-                    <div class="col-xl-2 col-md-4 col-sm-6 mb-3">
-                        <h:link outcome="/views/empleado/admin/tipoCliente/index.xhtml" styleClass="text-decoration-none">
-                            <div class="stat-card card-dark shadow h-100">
-                                <div class="card-body text-center">
-                                    <i class="fas fa-user-tag fa-2x mb-3"></i>
-                                    <h6>Tipo Cliente</h6>
-                                    <small>Gestionar tipos</small>
-                                </div>
-                            </div>
-                        </h:link>
-                    </div>
-                    
-                    <div class="col-xl-2 col-md-4 col-sm-6 mb-3">
-                        <h:link outcome="/views/empleado/admin/tipoHabitacion/index.xhtml" styleClass="text-decoration-none">
-                            <div class="stat-card card-primary shadow h-100">
-                                <div class="card-body text-center">
-                                    <i class="fas fa-home fa-2x mb-3"></i>
-                                    <h6>Tipo Habitación</h6>
-                                    <small>Gestionar tipos</small>
-                                </div>
-                            </div>
-                        </h:link>
-                    </div>
-                    
-                    <div class="col-xl-2 col-md-4 col-sm-6 mb-3">
-                        <h:link outcome="/views/empleado/admin/mesas/index.xhtml" styleClass="text-decoration-none">
-                            <div class="stat-card card-success shadow h-100">
-                                <div class="card-body text-center">
-                                    <i class="fas fa-utensils fa-2x mb-3"></i>
-                                    <h6>Mesas</h6>
-                                    <small>Gestionar mesas</small>
-                                </div>
-                            </div>
-                        </h:link>
-                    </div>
-                    
-                    <div class="col-xl-2 col-md-4 col-sm-6 mb-3">
-                        <h:link outcome="/views/empleado/admin/reservasRes/index.xhtml" styleClass="text-decoration-none">
-                            <div class="stat-card card-warning shadow h-100">
-                                <div class="card-body text-center">
-                                    <i class="fas fa-concierge-bell fa-2x mb-3"></i>
-                                    <h6>Restaurante</h6>
-                                    <small>Reservas restaurante</small>
-                                </div>
-                            </div>
-                        </h:link>
-                    </div>
-                </div>
-
-                <!-- Sección de Gráficas -->
-                <div class="row">
-                    <div class="col-xl-6 col-lg-12 mb-4">
-                        <div class="chart-card card shadow">
-                            <div class="card-header">
-                                <i class="fas fa-chart-bar me-2 text-primary"></i> Reservas por Mes
-                            </div>
-                            <div class="card-body">
-                                <p:chart type="bar" model="#{dashboardBean.reservasBarModel}" 
-                                         style="width:100%; height:300px"/>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="col-xl-6 col-lg-12 mb-4">
-                        <div class="chart-card card shadow">
-                            <div class="card-header">
-                                <i class="fas fa-chart-pie me-2 text-success"></i> Ocupación de Habitaciones
-                            </div>
-                            <div class="card-body">
-                                <p:chart type="donut" model="#{dashboardBean.ocupacionModel}" 
-                                         style="width:100%; height:300px"/>
-                            </div>
+                
+                <div class="col-xl-3 col-md-6 mb-4 fade-in" style="animation-delay: 0.1s">
+                    <div class="stat-card card-success shadow">
+                        <div class="card-body position-relative">
+                            <i class="fas fa-user-tie stat-card-icon"></i>
+                            <h6 class="stat-title">Empleados</h6>
+                            <h2 class="stat-number">#{dashboardBean.usuariosCount}</h2>
+                            <p class="stat-subtitle mb-0">Activos en el sistema</p>
                         </div>
                     </div>
                 </div>
+                
+                <div class="col-xl-3 col-md-6 mb-4 fade-in" style="animation-delay: 0.2s">
+                    <div class="stat-card card-warning shadow">
+                        <div class="card-body position-relative">
+                            <i class="fas fa-bed stat-card-icon"></i>
+                            <h6 class="stat-title">Habitaciones</h6>
+                            <h2 class="stat-number">#{dashboardBean.habitacionesCount}</h2>
+                            <p class="stat-subtitle mb-0">Disponibles</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-xl-3 col-md-6 mb-4 fade-in" style="animation-delay: 0.3s">
+                    <div class="stat-card card-danger shadow">
+                        <div class="card-body position-relative">
+                            <i class="fas fa-calendar-check stat-card-icon"></i>
+                            <h6 class="stat-title">Reservas Activas</h6>
+                            <h2 class="stat-number">#{dashboardBean.reservasActivas}</h2>
+                            <p class="stat-subtitle mb-0">En curso hoy</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-                <!-- Información Adicional -->
-                <div class="row mt-4">
-                    <div class="col-lg-12">
-                        <div class="card shadow">
-                            <div class="card-body">
-                                <h5 class="card-title mb-3">
-                                    <i class="fas fa-info-circle text-info me-2"></i> Resumen del Sistema
-                                </h5>
-                                <div class="row text-center">
-                                    <div class="col-md-3 mb-3">
-                                        <div class="p-3 bg-light rounded">
-                                            <h4 class="text-primary">#{dashboardBean.ocupacionPorcentaje}%</h4>
-                                            <small class="text-muted">Ocupación Hoy</small>
-                                        </div>
+            <!-- Segunda Fila de Tarjetas -->
+            <div class="row mb-4">
+                <div class="col-xl-2 col-md-4 col-sm-6 mb-3">
+                    <h:link outcome="/views/empleado/admin/tarifas/index.xhtml" styleClass="text-decoration-none">
+                        <div class="stat-card card-secondary shadow h-100">
+                            <div class="card-body text-center">
+                                <i class="fas fa-tags fa-2x mb-3"></i>
+                                <h6>Tarifas</h6>
+                                <small>Gestionar tarifas</small>
+                            </div>
+                        </div>
+                    </h:link>
+                </div>
+                
+                <div class="col-xl-2 col-md-4 col-sm-6 mb-3">
+                    <h:link outcome="/views/empleado/admin/temporadas/index.xhtml" styleClass="text-decoration-none">
+                        <div class="stat-card card-info shadow h-100">
+                            <div class="card-body text-center">
+                                <i class="fas fa-calendar-alt fa-2x mb-3"></i>
+                                <h6>Temporadas</h6>
+                                <small>Gestionar temporadas</small>
+                            </div>
+                        </div>
+                    </h:link>
+                </div>
+                
+                <div class="col-xl-2 col-md-4 col-sm-6 mb-3">
+                    <h:link outcome="/views/empleado/admin/tipoCliente/index.xhtml" styleClass="text-decoration-none">
+                        <div class="stat-card card-dark shadow h-100">
+                            <div class="card-body text-center">
+                                <i class="fas fa-user-tag fa-2x mb-3"></i>
+                                <h6>Tipo Cliente</h6>
+                                <small>Gestionar tipos</small>
+                            </div>
+                        </div>
+                    </h:link>
+                </div>
+                
+                <div class="col-xl-2 col-md-4 col-sm-6 mb-3">
+                    <h:link outcome="/views/empleado/admin/tipoHabitacion/index.xhtml" styleClass="text-decoration-none">
+                        <div class="stat-card card-primary shadow h-100">
+                            <div class="card-body text-center">
+                                <i class="fas fa-home fa-2x mb-3"></i>
+                                <h6>Tipo Habitación</h6>
+                                <small>Gestionar tipos</small>
+                            </div>
+                        </div>
+                    </h:link>
+                </div>
+                
+                <div class="col-xl-2 col-md-4 col-sm-6 mb-3">
+                    <h:link outcome="/views/empleado/admin/mesas/index.xhtml" styleClass="text-decoration-none">
+                        <div class="stat-card card-success shadow h-100">
+                            <div class="card-body text-center">
+                                <i class="fas fa-utensils fa-2x mb-3"></i>
+                                <h6>Mesas</h6>
+                                <small>Gestionar mesas</small>
+                            </div>
+                        </div>
+                    </h:link>
+                </div>
+                
+                <div class="col-xl-2 col-md-4 col-sm-6 mb-3">
+                    <h:link outcome="/views/empleado/admin/reservasRes/index.xhtml" styleClass="text-decoration-none">
+                        <div class="stat-card card-warning shadow h-100">
+                            <div class="card-body text-center">
+                                <i class="fas fa-concierge-bell fa-2x mb-3"></i>
+                                <h6>Restaurante</h6>
+                                <small>Reservas restaurante</small>
+                            </div>
+                        </div>
+                    </h:link>
+                </div>
+            </div>
+
+            <!-- Sección de Gráficas -->
+            <div class="row">
+                <div class="col-xl-6 col-lg-12 mb-4">
+                    <div class="chart-card card shadow">
+                        <div class="card-header">
+                            <i class="fas fa-chart-bar me-2 text-primary"></i> Reservas por Mes
+                        </div>
+                        <div class="card-body">
+                            <p:chart type="bar" model="#{dashboardBean.reservasBarModel}" 
+                                     style="width:100%; height:300px"/>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-xl-6 col-lg-12 mb-4">
+                    <div class="chart-card card shadow">
+                        <div class="card-header">
+                            <i class="fas fa-chart-pie me-2 text-success"></i> Ocupación de Habitaciones
+                        </div>
+                        <div class="card-body">
+                            <p:chart type="donut" model="#{dashboardBean.ocupacionModel}" 
+                                     style="width:100%; height:300px"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Información Adicional -->
+            <div class="row mt-4">
+                <div class="col-lg-12">
+                    <div class="card shadow">
+                        <div class="card-body">
+                            <h5 class="card-title mb-3">
+                                <i class="fas fa-info-circle text-info me-2"></i> Resumen del Sistema
+                            </h5>
+                            <div class="row text-center">
+                                <div class="col-md-3 mb-3">
+                                    <div class="p-3 bg-light rounded">
+                                        <h4 class="text-primary">#{dashboardBean.formattedOcupacionPorcentaje}</h4>
+                                        <small class="text-muted">Ocupación Hoy</small>
                                     </div>
-                                    <div class="col-md-3 mb-3">
-                                        <div class="p-3 bg-light rounded">
-                                            <h4 class="text-success">#{dashboardBean.reservasHoy}</h4>
-                                            <small class="text-muted">Reservas Hoy</small>
-                                        </div>
+                                </div>
+                                <div class="col-md-3 mb-3">
+                                    <div class="p-3 bg-light rounded">
+                                        <h4 class="text-success">#{dashboardBean.reservasHoy}</h4>
+                                        <small class="text-muted">Reservas Hoy</small>
                                     </div>
-                                    <div class="col-md-3 mb-3">
-                                        <div class="p-3 bg-light rounded">
-                                            <h4 class="text-warning">#{dashboardBean.clientesNuevos}</h4>
-                                            <small class="text-muted">Clientes Nuevos (30 días)</small>
-                                        </div>
+                                </div>
+                                <div class="col-md-3 mb-3">
+                                    <div class="p-3 bg-light rounded">
+                                        <h4 class="text-warning">#{dashboardBean.clientesNuevos}</h4>
+                                        <small class="text-muted">Clientes Nuevos (30 días)</small>
                                     </div>
-                                    <div class="col-md-3 mb-3">
-                                        <div class="p-3 bg-light rounded">
-                                            <h4 class="text-danger">#{dashboardBean.ingresosHoy}</h4>
-                                            <small class="text-muted">Ingresos Hoy</small>
-                                        </div>
+                                </div>
+                                <div class="col-md-3 mb-3">
+                                    <div class="p-3 bg-light rounded">
+                                        <h4 class="text-danger">#{dashboardBean.formattedIngresosConSimbolo}</h4>
+                                        <small class="text-muted">Ingresos Hoy</small>
                                     </div>
                                 </div>
                             </div>
@@ -313,6 +202,5 @@
                 </div>
             </div>
         </h:form>
-    </div>
-</h:body>
-</html>
+    </ui:define>
+</ui:composition>

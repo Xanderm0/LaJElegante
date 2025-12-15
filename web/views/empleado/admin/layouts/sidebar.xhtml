@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    
+    <title><ui:insert name="title">Sistema Hotel - Admin</ui:insert></title>
+    <link rel="icon" href="#{resource['images:icons/logoHotel.png']}"/>
+
+    <!-- Bootstrap 5 -->
+    <h:outputStylesheet library="bootstrap" name="css/bootstrap.min.css"/>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+    
+    <!-- Estilos personalizados del admin -->
+    <h:outputStylesheet library="css" name="dashboardAdmin.css"/>
+    
+    <!-- Incluir estilos específicos de la página -->
+    <ui:insert name="styles"/>
+    
+    <!-- Incluir scripts específicos de la página -->
+    <ui:insert name="scripts"/>
+</h:head>
+
+<h:body>
+    <!-- Sidebar Fijo -->
+    <div class="sidebar d-none d-lg-block">
+        <div class="sidebar-header">
+            <h4><i class="fas fa-hotel hotel-icon"></i> Sistema Hotel</h4>
+        </div>
+        
+        <nav class="sidebar-nav">
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <h:link outcome="/views/empleado/admin/dashboard.xhtml" styleClass="nav-link">
+                        <i class="fas fa-tachometer-alt"></i> Dashboard
+                    </h:link>
+                </li>
+                <li class="nav-item">
+                    <h:link outcome="/views/empleado/admin/clientes/index.xhtml" styleClass="nav-link">
+                        <i class="fas fa-users"></i> Clientes
+                    </h:link>
+                </li>
+                <li class="nav-item">
+                    <h:link outcome="/views/empleado/admin/empleados/index.xhtml" styleClass="nav-link">
+                        <i class="fas fa-user-tie"></i> Empleados
+                    </h:link>
+                </li>
+                <li class="nav-item">
+                    <h:link outcome="/views/empleado/admin/habitaciones/index.xhtml" styleClass="nav-link">
+                        <i class="fas fa-bed"></i> Habitaciones
+                    </h:link>
+                </li>
+                <li class="nav-item">
+                    <h:link outcome="/views/empleado/admin/reservasHab/index.xhtml" styleClass="nav-link">
+                        <i class="fas fa-calendar-check"></i> Reservas Habitación
+                    </h:link>
+                </li>
+                <li class="nav-item">
+                    <h:link outcome="/views/empleado/admin/tipoCliente/index.xhtml" styleClass="nav-link">
+                        <i class="fas fa-user-tag"></i> Tipos de Cliente
+                    </h:link>
+                </li>
+                <li class="nav-item">
+                    <h:link outcome="/views/empleado/admin/tipoHabitacion/index.xhtml" styleClass="nav-link">
+                        <i class="fas fa-home"></i> Tipos de Habitación
+                    </h:link>
+                </li>
+                <li class="nav-item">
+                    <h:link outcome="/views/empleado/admin/tarifas/index.xhtml" styleClass="nav-link">
+                        <i class="fas fa-tags"></i> Tarifas
+                    </h:link>
+                </li>
+                <li class="nav-item">
+                    <h:link outcome="/views/empleado/admin/temporadas/index.xhtml" styleClass="nav-link">
+                        <i class="fas fa-calendar-alt"></i> Temporadas
+                    </h:link>
+                </li>
+                <li class="nav-item">
+                    <h:link outcome="/views/empleado/admin/mesas/index.xhtml" styleClass="nav-link">
+                        <i class="fas fa-utensils"></i> Mesas
+                    </h:link>
+                </li>
+                <li class="nav-item">
+                    <h:link outcome="/views/empleado/admin/reservasRes/index.xhtml" styleClass="nav-link">
+                        <i class="fas fa-concierge-bell"></i> Reservas Restaurante
+                    </h:link>
+                </li>
+            </ul>
+        </nav>
+        
+        <div class="sidebar-footer">
+            <h:form>
+                <h:commandLink action="#{loginBean.logout()}" styleClass="btn btn-danger w-100">
+                    <i class="fas fa-sign-out-alt me-2"></i> Cerrar Sesión
+                </h:commandLink>
+            </h:form>
+        </div>
+    </div>
+
+    <!-- Navbar Móvil -->
+    <nav class="navbar mobile-navbar navbar-dark fixed-top d-lg-none">
+        <div class="container-fluid">
+            <button class="sidebar-toggle" type="button" onclick="toggleSidebar()">
+                <i class="fas fa-bars"></i>
+            </button>
+            <span class="navbar-brand ms-2">Sistema Hotel</span>
+        </div>
+    </nav>
+
+    <!-- Contenido Principal -->
+    <div class="main-content">
+        <!-- Breadcrumb opcional -->
+        <ui:insert name="breadcrumb">
+        </ui:insert>
+        
+        <!-- Header de la página -->
+        <ui:insert name="page-header">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <h1 class="h3 mb-1 text-dark"><ui:insert name="page-title">Panel de Administración</ui:insert></h1>
+                    <p class="text-muted mb-0"><ui:insert name="page-subtitle">Sistema de gestión hotelera</ui:insert></p>
+                </div>
+                <div class="d-none d-md-block">
+                    <span class="badge bg-primary p-2">
+                        <i class="fas fa-calendar-day me-1"></i> 
+                        <h:outputText value="#{dashboardBean.fechaActual}">
+                            <f:convertDateTime pattern="dd/MM/yyyy"/>
+                        </h:outputText>
+                    </span>
+                </div>
+            </div>
+        </ui:insert>
+        
+        <!-- Contenido específico de cada página -->
+        <ui:insert name="content">
+            <p>Contenido de la página...</p>
+        </ui:insert>
+    </div>
+</h:body>
+</html>

@@ -1,111 +1,283 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:p="http://primefaces.org/ui">
-
-<h:head>
-    <title>Listado de Clientes</title>
-    <h:outputStylesheet library="bootstrap" name="css/bootstrap.min.css" />
-</h:head>
-
-<h:body>
-
-<f:metadata>
-    <!-- Cargar clientes al entrar -->
-    <f:event type="preRenderView"
-             listener="#{clienteBean.listar}" />
-</f:metadata>
-
-<div class="container mt-4">
-
-    <h1>Listado de Clientes</h1>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/views/empleado/admin/layouts/sidebar.xhtml">
     
-    <div class="mb-3 d-flex gap-2">
-
-        <!-- NUEVO CLIENTE -->
-        <p:button value="Nuevo Cliente"
-                  icon="pi pi-plus"
-                  outcome="create"
-                  styleClass="btn btn-primary" />
-
-        <!-- PAPELERA -->
-        <p:button value="Papelera"
-                  icon="pi pi-trash"
-                  outcome="papelera"
-                  styleClass="btn btn-secondary" />
-
-        <!-- IR A REPORTES -->
-        <p:button value="Ir a Reportes"
-                  icon="pi pi-file"
-                  outcome="reportes"
-                  styleClass="btn btn-success" />
-
-    </div>
-
-    <!-- MENSAJES -->
-    <p:messages closable="true">
-        <p:autoUpdate />
-    </p:messages>
-
-    <h:form id="formClientes">
-
-        <!-- TABLA -->
-        <p:dataTable value="#{clienteBean.listaClientes}"
-                     var="c"
-                     paginator="true"
-                     rows="10"
-                     styleClass="table table-bordered">
-
-            <p:column headerText="ID">
-                #{c.idCliente}
-            </p:column>
-
-            <p:column headerText="Nombre completo">
-                #{c.nombre} #{c.apellido}
-            </p:column>
-
-            <p:column headerText="Email">
-                #{c.email}
-            </p:column>
-
-            <p:column headerText="Teléfono">
-                #{c.prefijo} #{c.numTel}
-            </p:column>
-
-            <p:column headerText="Tipo Cliente">
-                #{c.tipoCliente.nombreTipo}
-            </p:column>
-
-            <p:column headerText="Estado">
-                #{c.estado.valor}
-            </p:column>
-
-            <p:column headerText="Acciones" style="width:180px">
-
-                <!-- EDITAR -->
-                <p:button icon="pi pi-pencil"
-                          title="Editar"
-                          outcome="edit">
-                    <f:param name="id" value="#{c.idCliente}" />
-                </p:button>
-
-                <!-- ELIMINAR -->
-                <p:commandButton icon="pi pi-trash"
-                                 title="Eliminar"
-                                 action="#{clienteBean.eliminar(c.idCliente)}"
-                                 update="formClientes"
-                                 styleClass="btn btn-danger"
-                                 onclick="return confirm('¿Seguro que deseas eliminar este cliente?')" />
-            </p:column>
-
-        </p:dataTable>
-
-    </h:form>
-
-</div>
-
-<h:outputScript library="bootstrap" name="js/bootstrap.bundle.min.js" />
-
-</h:body>
-</html>
+    <ui:define name="title">Gestión de Clientes - Sistema Hotel</ui:define>
+    
+    <f:metadata>
+        <!-- Cargar clientes al entrar -->
+        <f:event type="preRenderView" listener="#{clienteBean.listar}" />
+        <f:event type="preRenderView" listener="#{clienteBean.cargarTiposCliente}" />
+    </f:metadata>
+    
+    <ui:define name="content">
+        <!-- Header con estadísticas rápidas -->
+        <div class="quick-stats mb-4">
+            <div class="stat-card-sm">
+                <div class="stat-icon-sm primary">
+                    <i class="fas fa-users"></i>
+                </div>
+                <div class="stat-info-sm">
+                    <h4>#{clienteBean.listaClientes.size()}</h4>
+                    <p>Clientes totales</p>
+                </div>
+            </div>
+            <div class="stat-card-sm">
+                <div class="stat-icon-sm success">
+                    <i class="fas fa-user-check"></i>
+                </div>
+                <div class="stat-info-sm">
+                    <h4>
+                        <h:outputText value="#{clienteBean.listaClientes.stream()
+                            .filter(c -> c.getEstado() != null and c.getEstado().name().equals('ACTIVO')).count()}"/>
+                    </h4>
+                    <p>Clientes activos</p>
+                </div>
+            </div>
+            <div class="stat-card-sm">
+                <div class="stat-icon-sm warning">
+                    <i class="fas fa-user-clock"></i>
+                </div>
+                <div class="stat-info-sm">
+                    <h4>
+                        <h:outputText value="#{clienteBean.listaClientes.stream()
+                            .filter(c -> c.getEstado() != null and c.getEstado().name().equals('INACTIVO')).count()}"/>
+                    </h4>
+                    <p>Clientes inactivos</p>
+                </div>
+            </div>
+            <div class="stat-card-sm">
+                <div class="stat-icon-sm danger">
+                    <i class="fas fa-user-slash"></i>
+                </div>
+                <div class="stat-info-sm">
+                    <h4>#{clienteBean.cantidadEliminados}</h4>
+                    <p>En papelera</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mensajes con Growl -->
+        <p:growl id="growl" showDetail="true" sticky="false" life="3000" />
+        
+        <!-- Tarjeta principal -->
+        <div class="admin-table-container">
+            <!-- Header de la tabla -->
+            <div class="admin-table-header">
+                <h3>Listado de Clientes</h3>
+                <div class="admin-actions">
+                    <!-- Usando h:button en lugar de p:button -->
+                    <h:button outcome="/views/empleado/admin/clientes/create.xhtml"
+                              styleClass="btn btn-primary">
+                        <i class="fas fa-plus me-2"></i> Nuevo Cliente
+                    </h:button>
+                    
+                    <h:button outcome="/views/empleado/admin/clientes/papelera.xhtml"
+                              styleClass="btn btn-secondary">
+                        <i class="fas fa-trash me-2"></i> Papelera
+                    </h:button>
+                    
+                    <h:button outcome="/views/empleado/admin/clientes/reportes.xhtml"
+                              styleClass="btn btn-success">
+                        <i class="fas fa-chart-bar me-2"></i> Reportes
+                    </h:button>
+                </div>
+            </div>
+            
+            <!-- Tabla de clientes -->
+            <h:form id="formClientes">
+                <p:dataTable value="#{clienteBean.listaClientes}"
+                           var="cliente"
+                           paginator="true"
+                           rows="10"
+                           paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                           rowsPerPageTemplate="5,10,15,20"
+                           styleClass="admin-table"
+                           emptyMessage="No se encontraron clientes"
+                           currentPageReportTemplate="Mostrando {startRecord} a {endRecord} de {totalRecords} clientes"
+                           paginatorPosition="bottom">
+                    
+                    <!-- Columna ID -->
+                    <p:column headerText="ID" style="width: 80px;" sortBy="#{cliente.idCliente}">
+                        <span class="badge bg-secondary">#{cliente.idCliente}</span>
+                    </p:column>
+                    
+                    <!-- Columna Nombre -->
+                    <p:column headerText="Cliente" sortBy="#{cliente.nombre}">
+                        <div class="d-flex align-items-center">
+                            <div class="avatar-circle me-3">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div>
+                                <strong>#{cliente.nombre} #{cliente.apellido}</strong>
+                                <div class="text-muted small">#{cliente.email}</div>
+                            </div>
+                        </div>
+                    </p:column>
+                    
+                    <!-- Columna Contacto -->
+                    <p:column headerText="Contacto">
+                        <div>
+                            <div><i class="fas fa-phone me-2"></i> #{cliente.prefijo} #{cliente.numTel}</div>
+                            <div class="text-muted small mt-1">
+                                <i class="fas fa-user-tag me-1"></i> #{cliente.tipoCliente.nombreTipo}
+                            </div>
+                        </div>
+                    </p:column>
+                    
+                    <!-- Columna Estado -->
+                    <p:column headerText="Estado" style="width: 120px;" sortBy="#{cliente.estado}">
+                        <span class="status-badge #{cliente.estado != null and cliente.estado.name() eq 'ACTIVO' ? 'status-active' : 'status-inactive'}">
+                            #{cliente.estado != null ? cliente.estado.valor : 'N/A'}
+                        </span>
+                    </p:column>
+                    
+                    <!-- Columna Acciones -->
+                    <p:column headerText="Acciones" style="width: 140px;">
+                        <div class="action-buttons">
+                            <!-- Botón Editar -->
+                            <h:button outcome="/views/empleado/admin/clientes/edit.xhtml" 
+                                    styleClass="btn-action btn-edit"
+                                    title="Editar">
+                                <f:param name="id" value="#{cliente.idCliente}" />
+                                <i class="fas fa-edit"></i>
+                            </h:button>
+                            
+                            <!-- Botón Eliminar -->
+                            <p:commandButton action="#{clienteBean.eliminar(cliente.idCliente)}"
+                                           update=":formClientes :growl"
+                                           styleClass="btn-action btn-delete"
+                                           title="Eliminar"
+                                           oncomplete="PF('growl').render()"
+                                           onclick="return confirm('¿Está seguro de eliminar al cliente #{cliente.nombre}?')">
+                                <i class="fas fa-trash"></i>
+                            </p:commandButton>
+                        </div>
+                    </p:column>
+                    
+                </p:dataTable>
+            </h:form>
+        </div>
+    </ui:define>
+    
+    <!-- Definir recursos adicionales -->
+    <ui:define name="styles">
+        <style>
+            /* Estilos adicionales para esta vista */
+            .avatar-circle {
+                width: 40px;
+                height: 40px;
+                background: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%);
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: white;
+                font-size: 1.2rem;
+            }
+            
+            .btn-primary, .btn-secondary, .btn-success {
+                padding: 10px 20px;
+                border-radius: 8px;
+                font-weight: 600;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                text-decoration: none !important;
+                border: none;
+            }
+            
+            .btn-primary {
+                background: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%);
+            }
+            
+            .btn-primary:hover {
+                background: linear-gradient(135deg, #3a0ca3 0%, #2d078a 100%);
+                transform: translateY(-2px);
+                box-shadow: 0 5px 15px rgba(58, 12, 163, 0.3);
+            }
+            
+            .btn-secondary {
+                background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+            }
+            
+            .btn-secondary:hover {
+                background: linear-gradient(135deg, #495057 0%, #343a40 100%);
+                transform: translateY(-2px);
+                box-shadow: 0 5px 15px rgba(108, 117, 125, 0.3);
+            }
+            
+            .btn-success {
+                background: linear-gradient(135deg, #28a745 0%, #1e7e34 100%);
+            }
+            
+            .btn-success:hover {
+                background: linear-gradient(135deg, #1e7e34 0%, #145523 100%);
+                transform: translateY(-2px);
+                box-shadow: 0 5px 15px rgba(40, 167, 69, 0.3);
+            }
+            
+            .ui-datatable .ui-paginator {
+                padding: 20px;
+                background: #f8f9fa;
+                border-top: 1px solid #dee2e6;
+                border-radius: 0 0 10px 10px;
+            }
+            
+            .ui-datatable .ui-datatable-data tr:last-child td {
+                border-bottom: none;
+            }
+            
+            /* Estilos para growl */
+            .ui-growl {
+                top: 70px !important;
+                right: 20px !important;
+            }
+            
+            .ui-growl-item-container {
+                border-radius: 10px !important;
+                border: none !important;
+                box-shadow: 0 5px 15px rgba(0,0,0,0.1) !important;
+            }
+            
+            /* Responsive */
+            @media (max-width: 768px) {
+                .admin-table-header {
+                    flex-direction: column;
+                    align-items: flex-start;
+                    gap: 15px;
+                }
+                
+                .admin-actions {
+                    width: 100%;
+                    flex-wrap: wrap;
+                    gap: 10px;
+                }
+                
+                .admin-actions .btn {
+                    flex: 1;
+                    min-width: 150px;
+                }
+                
+                .quick-stats {
+                    grid-template-columns: repeat(2, 1fr);
+                }
+            }
+            
+            @media (max-width: 576px) {
+                .quick-stats {
+                    grid-template-columns: 1fr;
+                }
+                
+                .admin-actions .btn {
+                    min-width: 100%;
+                }
+            }
+        </style>
+    </ui:define>
+</ui:composition>

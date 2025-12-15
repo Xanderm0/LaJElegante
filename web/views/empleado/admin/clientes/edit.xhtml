@@ -1,154 +1,146 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:p="http://primefaces.org/ui">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/views/empleado/admin/layouts/sidebar.xhtml">
+    
+    <ui:define name="title">Editar Cliente - Sistema Hotel</ui:define>
+    
+    <ui:define name="content">
+        <!-- ===== METADATA CORRECTA ===== -->
+        <f:metadata>
+            <!-- Captura el ID: edit.xhtml?id=3 -->
+            <f:viewParam name="id"
+                         value="#{clienteBean.idClienteSeleccionado}"
+                         required="true" />
 
-<h:head>
-    <title>Editar Cliente</title>
-    <h:outputStylesheet library="bootstrap" name="css/bootstrap.min.css" />
-</h:head>
+            <!-- Inicializa UNA SOLA VEZ -->
+            <f:event type="preRenderView"
+                     listener="#{clienteBean.initEditar}" />
+        </f:metadata>
 
-<h:body>
+        <div class="container mt-4">
+            <h1>Editar Cliente</h1>
 
-    <!-- ===== METADATA CORRECTA ===== -->
-    <f:metadata>
+            <h:form id="formCliente">
 
-        <!-- Captura el ID: edit.xhtml?id=3 -->
-        <f:viewParam name="id"
-                     value="#{clienteBean.idClienteSeleccionado}"
-                     required="true" />
+                <!-- MENSAJES -->
+                <p:messages closable="true">
+                    <p:autoUpdate />
+                </p:messages>
 
-        <!-- Inicializa UNA SOLA VEZ -->
-        <f:event type="preRenderView"
-                 listener="#{clienteBean.initEditar}" />
+                <!-- SALUDO -->
+                <div class="mb-3">
+                    <p:outputLabel for="saludo" value="Saludo" />
+                    <p:selectOneMenu id="saludo"
+                                     value="#{clienteBean.cliente.saludo}"
+                                     styleClass="form-select">
+                        <f:selectItem itemLabel="Seleccione un saludo" itemValue="#{null}" />
+                        <f:selectItems value="#{clienteBean.saludos}"
+                                       var="s"
+                                       itemValue="#{s}"
+                                       itemLabel="#{s}" />
+                    </p:selectOneMenu>
+                </div>
 
-    </f:metadata>
-
-    <div class="container mt-4">
-
-        <h1>Editar Cliente</h1>
-
-        <h:form id="formCliente">
-
-            <!-- MENSAJES -->
-            <p:messages closable="true">
-                <p:autoUpdate />
-            </p:messages>
-
-            <!-- SALUDO -->
-            <div class="mb-3">
-                <p:outputLabel for="saludo" value="Saludo" />
-                <p:selectOneMenu id="saludo"
-                                 value="#{clienteBean.cliente.saludo}"
-                                 styleClass="form-select">
-                    <f:selectItem itemLabel="Seleccione un saludo" itemValue="#{null}" />
-                    <f:selectItems value="#{clienteBean.saludos}"
-                                   var="s"
-                                   itemValue="#{s}"
-                                   itemLabel="#{s}" />
-                </p:selectOneMenu>
-            </div>
-
-            <!-- NOMBRE -->
-            <div class="mb-3">
-                <p:outputLabel for="nombre" value="Nombre" />
-                <p:inputText id="nombre"
-                             value="#{clienteBean.cliente.nombre}"
-                             required="true"
-                             styleClass="form-control" />
-            </div>
-
-            <!-- APELLIDO -->
-            <div class="mb-3">
-                <p:outputLabel for="apellido" value="Apellido" />
-                <p:inputText id="apellido"
-                             value="#{clienteBean.cliente.apellido}"
-                             required="true"
-                             styleClass="form-control" />
-            </div>
-
-            <!-- EMAIL -->
-            <div class="mb-3">
-                <p:outputLabel for="email" value="Email" />
-                <p:inputText id="email"
-                             value="#{clienteBean.cliente.email}"
-                             required="true"
-                             styleClass="form-control" />
-            </div>
-
-            <!-- TIPO CLIENTE (SIN CONVERTER) -->
-            <div class="mb-3">
-                <p:outputLabel for="tipo" value="Tipo de Cliente" />
-                <p:selectOneMenu id="tipo"
-                                 value="#{clienteBean.idTipoClienteSeleccionado}"
+                <!-- NOMBRE -->
+                <div class="mb-3">
+                    <p:outputLabel for="nombre" value="Nombre" />
+                    <p:inputText id="nombre"
+                                 value="#{clienteBean.cliente.nombre}"
                                  required="true"
-                                 styleClass="form-select">
-                    <f:selectItem itemLabel="Seleccione un tipo" itemValue="#{null}" />
-                    <f:selectItems value="#{clienteBean.listaTipos}"
-                                   var="t"
-                                   itemValue="#{t.idTipoCliente}"
-                                   itemLabel="#{t.nombreTipo}" />
-                </p:selectOneMenu>
-            </div>
+                                 styleClass="form-control" />
+                </div>
 
-            <!-- PREFIJO -->
-            <div class="mb-3">
-                <p:outputLabel for="prefijo" value="Prefijo" />
-                <p:inputText id="prefijo"
-                             value="#{clienteBean.cliente.prefijo}"
-                             styleClass="form-control" />
-            </div>
-
-            <!-- TELÉFONO -->
-            <div class="mb-3">
-                <p:outputLabel for="telefono" value="Teléfono" />
-                <p:inputText id="telefono"
-                             value="#{clienteBean.cliente.numTel}"
-                             styleClass="form-control" />
-            </div>
-
-            <!-- CONTRASEÑA -->
-            <div class="mb-3">
-                <p:outputLabel for="password" value="Nueva Contraseña (opcional)" />
-                <p:password id="password"
-                            value="#{clienteBean.cliente.nuevaContraseña}"
-                            feedback="true"
-                            styleClass="form-control" />
-                <small class="text-muted">
-                    Deja vacío si no deseas cambiarla
-                </small>
-            </div>
-
-            <!-- ESTADO -->
-            <div class="mb-3">
-                <p:outputLabel for="estado" value="Estado" />
-                <p:selectOneMenu id="estado"
-                                 value="#{clienteBean.cliente.estado}"
+                <!-- APELLIDO -->
+                <div class="mb-3">
+                    <p:outputLabel for="apellido" value="Apellido" />
+                    <p:inputText id="apellido"
+                                 value="#{clienteBean.cliente.apellido}"
                                  required="true"
-                                 styleClass="form-select">
-                    <f:selectItems value="#{clienteBean.estados}" />
-                </p:selectOneMenu>
-            </div>
+                                 styleClass="form-control" />
+                </div>
 
-            <!-- BOTONES -->
-            <div class="mt-4">
-                <p:commandButton value="Actualizar"
-                                 icon="pi pi-save"
-                                 action="#{clienteBean.actualizar}"
-                                 update="@form"
-                                 styleClass="btn btn-success" />
+                <!-- EMAIL -->
+                <div class="mb-3">
+                    <p:outputLabel for="email" value="Email" />
+                    <p:inputText id="email"
+                                 value="#{clienteBean.cliente.email}"
+                                 required="true"
+                                 styleClass="form-control" />
+                </div>
 
-                <p:button value="Cancelar"
-                          outcome="index"
-                          styleClass="btn btn-secondary ms-2" />
-            </div>
+                <!-- TIPO CLIENTE (SIN CONVERTER) -->
+                <div class="mb-3">
+                    <p:outputLabel for="tipo" value="Tipo de Cliente" />
+                    <p:selectOneMenu id="tipo"
+                                     value="#{clienteBean.idTipoClienteSeleccionado}"
+                                     required="true"
+                                     styleClass="form-select">
+                        <f:selectItem itemLabel="Seleccione un tipo" itemValue="#{null}" />
+                        <f:selectItems value="#{clienteBean.listaTipos}"
+                                       var="t"
+                                       itemValue="#{t.idTipoCliente}"
+                                       itemLabel="#{t.nombreTipo}" />
+                    </p:selectOneMenu>
+                </div>
 
-        </h:form>
-    </div>
+                <!-- PREFIJO -->
+                <div class="mb-3">
+                    <p:outputLabel for="prefijo" value="Prefijo" />
+                    <p:inputText id="prefijo"
+                                 value="#{clienteBean.cliente.prefijo}"
+                                 styleClass="form-control" />
+                </div>
 
-    <h:outputScript library="bootstrap" name="js/bootstrap.bundle.min.js" />
+                <!-- TELÉFONO -->
+                <div class="mb-3">
+                    <p:outputLabel for="telefono" value="Teléfono" />
+                    <p:inputText id="telefono"
+                                 value="#{clienteBean.cliente.numTel}"
+                                 styleClass="form-control" />
+                </div>
 
-</h:body>
-</html>
+                <!-- CONTRASEÑA -->
+                <div class="mb-3">
+                    <p:outputLabel for="password" value="Nueva Contraseña (opcional)" />
+                    <p:password id="password"
+                                value="#{clienteBean.cliente.nuevaContraseña}"
+                                feedback="true"
+                                styleClass="form-control" />
+                    <small class="text-muted">
+                        Deja vacío si no deseas cambiarla
+                    </small>
+                </div>
+
+                <!-- ESTADO -->
+                <div class="mb-3">
+                    <p:outputLabel for="estado" value="Estado" />
+                    <p:selectOneMenu id="estado"
+                                     value="#{clienteBean.cliente.estado}"
+                                     required="true"
+                                     styleClass="form-select">
+                        <f:selectItems value="#{clienteBean.estados}" />
+                    </p:selectOneMenu>
+                </div>
+
+                <!-- BOTONES -->
+                <div class="mt-4">
+                    <p:commandButton value="Actualizar"
+                                     icon="pi pi-save"
+                                     action="#{clienteBean.actualizar}"
+                                     update="@form"
+                                     styleClass="btn btn-success" />
+
+                    <p:button value="Cancelar"
+                              outcome="index"
+                              styleClass="btn btn-secondary ms-2" />
+                </div>
+
+            </h:form>
+        </div>
+    </ui:define>
+</ui:composition>
