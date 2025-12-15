@@ -52,7 +52,7 @@
                     </h:selectOneMenu>
                 </div>
 
-                <!-- TIPO CLIENTE (SIN CONVERTER) -->
+                <!-- TIPO CLIENTE -->
                 <div class="col-md-3">
                     <h:outputLabel value="Tipo Cliente" styleClass="form-label fw-semibold"/>
                     <h:selectOneMenu value="#{clienteReporteBean.idTipoClienteFiltro}"
@@ -65,15 +65,15 @@
                     </h:selectOneMenu>
                 </div>
 
-                <!-- FECHA DESDE -->
+<!-- FECHA DESDE -->
                 <div class="col-md-3">
                     <h:outputLabel value="Fecha Desde" styleClass="form-label fw-semibold"/>
                     <p:datePicker value="#{clienteReporteBean.fechaDesde}"
                                   pattern="dd/MM/yyyy"
                                   locale="es"
-                                  navigator="true"
                                   styleClass="form-control"
-                                  placeholder="dd/mm/aaaa"/>
+                                  placeholder="dd/mm/aaaa"
+                                  showIcon="true"/>
                 </div>
 
                 <!-- FECHA HASTA -->
@@ -82,25 +82,25 @@
                     <p:datePicker value="#{clienteReporteBean.fechaHasta}"
                                   pattern="dd/MM/yyyy"
                                   locale="es"
-                                  navigator="true"
                                   styleClass="form-control"
-                                  placeholder="dd/mm/aaaa"/>
+                                  placeholder="dd/mm/aaaa"
+                                  showIcon="true"/>
                 </div>
             </div>
             
-            <!-- BOTONES DE ACCIÓN MEJORADOS -->
+            <!-- BOTONES DE ACCIÓN -->
             <div class="mt-4 d-flex gap-2">
                 <p:commandButton value="Aplicar Filtros"
                                  icon="pi pi-search"
                                  action="#{clienteReporteBean.filtrarReporte}"
-                                 update=":formResultados:tablaReporte :growl resumenFiltros"
+                                 update=":formExportes:tablaReporte :growl resumenFiltros"
                                  styleClass="btn btn-primary px-4"
                                  ajax="true"/>
                                  
                 <p:commandButton value="Limpiar Filtros"
                                  icon="pi pi-times"
                                  action="#{clienteReporteBean.limpiarFiltros}"
-                                 update="formFiltros :formResultados:tablaReporte :growl resumenFiltros"
+                                 update="formFiltros :formExportes:tablaReporte :growl resumenFiltros"
                                  styleClass="btn btn-outline-secondary"
                                  ajax="true"/>
             </div>
@@ -110,59 +110,68 @@
     <!-- ================== MENSAJES ================== -->
     <p:growl id="growl" showDetail="true" sticky="false" life="3000"/>
 
-    <!-- ================== PANEL DE RESULTADOS ================== -->
-    <h:form id="formResultados">
+    <!-- ================== PANEL DE EXPORTACIÓN ================== -->
+    <h:form id="formExportes">
+        <div class="card border-0 shadow-sm mb-4">
+            <div class="card-header bg-light">
+                <h5 class="mb-0">
+                    <i class="pi pi-download me-2"></i>
+                    Exportar Resultados
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="btn-group">
+                    <!-- EXPORTAR EXCEL con PrimeFaces DataExporter -->
+                    <p:commandButton value="Exportar Excel"
+                                     icon="pi pi-file-excel"
+                                     styleClass="btn btn-success me-2"
+                                     ajax="false">
+                        <p:dataExporter type="xlsx" 
+                                        target="tablaReporte" 
+                                        fileName="reporte_clientes"
+                                        preProcessor="#{clienteReporteBean.preProcessExcel}"/>
+                    </p:commandButton>
+                    
+                    <!-- EXPORTAR PDF con PrimeFaces DataExporter -->
+                    <p:commandButton value="Exportar PDF"
+                                     icon="pi pi-file-pdf"
+                                     styleClass="btn btn-danger me-2"
+                                     ajax="false">
+                        <p:dataExporter type="pdf" 
+                                        target="tablaReporte" 
+                                        fileName="reporte_clientes"
+                                        pageOnly="true"
+                                        preProcessor="#{clienteReporteBean.preProcessPDF}"/>
+                    </p:commandButton>
+                    
+                    <!-- EXPORTAR CSV -->
+                    <p:commandButton value="Exportar CSV"
+                                     icon="pi pi-file"
+                                     styleClass="btn btn-secondary"
+                                     ajax="false">
+                        <p:dataExporter type="csv" 
+                                        target="tablaReporte" 
+                                        fileName="reporte_clientes"/>
+                    </p:commandButton>
+                </div>
+                
+                <small class="text-muted d-block mt-2">
+                    Total registros a exportar: <strong>#{clienteReporteBean.listaReporte.size()}</strong>
+                </small>
+            </div>
+        </div>
+
+        <!-- ================== TABLA DE RESULTADOS ================== -->
         <div class="card border-0 shadow-sm">
-            <div class="card-header bg-light d-flex justify-content-between align-items-center">
+            <div class="card-header bg-light">
                 <h5 class="mb-0">
                     <i class="pi pi-list me-2"></i>
-                    Resultados: 
-                    <span class="badge bg-primary ms-2">#{clienteReporteBean.listaReporte.size()}</span>
-                    cliente(s) encontrado(s)
+                    Resultados: #{clienteReporteBean.listaReporte.size()} cliente(s)
                 </h5>
-                
-                <!-- BOTONES DE EXPORTACIÓN MEJORADOS -->
-                    <!-- Opcional: Exportación personalizada con filtros en nombre -->
-                    <!--
-                    <p:commandButton value="Exportar Personalizado"
-                                     icon="pi pi-download"
-                                     action="#{clienteReporteBean.exportarExcelPersonalizado}"
-                                     disabled="#{empty clienteReporteBean.listaReporte}"
-                                     styleClass="btn btn-info ms-2"
-                                     ajax="false"/>
-                    -->
-                    <div class="btn-group">
-                        <p:commandButton value="Exportar Excel"
-                                         icon="pi pi-file-excel"
-                                         action="#{clienteReporteBean.exportarExcel}"
-                                         disabled="#{empty clienteReporteBean.listaReporte}"
-                                         styleClass="btn btn-success"
-                                         ajax="false"
-                                         onclick="return confirmarExportacion(#{clienteReporteBean.listaReporte.size()}, 'Excel')"/>
-
-                        <p:commandButton value="Exportar PDF"
-                                         icon="pi pi-file-pdf"
-                                         action="#{clienteReporteBean.exportarPDF}"
-                                         disabled="#{empty clienteReporteBean.listaReporte}"
-                                         styleClass="btn btn-danger ms-2"
-                                         ajax="false"
-                                         onclick="return confirmarExportacion(#{clienteReporteBean.listaReporte.size()}, 'PDF')"/>
-                        <!-- En tu vista, reemplaza el botón PDF por: -->
-                            <p:commandButton value="Exportar PDF"
-                                             icon="pi pi-file-pdf"
-                                             styleClass="btn btn-danger ms-2"
-                                             ajax="false">
-                                <p:dataExporter type="pdf" 
-                                                target="tablaReporte" 
-                                                fileName="reporte_clientes"
-                                                pageOnly="true"
-                                                preProcessor="#{clienteReporteBean.preProcessPDF}"/>
-                            </p:commandButton>
-                    </div>
             </div>
             
             <div class="card-body">
-                <!-- TABLA MEJORADA -->
+                <!-- TABLA PARA EXPORTACIÓN -->
                 <p:dataTable id="tablaReporte"
                              value="#{clienteReporteBean.listaReporte}"
                              var="c"
@@ -173,63 +182,55 @@
                              styleClass="table table-hover"
                              emptyMessage="No se encontraron clientes con los filtros aplicados">
 
-                    <p:column headerText="ID" width="80" styleClass="text-center">
-                        <span class="badge bg-secondary">#{c.idCliente}</span>
+                    <!-- COLUMNAS SIMPLES (sin badges/HTML complejo) -->
+                    <p:column headerText="ID" exportable="true">
+                        #{c.idCliente}
                     </p:column>
 
-                    <p:column headerText="Cliente" sortBy="#{c.nombre}">
-                        <div>
-                            <strong>#{c.nombre} #{c.apellido}</strong><br/>
-                            <small class="text-muted">#{c.email}</small>
-                        </div>
+                    <p:column headerText="Nombre" exportable="true">
+                        #{c.nombre}
                     </p:column>
 
-                    <p:column headerText="Contacto">
-                        <div>
-                            <i class="pi pi-phone me-1"></i>
-                            <small>#{empty c.prefijo ? '' : c.prefijo} #{c.numTel}</small>
-                        </div>
+                    <p:column headerText="Apellido" exportable="true">
+                        #{c.apellido}
                     </p:column>
 
-                    <p:column headerText="Tipo" width="120">
-                        <span class="badge bg-info">#{c.tipoCliente.nombreTipo}</span>
+                    <p:column headerText="Email" exportable="true">
+                        #{c.email}
                     </p:column>
 
-                    <p:column headerText="Estado" width="100">
-                        <span class="badge bg-#{c.estado.name() == 'ACTIVO' ? 'success' : 'danger'}">
-                            #{c.estado.valor}
-                        </span>
+                    <p:column headerText="Tipo Cliente" exportable="true">
+                        #{c.tipoCliente.nombreTipo}
                     </p:column>
 
-                    <p:column headerText="Registro" width="150">
-                        <small>#{c.createdAt}</small>
+                    <p:column headerText="Teléfono" exportable="true">
+                        #{empty c.prefijo ? '' : c.prefijo} #{c.numTel}
+                    </p:column>
+
+                    <p:column headerText="Estado" exportable="true">
+                        #{c.estado.valor}
+                    </p:column>
+
+                    <p:column headerText="Registro" exportable="true">
+                        #{c.createdAt}
+                    </p:column>
+                    
+                    <!-- COLUMNA NO EXPORTABLE (solo para vista) -->
+                    <p:column headerText="Acciones" exportable="false" style="width:80px">
+                        <p:button icon="pi pi-eye"
+                                title="Ver Detalles"
+                                outcome="detalleCliente"
+                                styleClass="btn btn-sm btn-outline-primary">
+                            <f:param name="id" value="#{c.idCliente}" />
+                        </p:button>
                     </p:column>
                 </p:dataTable>
-            </div>
-            
-            <!-- PIE DE PÁGINA INFORMATIVO -->
-            <div class="card-footer bg-light">
-                <div class="d-flex justify-content-between align-items-center">
-                    <small class="text-muted">
-                        <i class="pi pi-info-circle me-1"></i>
-                        Exportación realizada con Apache POI 5.2.3 - Formato .xlsx
-                    </small>
-                    <small class="text-muted">
-                        <i class="pi pi-clock me-1"></i>
-                        Generado el #{''}
-                        <h:outputText value="#{java.time.LocalDate.now()}">
-                            <f:convertDateTime pattern="dd/MM/yyyy"/>
-                        </h:outputText>
-                    </small>
-                </div>
             </div>
         </div>
     </h:form>
 </div>
 
 <h:outputScript library="bootstrap" name="js/bootstrap.bundle.min.js"/>
-
-<h:outputScript name="js/reporte.js" target="body"/>
 
 </h:body>
 </html>
