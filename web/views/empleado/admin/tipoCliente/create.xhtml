@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding='UTF-8' ?> 
+<?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
@@ -13,7 +13,7 @@
 <h:body>
 
 <f:metadata>
-    <!-- Inicializa el bean al cargar la página -->
+    <!-- Preparar bean al entrar -->
     <f:event type="preRenderView"
              listener="#{tipoClienteBean.nuevo}" />
 </f:metadata>
@@ -22,14 +22,14 @@
 
     <h1>Nuevo Tipo de Cliente</h1>
 
-    <h:form id="formTipo">
+    <h:form id="formTipoCliente">
 
-        <!-- Mensajes -->
+        <!-- MENSAJES -->
         <p:messages id="msgs" closable="true">
             <p:autoUpdate />
         </p:messages>
 
-        <!-- Nombre del Tipo -->
+        <!-- NOMBRE DEL TIPO -->
         <div class="mb-3">
             <p:outputLabel for="nombreTipo" value="Nombre del Tipo" />
             <p:inputText id="nombreTipo"

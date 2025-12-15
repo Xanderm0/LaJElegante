@@ -1,3 +1,4 @@
+<?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
@@ -22,10 +23,12 @@
 
     <h:form id="formPapelera">
 
+        <!-- MENSAJES -->
         <p:messages closable="true">
             <p:autoUpdate />
         </p:messages>
 
+        <!-- TABLA DE MESAS ELIMINADAS -->
         <p:dataTable value="#{mesaBean.listaPapelera}"
                      var="m"
                      rendered="#{not empty mesaBean.listaPapelera}"
@@ -35,8 +38,8 @@
                 #{m.idMesa}
             </p:column>
 
-            <p:column headerText="Número de Mesa">
-                #{m.numeroMesa}
+            <p:column headerText="Nombre de Mesa">
+                #{m.nombreMesa}
             </p:column>
 
             <p:column headerText="Capacidad">
@@ -44,11 +47,7 @@
             </p:column>
 
             <p:column headerText="Zona">
-                #{m.zona}
-            </p:column>
-
-            <p:column headerText="Estado">
-                #{m.estado.valor}
+                #{m.zona.nombreZona}
             </p:column>
 
             <p:column headerText="Eliminado en">
@@ -65,12 +64,14 @@
 
         </p:dataTable>
 
+        <!-- MENSAJE SI NO HAY REGISTROS -->
         <h:panelGroup rendered="#{empty mesaBean.listaPapelera}">
             <div class="alert alert-info">
                 No hay mesas en la papelera.
             </div>
         </h:panelGroup>
 
+        <!-- BOTÓN VOLVER -->
         <p:button value="Volver al listado"
                   outcome="index"
                   styleClass="btn btn-secondary mt-3" />

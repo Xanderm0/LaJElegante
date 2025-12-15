@@ -15,6 +15,7 @@
     <f:event type="preRenderView" listener="#{tipoClienteReporteBean.init}" />
 </f:metadata>
 
+<!-- CONTENEDOR PRINCIPAL -->
 <div class="container mt-4">
 
     <!-- ENCABEZADO -->
@@ -24,11 +25,12 @@
             <h:outputText id="resumenFiltros" value="#{tipoClienteReporteBean.resumenFiltros}" styleClass="text-muted"/>
         </div>
 
+        <!-- BOTÓN VOLVER -->
         <p:button value="Volver al Listado"
                   icon="pi pi-arrow-left"
-                  outcome="/views/empleado/admin/tipoCliente/index.xhtml"
+                  outcome="/views/empleado/admin/tiposCliente/reportes.xhtml"
                   styleClass="btn btn-outline-secondary"/>
-    </div>
+    </div> <!-- cierra d-flex -->
 
     <!-- FORM FILTROS -->
     <h:form id="formFiltros" styleClass="card mb-4 border-0 shadow-sm">
@@ -38,10 +40,14 @@
         <div class="card-body">
             <div class="row g-3">
 
-                <!-- NOMBRE TIPO -->
-                <div class="col-md-6">
-                    <h:outputLabel value="Nombre del Tipo" styleClass="form-label fw-semibold"/>
-                    <p:inputText value="#{tipoClienteReporteBean.nombreFiltro}" styleClass="form-control"/>
+                <!-- ESTADO -->
+                <div class="col-md-3">
+                    <h:outputLabel value="Estado" styleClass="form-label fw-semibold"/>
+                    <h:selectOneMenu value="#{tipoClienteReporteBean.estadoFiltro}" styleClass="form-select">
+                        <f:selectItem itemLabel="-- Todos los estados --" itemValue="#{null}"/>
+                        <f:selectItems value="#{tipoClienteReporteBean.estados}" var="e"
+                                       itemLabel="#{e.valor}" itemValue="#{e}"/>
+                    </h:selectOneMenu>
                 </div>
 
                 <!-- FECHA DESDE -->
@@ -61,10 +67,9 @@
                                   styleClass="form-control"
                                   placeholder="dd/mm/aaaa" showIcon="true"/>
                 </div>
+            </div> <!-- cierra row -->
 
-            </div>
-
-            <!-- BOTONES FILTRO -->
+            <!-- BOTONES DE FILTRO -->
             <div class="mt-4 d-flex gap-2">
                 <p:commandButton value="Aplicar Filtros"
                                  icon="pi pi-search"
@@ -80,8 +85,8 @@
                                  styleClass="btn btn-outline-secondary"
                                  ajax="true"/>
             </div>
-        </div>
-    </h:form>
+        </div> <!-- cierra card-body -->
+    </h:form> <!-- cierra formFiltros -->
 
     <!-- MENSAJES -->
     <p:growl id="growl" showDetail="true" sticky="false" life="3000"/>
@@ -128,8 +133,8 @@
                 <small class="text-muted d-block mt-2">
                     Total registros a exportar: <strong>#{tipoClienteReporteBean.listaReporte.size()}</strong>
                 </small>
-            </div>
-        </div>
+            </div> <!-- cierra card-body -->
+        </div> <!-- cierra card -->
 
         <!-- TABLA DE RESULTADOS -->
         <div class="card border-0 shadow-sm">
@@ -143,7 +148,7 @@
             <div class="card-body">
                 <p:dataTable id="tablaReporte"
                              value="#{tipoClienteReporteBean.listaReporte}"
-                             var="tc"
+                             var="t"
                              paginator="true"
                              rows="10"
                              paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
@@ -152,30 +157,35 @@
                              emptyMessage="No se encontraron tipos de cliente con los filtros aplicados">
 
                     <p:column headerText="ID" exportable="true">
-                        #{tc.idTipoCliente}
+                        #{t.idTipoCliente}
                     </p:column>
 
-                    <p:column headerText="Nombre del Tipo" exportable="true">
-                        #{tc.nombreTipo}
+                    <p:column headerText="Nombre" exportable="true">
+                        #{t.nombreTipo}
                     </p:column>
 
-                    <p:column headerText="Creado en" exportable="true">
-                        #{tc.createdAt}
+                    <p:column headerText="Estado" exportable="true">
+                        #{t.estado.valor}
                     </p:column>
 
-                    <p:column headerText="Actualizado en" exportable="true">
-                        #{tc.updatedAt}
+                    <p:column headerText="Registro" exportable="true">
+                        #{t.createdAt}
                     </p:column>
 
-                    <p:column headerText="Eliminado en" exportable="true">
-                        #{tc.deletedAt}
+                    <!-- COLUMNA ACCIONES: vuelve a reportes.xhtml -->
+                    <p:column headerText="Acciones" exportable="false" style="width:80px">
+                        <p:button icon="pi pi-eye"
+                                  title="Ver Detalles"
+                                  outcome="/views/empleado/admin/tiposCliente/reportes.xhtml"
+                                  styleClass="btn btn-sm btn-outline-primary">
+                            <f:param name="id" value="#{t.idTipoCliente}" />
+                        </p:button>
                     </p:column>
-
                 </p:dataTable>
-            </div>
-        </div>
-    </h:form>
-</div>
+            </div> <!-- cierra card-body de tabla -->
+        </div> <!-- cierra card -->
+    </h:form> <!-- cierra formExportes -->
+</div> <!-- cierra container -->
 
 <h:outputScript library="bootstrap" name="js/bootstrap.bundle.min.js"/>
 

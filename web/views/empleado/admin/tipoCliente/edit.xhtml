@@ -12,17 +12,17 @@
 
 <h:body>
 
-    <!-- ===== METADATA ===== -->
+    <!-- ===== METADATA CORRECTA ===== -->
     <f:metadata>
 
         <!-- Captura el ID: edit.xhtml?id=3 -->
         <f:viewParam name="id"
-                     value="#{tipoClienteBean.tipoCliente.idTipoCliente}"
+                     value="#{tipoClienteBean.idTipoClienteSeleccionado}"
                      required="true" />
 
         <!-- Inicializa UNA SOLA VEZ -->
         <f:event type="preRenderView"
-                 listener="#{tipoClienteBean.buscar(tipoClienteBean.tipoCliente.idTipoCliente)}" />
+                 listener="#{tipoClienteBean.initEditar}" />
 
     </f:metadata>
 
@@ -30,7 +30,7 @@
 
         <h1>Editar Tipo de Cliente</h1>
 
-        <h:form id="formTipo">
+        <h:form id="formTipoCliente">
 
             <!-- MENSAJES -->
             <p:messages closable="true">

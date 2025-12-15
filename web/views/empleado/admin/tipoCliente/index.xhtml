@@ -1,42 +1,63 @@
-<?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:p="http://primefaces.org/ui"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
 
 <h:head>
-    <title>Tipos de Cliente</title>
+    <title>Listado de Tipos de Cliente</title>
     <h:outputStylesheet library="bootstrap" name="css/bootstrap.min.css" />
 </h:head>
 
 <h:body>
 
-<h:form id="formTipos">
+<f:metadata>
+    <!-- Cargar tipos de cliente al entrar -->
+    <f:event type="preRenderView"
+             listener="#{tipoClienteBean.listar}" />
+</f:metadata>
 
-    <div class="container mt-4">
+<div class="container mt-4">
 
-        <h1>Tipos de Cliente</h1>
+    <h1>Listado de Tipos de Cliente</h1>
+    
+    <div class="mb-3 d-flex gap-2">
 
-        <!-- Mensajes -->
-        <p:messages closable="true">
-            <p:autoUpdate />
-        </p:messages>
+        <!-- NUEVO TIPO DE CLIENTE -->
+        <p:button value="Nuevo Tipo de Cliente"
+                  icon="pi pi-plus"
+                  outcome="create"
+                  styleClass="btn btn-primary" />
 
-        <!-- Botón Nuevo -->
-        <p:commandButton value="+ Nuevo Tipo de Cliente"
-                         icon="pi pi-plus"
-                         action="#{tipoClienteBean.nuevo}"
-                         update="@form"
-                         styleClass="btn btn-primary mb-3" />
+        <!-- PAPELERA -->
+        <p:button value="Papelera"
+                  icon="pi pi-trash"
+                  outcome="papelera"
+                  styleClass="btn btn-secondary" />
 
-        <!-- Tabla -->
+        <!-- IR A REPORTES -->
+        <p:button value="Ir a Reportes"
+                  icon="pi pi-file"
+                  outcome="reportes"
+                  styleClass="btn btn-success" />
+
+    </div>
+
+    <!-- MENSAJES -->
+    <p:messages closable="true">
+        <p:autoUpdate />
+    </p:messages>
+
+    <h:form id="formTiposCliente">
+
+        <!-- TABLA -->
         <p:dataTable value="#{tipoClienteBean.listaTipoClientes}"
                      var="tc"
-                     emptyMessage="No hay tipos de cliente registrados"
-                     styleClass="table table-bordered table-striped table-hover">
+                     paginator="true"
+                     rows="10"
+                     styleClass="table table-bordered">
 
-            <p:column headerText="ID" style="width:80px">
+            <p:column headerText="ID">
                 #{tc.idTipoCliente}
             </p:column>
 
@@ -44,62 +65,41 @@
                 #{tc.nombreTipo}
             </p:column>
 
+            <p:column headerText="Creado en">
+                #{tc.createdAt}
+            </p:column>
+
+            <p:column headerText="Actualizado en">
+                #{tc.updatedAt}
+            </p:column>
+
+            <p:column headerText="Eliminado en">
+                #{tc.deletedAt}
+            </p:column>
+
             <p:column headerText="Acciones" style="width:180px">
 
-                <!-- Editar -->
-                <p:commandButton value="Editar"
-                                 icon="pi pi-pencil"
-                                 styleClass="btn btn-warning btn-sm me-1"
-                                 update=":formModal"
-                                 actionListener="#{tipoClienteBean.cargarTipo(tc)}"
-                                 oncomplete="PF('modalEditar').show()" />
+                <!-- EDITAR -->
+                <p:button icon="pi pi-pencil"
+                          title="Editar"
+                          outcome="edit">
+                    <f:param name="id" value="#{tc.idTipoCliente}" />
+                </p:button>
 
-                <!-- Eliminar -->
-                <p:commandButton value="Eliminar"
-                                 icon="pi pi-trash"
-                                 styleClass="btn btn-danger btn-sm"
+                <!-- ELIMINAR -->
+                <p:commandButton icon="pi pi-trash"
+                                 title="Eliminar"
                                  action="#{tipoClienteBean.eliminar(tc.idTipoCliente)}"
-                                 update="@form"
+                                 update="formTiposCliente"
+                                 styleClass="btn btn-danger"
                                  onclick="return confirm('¿Seguro que deseas eliminar este tipo de cliente?')" />
-
             </p:column>
 
         </p:dataTable>
-    </div>
-</h:form>
 
-<!-- MODAL EDITAR -->
-<p:dialog widgetVar="modalEditar"
-          modal="true"
-          header="Editar Tipo de Cliente"
-          closable="true"
-          styleClass="modal-dialog-centered">
-
-    <h:form id="formModal">
-        <div class="mb-3">
-            <p:outputLabel value="Nombre del Tipo" for="nombreTipo"/>
-            <p:inputText id="nombreTipo"
-                         value="#{tipoClienteBean.tipoCliente.nombreTipo}"
-                         required="true"
-                         styleClass="form-control"/>
-        </div>
-
-        <div class="d-flex gap-2">
-            <p:commandButton value="Guardar Cambios"
-                             icon="pi pi-check"
-                             update=":formTipos @form"
-                             action="#{tipoClienteBean.actualizar}"
-                             oncomplete="PF('modalEditar').hide()"
-                             styleClass="btn btn-success"/>
-
-            <p:commandButton value="Cancelar"
-                             icon="pi pi-times"
-                             styleClass="btn btn-secondary"
-                             onclick="PF('modalEditar').hide()"
-                             type="button"/>
-        </div>
     </h:form>
-</p:dialog>
+
+</div>
 
 <h:outputScript library="bootstrap" name="js/bootstrap.bundle.min.js" />
 

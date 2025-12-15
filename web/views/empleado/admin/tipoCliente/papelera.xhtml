@@ -12,7 +12,6 @@
 <h:body>
 
 <f:metadata>
-    <!-- Cargar la lista de tipos eliminados -->
     <f:event type="preRenderView"
              listener="#{tipoClienteBean.listarPapelera}" />
 </f:metadata>
@@ -23,47 +22,43 @@
 
     <h:form id="formPapelera">
 
-        <!-- Mensajes -->
         <p:messages closable="true">
             <p:autoUpdate />
         </p:messages>
 
-        <!-- Tabla de tipos eliminados -->
         <p:dataTable value="#{tipoClienteBean.listaPapelera}"
-                     var="tc"
+                     var="t"
                      rendered="#{not empty tipoClienteBean.listaPapelera}"
-                     styleClass="table table-bordered table-striped table-hover">
+                     styleClass="table table-bordered table-striped">
 
-            <p:column headerText="ID" style="width:80px">
-                #{tc.idTipoCliente}
+            <p:column headerText="ID">
+                #{t.idTipoCliente}
             </p:column>
 
             <p:column headerText="Nombre del Tipo">
-                #{tc.nombreTipo}
+                #{t.nombreTipo}
             </p:column>
 
             <p:column headerText="Eliminado en">
-                <h:outputText value="#{tc.deletedAt}" />
+                <h:outputText value="#{t.deletedAt}" />
             </p:column>
 
-            <p:column headerText="Acciones" style="width:150px">
+            <p:column headerText="Acciones">
                 <p:commandButton value="Restaurar"
                                  icon="pi pi-refresh"
-                                 action="#{tipoClienteBean.restaurar(tc.idTipoCliente)}"
+                                 action="#{tipoClienteBean.restaurar(t.idTipoCliente)}"
                                  update="@form"
                                  styleClass="btn btn-success btn-sm" />
             </p:column>
 
         </p:dataTable>
 
-        <!-- Mensaje si no hay tipos eliminados -->
         <h:panelGroup rendered="#{empty tipoClienteBean.listaPapelera}">
             <div class="alert alert-info">
                 No hay tipos de cliente en la papelera.
             </div>
         </h:panelGroup>
 
-        <!-- Botón volver -->
         <p:button value="Volver al listado"
                   outcome="index"
                   styleClass="btn btn-secondary mt-3" />

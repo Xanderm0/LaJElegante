@@ -1,3 +1,4 @@
+<?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
@@ -11,16 +12,18 @@
 
 <h:body>
 
-    <!-- ===== METADATA ===== -->
+    <!-- ===== METADATA CORRECTA ===== -->
     <f:metadata>
+
         <!-- Captura el ID: edit.xhtml?id=3 -->
         <f:viewParam name="id"
-                     value="#{mesaBean.mesa.idMesa}"
+                     value="#{mesaBean.idMesaSeleccionada}"
                      required="true" />
 
-        <!-- Inicializa el bean con los datos de la mesa -->
+        <!-- Inicializa UNA SOLA VEZ -->
         <f:event type="preRenderView"
-                 listener="#{mesaBean.buscar(mesaBean.mesa.idMesa)}" />
+                 listener="#{mesaBean.initEditar}" />
+
     </f:metadata>
 
     <div class="container mt-4">
@@ -34,11 +37,11 @@
                 <p:autoUpdate />
             </p:messages>
 
-            <!-- NÚMERO DE MESA -->
+            <!-- NOMBRE DE MESA -->
             <div class="mb-3">
-                <p:outputLabel for="numeroMesa" value="Número de Mesa" />
-                <p:inputText id="numeroMesa"
-                             value="#{mesaBean.mesa.numeroMesa}"
+                <p:outputLabel for="nombreMesa" value="Nombre de Mesa" />
+                <p:inputText id="nombreMesa"
+                             value="#{mesaBean.mesa.nombreMesa}"
                              required="true"
                              styleClass="form-control" />
             </div>
@@ -56,11 +59,14 @@
             <div class="mb-3">
                 <p:outputLabel for="zona" value="Zona" />
                 <p:selectOneMenu id="zona"
-                                 value="#{mesaBean.mesa.zona}"
+                                 value="#{mesaBean.idZonaSeleccionada}"
                                  required="true"
                                  styleClass="form-select">
                     <f:selectItem itemLabel="Seleccione una zona" itemValue="#{null}" />
-                    <f:selectItems value="#{mesaBean.zonasDisponibles}" var="z" itemValue="#{z}" itemLabel="#{z}" />
+                    <f:selectItems value="#{mesaBean.zonasDisponibles}"
+                                   var="z"
+                                   itemValue="#{z.idZona}"
+                                   itemLabel="#{z.nombreZona}" />
                 </p:selectOneMenu>
             </div>
 

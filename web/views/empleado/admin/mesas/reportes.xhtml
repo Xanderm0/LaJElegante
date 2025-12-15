@@ -1,3 +1,4 @@
+<?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
@@ -12,6 +13,7 @@
 <h:body>
 
 <f:metadata>
+    <!-- Inicializa el reporte al entrar -->
     <f:event type="preRenderView" listener="#{mesaReporteBean.init}" />
 </f:metadata>
 
@@ -24,9 +26,10 @@
             <h:outputText id="resumenFiltros" value="#{mesaReporteBean.resumenFiltros}" styleClass="text-muted"/>
         </div>
 
+        <!-- BOTÓN VOLVER -->
         <p:button value="Volver al Listado"
                   icon="pi pi-arrow-left"
-                  outcome="/views/empleado/admin/mesas/index.xhtml"
+                  outcome="/views/empleado/admin/mesas/reportes.xhtml"
                   styleClass="btn btn-outline-secondary"/>
     </div>
 
@@ -52,27 +55,33 @@
                 <div class="col-md-3">
                     <h:outputLabel value="Zona" styleClass="form-label fw-semibold"/>
                     <h:selectOneMenu value="#{mesaReporteBean.zonaFiltro}" styleClass="form-select">
-                        <f:selectItem itemLabel="-- Todas las zonas --" itemValue="#{null}"/>
-                        <f:selectItems value="#{mesaReporteBean.listaZonas}" var="z"
-                                       itemLabel="#{z}" itemValue="#{z}"/>
+                        <f:selectItem itemLabel="-- Todas las zonas --" itemValue="#{null}" />
+                        <f:selectItems value="#{mesaReporteBean.zonasDisponibles}" var="z"
+                                       itemLabel="#{z.nombreZona}" itemValue="#{z}" />
                     </h:selectOneMenu>
                 </div>
 
-                <!-- CAPACIDAD MÍNIMA -->
+                <!-- FECHA DESDE -->
                 <div class="col-md-3">
-                    <h:outputLabel value="Capacidad Mínima" styleClass="form-label fw-semibold"/>
-                    <p:inputText value="#{mesaReporteBean.capacidadMin}" styleClass="form-control" placeholder="Cap. Min"/>
+                    <h:outputLabel value="Fecha Desde" styleClass="form-label fw-semibold"/>
+                    <p:datePicker value="#{mesaReporteBean.fechaDesde}"
+                                  pattern="dd/MM/yyyy" locale="es"
+                                  styleClass="form-control"
+                                  placeholder="dd/mm/aaaa" showIcon="true"/>
                 </div>
 
-                <!-- CAPACIDAD MÁXIMA -->
+                <!-- FECHA HASTA -->
                 <div class="col-md-3">
-                    <h:outputLabel value="Capacidad Máxima" styleClass="form-label fw-semibold"/>
-                    <p:inputText value="#{mesaReporteBean.capacidadMax}" styleClass="form-control" placeholder="Cap. Max"/>
+                    <h:outputLabel value="Fecha Hasta" styleClass="form-label fw-semibold"/>
+                    <p:datePicker value="#{mesaReporteBean.fechaHasta}"
+                                  pattern="dd/MM/yyyy" locale="es"
+                                  styleClass="form-control"
+                                  placeholder="dd/mm/aaaa" showIcon="true"/>
                 </div>
 
-            </div>
+            </div> <!-- cierra row -->
 
-            <!-- BOTONES FILTROS -->
+            <!-- BOTONES DE FILTRO -->
             <div class="mt-4 d-flex gap-2">
                 <p:commandButton value="Aplicar Filtros"
                                  icon="pi pi-search"
@@ -80,6 +89,7 @@
                                  update=":formExportes:tablaReporte :growl resumenFiltros"
                                  styleClass="btn btn-primary px-4"
                                  ajax="true"/>
+
                 <p:commandButton value="Limpiar Filtros"
                                  icon="pi pi-times"
                                  action="#{mesaReporteBean.limpiarFiltros}"
@@ -146,6 +156,7 @@
                     Resultados: #{mesaReporteBean.listaReporte.size()} mesa(s)
                 </h5>
             </div>
+
             <div class="card-body">
                 <p:dataTable id="tablaReporte"
                              value="#{mesaReporteBean.listaReporte}"
@@ -161,8 +172,8 @@
                         #{m.idMesa}
                     </p:column>
 
-                    <p:column headerText="Número" exportable="true">
-                        #{m.numeroMesa}
+                    <p:column headerText="Nombre de Mesa" exportable="true">
+                        #{m.nombreMesa}
                     </p:column>
 
                     <p:column headerText="Capacidad" exportable="true">
@@ -170,7 +181,7 @@
                     </p:column>
 
                     <p:column headerText="Zona" exportable="true">
-                        #{m.zona}
+                        #{m.zona.nombreZona}
                     </p:column>
 
                     <p:column headerText="Estado" exportable="true">
@@ -179,6 +190,16 @@
 
                     <p:column headerText="Registro" exportable="true">
                         #{m.createdAt}
+                    </p:column>
+
+                    <!-- COLUMNA ACCIONES -->
+                    <p:column headerText="Acciones" exportable="false" style="width:80px">
+                        <p:button icon="pi pi-eye"
+                                  title="Ver Detalles"
+                                  outcome="/views/empleado/admin/mesas/reportes.xhtml"
+                                  styleClass="btn btn-sm btn-outline-primary">
+                            <f:param name="id" value="#{m.idMesa}" />
+                        </p:button>
                     </p:column>
 
                 </p:dataTable>

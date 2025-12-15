@@ -5,86 +5,90 @@
       xmlns:p="http://primefaces.org/ui">
 
 <h:head>
-    <title>Reporte de Mesas</title>
+    <title>Listado de Mesas</title>
     <h:outputStylesheet library="bootstrap" name="css/bootstrap.min.css" />
 </h:head>
 
 <h:body>
 
 <f:metadata>
-    <f:event type="preRenderView" listener="#{mesaReporteBean.init}" />
+    <!-- Cargar mesas al entrar -->
+    <f:event type="preRenderView"
+             listener="#{mesaBean.listar}" />
 </f:metadata>
 
 <div class="container mt-4">
 
-    <h1>Reporte de Mesas</h1>
+    <h1>Listado de Mesas</h1>
+    
+    <div class="mb-3 d-flex gap-2">
 
-    <h:form id="formReportes">
+        <!-- NUEVA MESA -->
+        <p:button value="Nueva Mesa"
+                  icon="pi pi-plus"
+                  outcome="create"
+                  styleClass="btn btn-primary" />
 
-        <!-- FILTROS -->
-        <div class="row mb-3">
-            <div class="col">
-                <p:selectOneMenu value="#{mesaReporteBean.estadoFiltro}" styleClass="form-control">
-                    <f:selectItem itemLabel="Todos" itemValue="#{null}" />
-                    <f:selectItems value="#{mesaReporteBean.estados}" var="e" itemLabel="#{e.valor}" itemValue="#{e}" />
-                </p:selectOneMenu>
-            </div>
-            <div class="col">
-                <p:selectOneMenu value="#{mesaReporteBean.zonaFiltro}" styleClass="form-control">
-                    <f:selectItem itemLabel="Todas" itemValue="#{null}" />
-                    <f:selectItems value="#{mesaReporteBean.listaZonas}" var="z" itemLabel="#{z}" itemValue="#{z}" />
-                </p:selectOneMenu>
-            </div>
-            <div class="col">
-                <p:inputText value="#{mesaReporteBean.capacidadMin}" placeholder="Cap. Min" styleClass="form-control" />
-            </div>
-            <div class="col">
-                <p:inputText value="#{mesaReporteBean.capacidadMax}" placeholder="Cap. Max" styleClass="form-control" />
-            </div>
-            <div class="col d-flex gap-2">
-                <p:commandButton value="Filtrar" icon="pi pi-search"
-                                 action="#{mesaReporteBean.filtrarReporte}"
-                                 update="tablaReportes" />
-                <p:commandButton value="Limpiar" icon="pi pi-times"
-                                 action="#{mesaReporteBean.limpiarFiltros}"
-                                 update="formReportes" />
-            </div>
-        </div>
+        <!-- PAPELERA -->
+        <p:button value="Papelera"
+                  icon="pi pi-trash"
+                  outcome="papelera"
+                  styleClass="btn btn-secondary" />
+
+        <!-- IR A REPORTES -->
+        <p:button value="Ir a Reportes"
+                  icon="pi pi-file"
+                  outcome="reportes"
+                  styleClass="btn btn-success" />
+
+    </div>
+
+    <!-- MENSAJES -->
+    <p:messages closable="true">
+        <p:autoUpdate />
+    </p:messages>
+
+    <h:form id="formMesas">
 
         <!-- TABLA -->
-        <p:dataTable id="tablaReportes" value="#{mesaReporteBean.listaReporte}" var="m"
-                     paginator="true" rows="10" styleClass="table table-bordered"
-                     widgetVar="dtReportes">
-
-            <f:facet name="header">
-                <h:panelGroup>
-                    <p:commandButton type="button" value="Exportar Excel" icon="pi pi-file-excel">
-                        <p:dataExporter type="xlsx" target="tablaReportes" fileName="Mesas" />
-                    </p:commandButton>
-                    <p:commandButton type="button" value="Exportar PDF" icon="pi pi-file-pdf">
-                        <p:dataExporter type="pdf" target="tablaReportes" fileName="Mesas" />
-                    </p:commandButton>
-                </h:panelGroup>
-            </f:facet>
+        <p:dataTable value="#{mesaBean.listaMesas}"
+                     var="m"
+                     paginator="true"
+                     rows="10"
+                     styleClass="table table-bordered">
 
             <p:column headerText="ID">
                 #{m.idMesa}
             </p:column>
 
-            <p:column headerText="Número de Mesa">
-                #{m.numeroMesa}
+            <p:column headerText="Nombre">
+                #{m.nombreMesa}
             </p:column>
 
             <p:column headerText="Capacidad">
                 #{m.capacidad}
             </p:column>
 
-            <p:column headerText="Zona">
-                #{m.zona}
-            </p:column>
-
             <p:column headerText="Estado">
                 #{m.estado.valor}
+            </p:column>
+
+            <p:column headerText="Acciones" style="width:180px">
+
+                <!-- EDITAR -->
+                <p:button icon="pi pi-pencil"
+                          title="Editar"
+                          outcome="edit">
+                    <f:param name="id" value="#{m.idMesa}" />
+                </p:button>
+
+                <!-- ELIMINAR -->
+                <p:commandButton icon="pi pi-trash"
+                                 title="Eliminar"
+                                 action="#{mesaBean.eliminar(m.idMesa)}"
+                                 update="formMesas"
+                                 styleClass="btn btn-danger"
+                                 onclick="return confirm('¿Seguro que deseas eliminar esta mesa?')" />
             </p:column>
 
         </p:dataTable>
