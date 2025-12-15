@@ -7,7 +7,55 @@
 <h:head>
     <title>Reporte de Clientes</title>
     <h:outputStylesheet library="bootstrap" name="css/bootstrap.min.css"/>
+    
+    <!-- Estilos internos -->
+    <style>
+        /* Contenedor principal */
+        .reportes-container {
+            margin-top: 2rem;
+        }
+
+        /* Encabezado */
+        .reportes-header h1 {
+            margin-bottom: 1rem;
+        }
+
+        /* Formulario de filtros */
+        .form-filtros .form-label {
+            font-weight: 500;
+        }
+
+        .form-filtros .btn {
+            width: 100%;
+        }
+
+        /* Espaciado entre datePickers */
+        .date-range-picker .form-control + .form-control {
+            margin-top: 0.25rem;
+        }
+
+        /* Botones de exportación */
+        .btn-export {
+            margin-right: 0.5rem;
+        }
+
+        /* Mensajes */
+        #mensajes {
+            margin-bottom: 1rem;
+        }
+
+        /* Tabla de resultados */
+        .table-resultados {
+            table-layout: auto;
+        }
+
+        /* Alertas cuando no hay datos */
+        .alert-info {
+            margin-top: 1rem;
+        }
+    </style>
 </h:head>
+
 
 <h:body>
 
