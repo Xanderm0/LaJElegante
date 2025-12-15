@@ -1,13 +1,68 @@
 <?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://java.sun.com/jsf/html">
-    <h:head>
-        <title>Facelet Title</title>
-        <h:outputStylesheet library="bootstrap" name="css/bootstrap.min.css" />
-    </h:head>
-    <h:body>
-        Hello from Facelets
-        <h:outputScript library="bootstrap" name="js/bootstrap.bundle.min.js" />
-    </h:body>
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+    <title>Editar Tipo de Cliente</title>
+    <h:outputStylesheet library="bootstrap" name="css/bootstrap.min.css" />
+</h:head>
+
+<h:body>
+
+    <!-- ===== METADATA ===== -->
+    <f:metadata>
+
+        <!-- Captura el ID: edit.xhtml?id=3 -->
+        <f:viewParam name="id"
+                     value="#{tipoClienteBean.tipoCliente.idTipoCliente}"
+                     required="true" />
+
+        <!-- Inicializa UNA SOLA VEZ -->
+        <f:event type="preRenderView"
+                 listener="#{tipoClienteBean.buscar(tipoClienteBean.tipoCliente.idTipoCliente)}" />
+
+    </f:metadata>
+
+    <div class="container mt-4">
+
+        <h1>Editar Tipo de Cliente</h1>
+
+        <h:form id="formTipo">
+
+            <!-- MENSAJES -->
+            <p:messages closable="true">
+                <p:autoUpdate />
+            </p:messages>
+
+            <!-- NOMBRE DEL TIPO -->
+            <div class="mb-3">
+                <p:outputLabel for="nombreTipo" value="Nombre del Tipo" />
+                <p:inputText id="nombreTipo"
+                             value="#{tipoClienteBean.tipoCliente.nombreTipo}"
+                             required="true"
+                             styleClass="form-control" />
+            </div>
+
+            <!-- BOTONES -->
+            <div class="mt-4">
+                <p:commandButton value="Actualizar"
+                                 icon="pi pi-save"
+                                 action="#{tipoClienteBean.actualizar}"
+                                 update="@form"
+                                 styleClass="btn btn-success" />
+
+                <p:button value="Cancelar"
+                          outcome="index"
+                          styleClass="btn btn-secondary ms-2" />
+            </div>
+
+        </h:form>
+    </div>
+
+    <h:outputScript library="bootstrap" name="js/bootstrap.bundle.min.js" />
+
+</h:body>
 </html>

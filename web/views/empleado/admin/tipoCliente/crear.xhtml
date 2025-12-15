@@ -1,44 +1,60 @@
-<?xml version='1.0' encoding='UTF-8' ?>
+<?xml version='1.0' encoding='UTF-8' ?> 
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui">
-    <h:head>
-        <title>crear cliente</title>
-        <h:outputStylesheet library="bootstrap" name="css/bootstrap.min.css" />
-    </h:head>
+
+<h:head>
+    <title>Nuevo Tipo de Cliente</title>
+    <h:outputStylesheet library="bootstrap" name="css/bootstrap.min.css" />
+</h:head>
+
 <h:body>
 
-    <h:form>
-        <div class="card">
-            <h2>Crear Tipo de Cliente</h2>
+<f:metadata>
+    <!-- Inicializa el bean al cargar la página -->
+    <f:event type="preRenderView"
+             listener="#{tipoClienteBean.nuevo}" />
+</f:metadata>
 
-            <!-- Mostrar mensajes -->
-            <p:messages id="msgs" closable="true" showDetail="true" />
+<div class="container mt-4">
 
-            <p:panelGrid columns="2" columnClasses="label,value">
+    <h1>Nuevo Tipo de Cliente</h1>
 
-                <h:outputText value="Nombre del tipo:" />
+    <h:form id="formTipo">
 
-                <p:inputText value="#{tipoClienteBean.nombreTipo}" 
-                             required="true"
-                             maxlength="50"
-                             requiredMessage="El nombre es obligatorio"
-                             placeholder="Ej: Cliente VIP"/>
-            </p:panelGrid>
+        <!-- Mensajes -->
+        <p:messages id="msgs" closable="true">
+            <p:autoUpdate />
+        </p:messages>
 
-            <br/>
-
-            <p:commandButton value="Guardar"
-                             action="#{tipoClienteBean.guardar}"
-                             update="msgs" 
-                             styleClass="ui-button-success"/>
-
-            <p:commandButton value="Cancelar"
-                             styleClass="ui-button-secondary"
-                             action="#{tipoClienteBean.volver}" />
-
+        <!-- Nombre del Tipo -->
+        <div class="mb-3">
+            <p:outputLabel for="nombreTipo" value="Nombre del Tipo" />
+            <p:inputText id="nombreTipo"
+                         value="#{tipoClienteBean.tipoCliente.nombreTipo}"
+                         required="true"
+                         styleClass="form-control" />
         </div>
+
+        <!-- BOTONES -->
+        <div class="mt-4">
+            <p:commandButton value="Guardar"
+                             icon="pi pi-save"
+                             action="#{tipoClienteBean.guardar}"
+                             update="@form"
+                             styleClass="btn btn-success" />
+
+            <p:button value="Cancelar"
+                      outcome="index"
+                      styleClass="btn btn-secondary ms-2" />
+        </div>
+
     </h:form>
+</div>
+
 <h:outputScript library="bootstrap" name="js/bootstrap.bundle.min.js" />
+
 </h:body>
 </html>
