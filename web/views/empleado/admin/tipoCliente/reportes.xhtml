@@ -28,7 +28,7 @@
         <!-- BOTÓN VOLVER -->
         <p:button value="Volver al Listado"
                   icon="pi pi-arrow-left"
-                  outcome="/views/empleado/admin/tiposCliente/reportes.xhtml"
+                  outcome="index"
                   styleClass="btn btn-outline-secondary"/>
     </div> <!-- cierra d-flex -->
 
@@ -46,7 +46,7 @@
                     <h:selectOneMenu value="#{tipoClienteReporteBean.estadoFiltro}" styleClass="form-select">
                         <f:selectItem itemLabel="-- Todos los estados --" itemValue="#{null}"/>
                         <f:selectItems value="#{tipoClienteReporteBean.estados}" var="e"
-                                       itemLabel="#{e.valor}" itemValue="#{e}"/>
+                                       itemLabel="#{e}" itemValue="#{e}"/>
                     </h:selectOneMenu>
                 </div>
 
@@ -85,7 +85,7 @@
                                  styleClass="btn btn-outline-secondary"
                                  ajax="true"/>
             </div>
-        </div> <!-- cierra card-body -->
+        </div>
     </h:form> <!-- cierra formFiltros -->
 
     <!-- MENSAJES -->
@@ -102,41 +102,29 @@
             </div>
             <div class="card-body">
                 <div class="btn-group">
-                    <p:commandButton value="Exportar Excel"
-                                     icon="pi pi-file-excel"
-                                     styleClass="btn btn-success me-2"
-                                     ajax="false">
-                        <p:dataExporter type="xlsx" target="tablaReporte"
-                                        fileName="reporte_tipos_cliente"
+                    <p:commandButton value="Exportar Excel" icon="pi pi-file-excel" styleClass="btn btn-success me-2" ajax="false">
+                        <p:dataExporter type="xlsx" target="tablaReporte" fileName="reporte_tipos_cliente"
                                         preProcessor="#{tipoClienteReporteBean.preProcessExcel}"/>
                     </p:commandButton>
 
-                    <p:commandButton value="Exportar PDF"
-                                     icon="pi pi-file-pdf"
-                                     styleClass="btn btn-danger me-2"
-                                     ajax="false">
-                        <p:dataExporter type="pdf" target="tablaReporte"
-                                        fileName="reporte_tipos_cliente"
+                    <p:commandButton value="Exportar PDF" icon="pi pi-file-pdf" styleClass="btn btn-danger me-2" ajax="false">
+                        <p:dataExporter type="pdf" target="tablaReporte" fileName="reporte_tipos_cliente"
                                         pageOnly="true"
                                         preProcessor="#{tipoClienteReporteBean.preProcessPDF}"/>
                     </p:commandButton>
 
-                    <p:commandButton value="Exportar CSV"
-                                     icon="pi pi-file"
-                                     styleClass="btn btn-secondary"
-                                     ajax="false">
-                        <p:dataExporter type="csv" target="tablaReporte"
-                                        fileName="reporte_tipos_cliente"/>
+                    <p:commandButton value="Exportar CSV" icon="pi pi-file" styleClass="btn btn-secondary" ajax="false">
+                        <p:dataExporter type="csv" target="tablaReporte" fileName="reporte_tipos_cliente"/>
                     </p:commandButton>
                 </div>
 
                 <small class="text-muted d-block mt-2">
                     Total registros a exportar: <strong>#{tipoClienteReporteBean.listaReporte.size()}</strong>
                 </small>
-            </div> <!-- cierra card-body -->
-        </div> <!-- cierra card -->
+            </div>
+        </div>
 
-        <!-- TABLA DE RESULTADOS -->
+        <!-- TABLA RESULTADOS -->
         <div class="card border-0 shadow-sm">
             <div class="card-header bg-light">
                 <h5 class="mb-0">
@@ -144,7 +132,6 @@
                     Resultados: #{tipoClienteReporteBean.listaReporte.size()} tipo(s) de cliente
                 </h5>
             </div>
-
             <div class="card-body">
                 <p:dataTable id="tablaReporte"
                              value="#{tipoClienteReporteBean.listaReporte}"
@@ -165,18 +152,18 @@
                     </p:column>
 
                     <p:column headerText="Estado" exportable="true">
-                        #{t.estado.valor}
+                        #{t.estado}
                     </p:column>
 
                     <p:column headerText="Registro" exportable="true">
                         #{t.createdAt}
                     </p:column>
 
-                    <!-- COLUMNA ACCIONES: vuelve a reportes.xhtml -->
+                    <!-- COLUMNA ACCIONES -->
                     <p:column headerText="Acciones" exportable="false" style="width:80px">
                         <p:button icon="pi pi-eye"
                                   title="Ver Detalles"
-                                  outcome="/views/empleado/admin/tiposCliente/reportes.xhtml"
+                                  outcome="/views/empleado/admin/tiposCliente/edit.xhtml"
                                   styleClass="btn btn-sm btn-outline-primary">
                             <f:param name="id" value="#{t.idTipoCliente}" />
                         </p:button>
@@ -188,6 +175,5 @@
 </div> <!-- cierra container -->
 
 <h:outputScript library="bootstrap" name="js/bootstrap.bundle.min.js"/>
-
 </h:body>
 </html>

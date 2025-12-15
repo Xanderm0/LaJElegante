@@ -4,12 +4,14 @@ import dao.TipoClienteDAO;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import models.TipoCliente;
+import models.enums.Estado;
 import org.primefaces.component.export.ExcelOptions;
 import org.primefaces.component.export.PDFOptions;
 import utils.MessageUtil;
@@ -22,6 +24,7 @@ public class TipoClienteReporteBean implements Serializable {
 
     // ===== FILTROS =====
     private String nombreFiltro;
+    private Estado estadoFiltro;
     private LocalDate fechaDesde;
     private LocalDate fechaHasta;
 
@@ -44,6 +47,13 @@ public class TipoClienteReporteBean implements Serializable {
 
             if (params.containsKey("nombre")) {
                 nombreFiltro = params.get("nombre");
+            }
+            if (params.containsKey("estado")) {
+                try {
+                    estadoFiltro = Estado.valueOf(params.get("estado").toUpperCase());
+                } catch (IllegalArgumentException e) {
+                    estadoFiltro = null;
+                }
             }
             if (params.containsKey("desde")) {
                 try {
@@ -90,15 +100,45 @@ public class TipoClienteReporteBean implements Serializable {
             // Filtrar por nombre
             if (nombreFiltro != null && !nombreFiltro.trim().isEmpty()) {
                 String filtro = nombreFiltro.trim().toLowerCase();
-                listaReporte.removeIf(tc -> !tc.getNombreTipo().toLowerCase().contains(filtro));
+                Iterator<TipoCliente> it = listaReporte.iterator();
+                while (it.hasNext()) {
+                    TipoCliente tc = it.next();
+                    if (!tc.getNombreTipo().toLowerCase().contains(filtro)) {
+                        it.remove();
+                    }
+                }
             }
+
+            // Filtrar por estado
+          if (estadoFiltro != null) {
+    Iterator<TipoCliente> it = listaReporte.iterator();
+    while (it.hasNext()) {
+        TipoCliente tc = it.next();
+        if (!tc.getEstado().toString().equalsIgnoreCase(estadoFiltro.toString())) {
+            it.remove();
+        }
+    }
+}
+
 
             // Filtrar por fecha
             if (fechaDesde != null) {
-                listaReporte.removeIf(tc -> tc.getCreatedAt().toLocalDate().isBefore(fechaDesde));
+                Iterator<TipoCliente> it = listaReporte.iterator();
+                while (it.hasNext()) {
+                    TipoCliente tc = it.next();
+                    if (tc.getCreatedAt().toLocalDate().isBefore(fechaDesde)) {
+                        it.remove();
+                    }
+                }
             }
             if (fechaHasta != null) {
-                listaReporte.removeIf(tc -> tc.getCreatedAt().toLocalDate().isAfter(fechaHasta));
+                Iterator<TipoCliente> it = listaReporte.iterator();
+                while (it.hasNext()) {
+                    TipoCliente tc = it.next();
+                    if (tc.getCreatedAt().toLocalDate().isAfter(fechaHasta)) {
+                        it.remove();
+                    }
+                }
             }
 
             if (listaReporte.isEmpty()) {
@@ -115,6 +155,7 @@ public class TipoClienteReporteBean implements Serializable {
 
     public void limpiarFiltros() {
         nombreFiltro = null;
+        estadoFiltro = null;
         fechaDesde = null;
         fechaHasta = null;
         filtrarReporte();
@@ -124,6 +165,7 @@ public class TipoClienteReporteBean implements Serializable {
     public String getResumenFiltros() {
         StringBuilder sb = new StringBuilder();
         if (nombreFiltro != null && !nombreFiltro.isEmpty()) sb.append("Nombre: ").append(nombreFiltro).append("; ");
+        if (estadoFiltro != null) sb.append("Estado: ").append(estadoFiltro.getValor()).append("; ");
         if (fechaDesde != null) sb.append("Desde: ").append(fechaDesde).append("; ");
         if (fechaHasta != null) sb.append("Hasta: ").append(fechaHasta).append("; ");
         return sb.length() > 0 ? sb.toString() : "Sin filtros";
@@ -136,6 +178,9 @@ public class TipoClienteReporteBean implements Serializable {
     public String getNombreFiltro() { return nombreFiltro; }
     public void setNombreFiltro(String nombreFiltro) { this.nombreFiltro = nombreFiltro; }
 
+    public Estado getEstadoFiltro() { return estadoFiltro; }
+    public void setEstadoFiltro(Estado estadoFiltro) { this.estadoFiltro = estadoFiltro; }
+
     public LocalDate getFechaDesde() { return fechaDesde; }
     public void setFechaDesde(LocalDate fechaDesde) { this.fechaDesde = fechaDesde; }
 
@@ -144,4 +189,6 @@ public class TipoClienteReporteBean implements Serializable {
 
     public ExcelOptions getExcelOpt() { return excelOpt; }
     public PDFOptions getPdfOpt() { return pdfOpt; }
+
+    public Estado[] getEstados() { return Estado.values(); }
 }
