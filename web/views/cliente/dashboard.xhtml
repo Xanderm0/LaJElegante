@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+    <title>Dashboard Huesped</title>
+
+    <!-- Bootstrap -->
+    <h:outputStylesheet name="bootstrap/css/bootstrap.min.css"/>
+
+    <!-- Estilos Dashboard -->
+    <style>
+        .dashboard-link {
+            display: block;
+            height: 100%;
+            text-decoration: none;
+        }
+
+        .dashboard-card {
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .dashboard-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+    </style>
+</h:head>
+
+<h:body>
+    <h:form id="formDashboard">
+        <div class="container mt-4">
+
+            <h1 class="mb-4">Panel de Cliente</h1>
+
+            <div class="row text-center mb-4">
+
+                <div class="col-md-4 mb-3">
+                    <h:link outcome="/views/cliente/misReservas.xhtml"
+                            styleClass="dashboard-link">
+                        <div class="card bg-primary text-white shadow h-100 dashboard-card">
+                            <div class="card-body">
+                                <h5>Mis reservas</h5>
+                            </div>
+                        </div>
+                    </h:link>
+                </div>
+
+                <!-- EMPLEADOS -->
+                <div class="col-md-4 mb-3">
+                    <h:link outcome="/views/cliente/reservarHabitacion.xhtml"
+                            styleClass="dashboard-link">
+                        <div class="card bg-success text-white shadow h-100 dashboard-card">
+                            <div class="card-body">
+                                <h5>Reservar Habitacion</h5>
+                            </div>
+                        </div>
+                    </h:link>
+                </div>
+
+                <!-- HABITACIONES -->
+                <div class="col-md-4 mb-3">
+                    <h:link outcome="/views/cliente/reservarRestaurante.xhtml"
+                            styleClass="dashboard-link">
+                        <div class="card bg-warning text-dark shadow h-100 dashboard-card">
+                            <div class="card-body">
+                                <h5>Reservar Restaurante</h5>
+                            </div>
+                        </div>
+                    </h:link>
+                </div>
+
+            </div>
+        </div>
+    </h:form>
+</h:body>
+</html>
