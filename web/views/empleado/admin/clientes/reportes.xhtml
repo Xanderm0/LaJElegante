@@ -15,138 +15,213 @@
     <f:event type="preRenderView" listener="#{clienteReporteBean.init}" />
 </f:metadata>
 
-<!-- BOTÓN PARA VOLVER -->
-<div class="mb-3">
-    <p:button value="Volver al Listado"
-              icon="pi pi-arrow-left"
-              outcome="index"
-              styleClass="btn btn-secondary"/>
-</div>
-
+<!-- ENCABEZADO MEJORADO -->
 <div class="container mt-4">
-
-    <h1 class="mb-4">Reporte de Clientes</h1>
-
-    <!-- ================== FILTROS ================== -->
-    <h:form id="formFiltros" styleClass="row g-3 mb-4">
-
-        <!-- ESTADO -->
-        <div class="col-md-3">
-            <h:outputLabel value="Estado" styleClass="form-label"/>
-            <h:selectOneMenu value="#{clienteReporteBean.estadoFiltro}"
-                             styleClass="form-select">
-                <f:selectItem itemLabel="Todos" itemValue="#{null}"/>
-                <f:selectItems value="#{clienteReporteBean.estados}"
-                               var="e"
-                               itemLabel="#{e.valor}"
-                               itemValue="#{e}"/>
-            </h:selectOneMenu>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="mb-1">Reporte de Clientes</h1>
+            <p class="text-muted mb-0">
+                <i class="pi pi-filter me-1"></i>
+                <span id="resumenFiltros">#{clienteReporteBean.resumenFiltros}</span>
+            </p>
         </div>
+        <p:button value="Volver al Listado"
+                  icon="pi pi-arrow-left"
+                  outcome="listaClientes"
+                  styleClass="btn btn-outline-secondary"/>
+    </div>
 
-        <!-- TIPO CLIENTE (SIN CONVERTER) -->
-        <div class="col-md-3">
-            <h:outputLabel value="Tipo Cliente" styleClass="form-label"/>
-            <h:selectOneMenu value="#{clienteReporteBean.idTipoClienteFiltro}"
-                             styleClass="form-select">
-                <f:selectItem itemLabel="Todos" itemValue="#{null}"/>
-                <f:selectItems value="#{clienteReporteBean.listaTipos}"
-                               var="t"
-                               itemLabel="#{t.nombreTipo}"
-                               itemValue="#{t.idTipoCliente}"/>
-            </h:selectOneMenu>
+    <!-- ================== FILTROS MEJORADOS ================== -->
+    <h:form id="formFiltros" styleClass="card mb-4 border-0 shadow-sm">
+        <div class="card-header bg-light">
+            <h5 class="mb-0">Filtros de Búsqueda</h5>
         </div>
+        <div class="card-body">
+            <div class="row g-3">
+                
+                <!-- ESTADO -->
+                <div class="col-md-3">
+                    <h:outputLabel value="Estado" styleClass="form-label fw-semibold"/>
+                    <h:selectOneMenu value="#{clienteReporteBean.estadoFiltro}"
+                                     styleClass="form-select">
+                        <f:selectItem itemLabel="-- Todos los estados --" itemValue="#{null}"/>
+                        <f:selectItems value="#{clienteReporteBean.estados}"
+                                       var="e"
+                                       itemLabel="#{e.valor}"
+                                       itemValue="#{e}"/>
+                    </h:selectOneMenu>
+                </div>
 
-        <!-- FECHAS -->
-        <div class="col-md-3">
-            <h:outputLabel value="Rango de fechas" styleClass="form-label"/>
-            <p:datePicker value="#{clienteReporteBean.fechaDesde}"
-                          pattern="yyyy-MM-dd"
-                          styleClass="form-control"/>
-            <p:datePicker value="#{clienteReporteBean.fechaHasta}"
-                          pattern="yyyy-MM-dd"
-                          styleClass="form-control mt-1"/>
+                <!-- TIPO CLIENTE (SIN CONVERTER) -->
+                <div class="col-md-3">
+                    <h:outputLabel value="Tipo Cliente" styleClass="form-label fw-semibold"/>
+                    <h:selectOneMenu value="#{clienteReporteBean.idTipoClienteFiltro}"
+                                     styleClass="form-select">
+                        <f:selectItem itemLabel="-- Todos los tipos --" itemValue="#{null}"/>
+                        <f:selectItems value="#{clienteReporteBean.listaTipos}"
+                                       var="t"
+                                       itemLabel="#{t.nombreTipo}"
+                                       itemValue="#{t.idTipoCliente}"/>
+                    </h:selectOneMenu>
+                </div>
+
+                <!-- FECHA DESDE -->
+                <div class="col-md-3">
+                    <h:outputLabel value="Fecha Desde" styleClass="form-label fw-semibold"/>
+                    <p:datePicker value="#{clienteReporteBean.fechaDesde}"
+                                  pattern="dd/MM/yyyy"
+                                  locale="es"
+                                  navigator="true"
+                                  styleClass="form-control"
+                                  placeholder="dd/mm/aaaa"/>
+                </div>
+
+                <!-- FECHA HASTA -->
+                <div class="col-md-3">
+                    <h:outputLabel value="Fecha Hasta" styleClass="form-label fw-semibold"/>
+                    <p:datePicker value="#{clienteReporteBean.fechaHasta}"
+                                  pattern="dd/MM/yyyy"
+                                  locale="es"
+                                  navigator="true"
+                                  styleClass="form-control"
+                                  placeholder="dd/mm/aaaa"/>
+                </div>
+            </div>
+            
+            <!-- BOTONES DE ACCIÓN MEJORADOS -->
+            <div class="mt-4 d-flex gap-2">
+                <p:commandButton value="Aplicar Filtros"
+                                 icon="pi pi-search"
+                                 action="#{clienteReporteBean.filtrarReporte}"
+                                 update=":formResultados:tablaReporte :growl resumenFiltros"
+                                 styleClass="btn btn-primary px-4"
+                                 ajax="true"/>
+                                 
+                <p:commandButton value="Limpiar Filtros"
+                                 icon="pi pi-times"
+                                 action="#{clienteReporteBean.limpiarFiltros}"
+                                 update="formFiltros :formResultados:tablaReporte :growl resumenFiltros"
+                                 styleClass="btn btn-outline-secondary"
+                                 ajax="true"/>
+            </div>
         </div>
-
-        <!-- BOTÓN FILTRAR -->
-        <div class="col-md-3 d-flex align-items-end">
-            <p:commandButton value="Filtrar"
-                             action="#{clienteReporteBean.filtrarReporte}"
-                             update="tablaReporte mensajes"
-                             styleClass="btn btn-primary"/>
-        </div>
-
-    </h:form>
-
-    <!-- ================== EXPORTES ================== -->
-    <h:form id="formExportes" class="mb-3">
-
-        <p:commandButton value="Exportar Excel"
-                         icon="pi pi-file-excel"
-                         styleClass="btn btn-success me-2"
-                         ajax="false">
-            <p:dataExporter type="xlsx"
-                            target="tablaReporte"
-                            fileName="reporte_clientes"/>
-        </p:commandButton>
-
-        <p:commandButton value="Exportar PDF"
-                         icon="pi pi-file-pdf"
-                         styleClass="btn btn-danger"
-                         ajax="false">
-            <p:dataExporter type="pdf"
-                            target="tablaReporte"
-                            fileName="reporte_clientes"/>
-        </p:commandButton>
-
     </h:form>
 
     <!-- ================== MENSAJES ================== -->
-    <p:messages id="mensajes" closable="true">
-        <p:autoUpdate/>
-    </p:messages>
+    <p:growl id="growl" showDetail="true" sticky="false" life="3000"/>
 
-    <!-- ================== TABLA ================== -->
-    <p:dataTable id="tablaReporte"
-                 value="#{clienteReporteBean.listaReporte}"
-                 var="c"
-                 rendered="#{not empty clienteReporteBean.listaReporte}"
-                 styleClass="table table-bordered">
+    <!-- ================== PANEL DE RESULTADOS ================== -->
+    <h:form id="formResultados">
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-light d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">
+                    <i class="pi pi-list me-2"></i>
+                    Resultados: 
+                    <span class="badge bg-primary ms-2">#{clienteReporteBean.listaReporte.size()}</span>
+                    cliente(s) encontrado(s)
+                </h5>
+                
+                <!-- BOTONES DE EXPORTACIÓN MEJORADOS -->
+                <div class="btn-group">
+                    <p:commandButton value="Exportar Excel"
+                                     icon="pi pi-file-excel"
+                                     action="#{clienteReporteBean.exportarExcel}"
+                                     disabled="#{empty clienteReporteBean.listaReporte}"
+                                     styleClass="btn btn-success"
+                                     ajax="false"
+                                     onclick="return confirm('¿Exportar #{clienteReporteBean.listaReporte.size()} registro(s) a Excel?')"/>
+                                     
+                    <!-- Opcional: Exportación personalizada con filtros en nombre -->
+                    <!--
+                    <p:commandButton value="Exportar Personalizado"
+                                     icon="pi pi-download"
+                                     action="#{clienteReporteBean.exportarExcelPersonalizado}"
+                                     disabled="#{empty clienteReporteBean.listaReporte}"
+                                     styleClass="btn btn-info ms-2"
+                                     ajax="false"/>
+                    -->
+                </div>
+            </div>
+            
+            <div class="card-body">
+                <!-- TABLA MEJORADA -->
+                <p:dataTable id="tablaReporte"
+                             value="#{clienteReporteBean.listaReporte}"
+                             var="c"
+                             paginator="true"
+                             rows="10"
+                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             rowsPerPageTemplate="5,10,20,50"
+                             styleClass="table table-hover"
+                             emptyMessage="No se encontraron clientes con los filtros aplicados">
 
-        <p:column headerText="ID">
-            <h:outputText value="#{c.idCliente}"/>
-        </p:column>
+                    <p:column headerText="ID" width="80" styleClass="text-center">
+                        <span class="badge bg-secondary">#{c.idCliente}</span>
+                    </p:column>
 
-        <p:column headerText="Nombre">
-            <h:outputText value="#{c.nombre} #{c.apellido}"/>
-        </p:column>
+                    <p:column headerText="Cliente" sortBy="#{c.nombre}">
+                        <div>
+                            <strong>#{c.nombre} #{c.apellido}</strong><br/>
+                            <small class="text-muted">#{c.email}</small>
+                        </div>
+                    </p:column>
 
-        <p:column headerText="Email">
-            <h:outputText value="#{c.email}"/>
-        </p:column>
+                    <p:column headerText="Contacto">
+                        <div>
+                            <i class="pi pi-phone me-1"></i>
+                            <small>#{empty c.prefijo ? '' : c.prefijo} #{c.numTel}</small>
+                        </div>
+                    </p:column>
 
-        <p:column headerText="Tipo Cliente">
-            <h:outputText value="#{c.tipoCliente.nombreTipo}"/>
-        </p:column>
+                    <p:column headerText="Tipo" width="120">
+                        <span class="badge bg-info">#{c.tipoCliente.nombreTipo}</span>
+                    </p:column>
 
-        <p:column headerText="Teléfono">
-            <h:outputText value="#{c.prefijo} #{c.numTel}"/>
-        </p:column>
+                    <p:column headerText="Estado" width="100">
+                        <span class="badge bg-#{c.estado.name() == 'ACTIVO' ? 'success' : 'danger'}">
+                            #{c.estado.valor}
+                        </span>
+                    </p:column>
 
-        <p:column headerText="Estado">
-            <h:outputText value="#{c.estado.valor}"/>
-        </p:column>
-
-    </p:dataTable>
-
-    <h:panelGroup rendered="#{empty clienteReporteBean.listaReporte}">
-        <div class="alert alert-info">
-            No hay clientes que coincidan con los filtros.
+                    <p:column headerText="Registro" width="150">
+                        <small>#{c.createdAt}</small>
+                    </p:column>
+                </p:dataTable>
+            </div>
+            
+            <!-- PIE DE PÁGINA INFORMATIVO -->
+            <div class="card-footer bg-light">
+                <div class="d-flex justify-content-between align-items-center">
+                    <small class="text-muted">
+                        <i class="pi pi-info-circle me-1"></i>
+                        Exportación realizada con Apache POI 5.2.3 - Formato .xlsx
+                    </small>
+                    <small class="text-muted">
+                        <i class="pi pi-clock me-1"></i>
+                        Generado el #{''}
+                        <h:outputText value="#{java.time.LocalDate.now()}">
+                            <f:convertDateTime pattern="dd/MM/yyyy"/>
+                        </h:outputText>
+                    </small>
+                </div>
+            </div>
         </div>
-    </h:panelGroup>
-
+    </h:form>
 </div>
 
 <h:outputScript library="bootstrap" name="js/bootstrap.bundle.min.js"/>
+
+<script>
+    // Inicializar tooltips de Bootstrap si es necesario
+    document.addEventListener('DOMContentLoaded', function() {
+        if (typeof bootstrap !== 'undefined' && bootstrap.Tooltip) {
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl);
+            });
+        }
+    });
+</script>
 
 </h:body>
 </html>
