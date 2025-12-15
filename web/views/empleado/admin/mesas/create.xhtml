@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+    <title>Nueva Mesa</title>
+    <h:outputStylesheet library="bootstrap" name="css/bootstrap.min.css" />
+</h:head>
+
+<h:body>
+
+<f:metadata>
+    <!-- Inicializar el bean al entrar -->
+    <f:event type="preRenderView"
+             listener="#{mesaBean.nuevo}" />
+</f:metadata>
+
+<div class="container mt-4">
+
+    <h1>Nueva Mesa</h1>
+
+    <h:form id="formMesa">
+
+        <!-- MENSAJES -->
+        <p:messages id="msgs" closable="true">
+            <p:autoUpdate />
+        </p:messages>
+
+        <!-- NÚMERO DE MESA -->
+        <div class="mb-3">
+            <p:outputLabel for="numeroMesa" value="Número de Mesa" />
+            <p:inputText id="numeroMesa"
+                         value="#{mesaBean.mesa.numeroMesa}"
+                         required="true"
+                         styleClass="form-control" />
+        </div>
+
+        <!-- CAPACIDAD -->
+        <div class="mb-3">
+            <p:outputLabel for="capacidad" value="Capacidad" />
+            <p:inputText id="capacidad"
+                         value="#{mesaBean.mesa.capacidad}"
+                         required="true"
+                         styleClass="form-control" />
+        </div>
+
+        <!-- ZONA -->
+        <div class="mb-3">
+            <p:outputLabel for="zona" value="Zona" />
+            <p:selectOneMenu id="zona"
+                             value="#{mesaBean.mesa.zona}"
+                             required="true"
+                             styleClass="form-select">
+                <f:selectItem itemLabel="Seleccione una zona" itemValue="#{null}" />
+                <f:selectItems value="#{mesaBean.zonasDisponibles}" var="z" itemValue="#{z}" itemLabel="#{z}" />
+            </p:selectOneMenu>
+        </div>
+
+        <!-- ESTADO -->
+        <div class="mb-3">
+            <p:outputLabel for="estado" value="Estado" />
+            <p:selectOneMenu id="estado"
+                             value="#{mesaBean.mesa.estado}"
+                             required="true"
+                             styleClass="form-select">
+                <f:selectItems value="#{mesaBean.estadosDisponibles}" var="e" itemValue="#{e}" itemLabel="#{e.valor}" />
+            </p:selectOneMenu>
+        </div>
+
+        <!-- DETALLE DE UBICACIÓN -->
+        <div class="mb-3">
+            <p:outputLabel for="detalle" value="Detalle de Ubicación" />
+            <p:inputText id="detalle"
+                         value="#{mesaBean.mesa.ubicacionDetalle}"
+                         styleClass="form-control" />
+        </div>
+
+        <!-- BOTONES -->
+        <div class="mt-4">
+            <p:commandButton value="Guardar"
+                             icon="pi pi-save"
+                             action="#{mesaBean.guardar}"
+                             update="@form"
+                             styleClass="btn btn-success" />
+
+            <p:button value="Cancelar"
+                      outcome="index"
+                      styleClass="btn btn-secondary ms-2" />
+        </div>
+
+    </h:form>
+</div>
+
+<h:outputScript library="bootstrap" name="js/bootstrap.bundle.min.js" />
+
+</h:body>
+</html>

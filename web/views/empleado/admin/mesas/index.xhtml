@@ -1,15 +1,99 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!--
-Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
-Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit this template
--->
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
-    <head>
-        <title>TODO supply a title</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    </head>
-    <body>
-        <div>TODO write content</div>
-    </body>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+    <title>Reporte de Mesas</title>
+    <h:outputStylesheet library="bootstrap" name="css/bootstrap.min.css" />
+</h:head>
+
+<h:body>
+
+<f:metadata>
+    <f:event type="preRenderView" listener="#{mesaReporteBean.init}" />
+</f:metadata>
+
+<div class="container mt-4">
+
+    <h1>Reporte de Mesas</h1>
+
+    <h:form id="formReportes">
+
+        <!-- FILTROS -->
+        <div class="row mb-3">
+            <div class="col">
+                <p:selectOneMenu value="#{mesaReporteBean.estadoFiltro}" styleClass="form-control">
+                    <f:selectItem itemLabel="Todos" itemValue="#{null}" />
+                    <f:selectItems value="#{mesaReporteBean.estados}" var="e" itemLabel="#{e.valor}" itemValue="#{e}" />
+                </p:selectOneMenu>
+            </div>
+            <div class="col">
+                <p:selectOneMenu value="#{mesaReporteBean.zonaFiltro}" styleClass="form-control">
+                    <f:selectItem itemLabel="Todas" itemValue="#{null}" />
+                    <f:selectItems value="#{mesaReporteBean.listaZonas}" var="z" itemLabel="#{z}" itemValue="#{z}" />
+                </p:selectOneMenu>
+            </div>
+            <div class="col">
+                <p:inputText value="#{mesaReporteBean.capacidadMin}" placeholder="Cap. Min" styleClass="form-control" />
+            </div>
+            <div class="col">
+                <p:inputText value="#{mesaReporteBean.capacidadMax}" placeholder="Cap. Max" styleClass="form-control" />
+            </div>
+            <div class="col d-flex gap-2">
+                <p:commandButton value="Filtrar" icon="pi pi-search"
+                                 action="#{mesaReporteBean.filtrarReporte}"
+                                 update="tablaReportes" />
+                <p:commandButton value="Limpiar" icon="pi pi-times"
+                                 action="#{mesaReporteBean.limpiarFiltros}"
+                                 update="formReportes" />
+            </div>
+        </div>
+
+        <!-- TABLA -->
+        <p:dataTable id="tablaReportes" value="#{mesaReporteBean.listaReporte}" var="m"
+                     paginator="true" rows="10" styleClass="table table-bordered"
+                     widgetVar="dtReportes">
+
+            <f:facet name="header">
+                <h:panelGroup>
+                    <p:commandButton type="button" value="Exportar Excel" icon="pi pi-file-excel">
+                        <p:dataExporter type="xlsx" target="tablaReportes" fileName="Mesas" />
+                    </p:commandButton>
+                    <p:commandButton type="button" value="Exportar PDF" icon="pi pi-file-pdf">
+                        <p:dataExporter type="pdf" target="tablaReportes" fileName="Mesas" />
+                    </p:commandButton>
+                </h:panelGroup>
+            </f:facet>
+
+            <p:column headerText="ID">
+                #{m.idMesa}
+            </p:column>
+
+            <p:column headerText="Número de Mesa">
+                #{m.numeroMesa}
+            </p:column>
+
+            <p:column headerText="Capacidad">
+                #{m.capacidad}
+            </p:column>
+
+            <p:column headerText="Zona">
+                #{m.zona}
+            </p:column>
+
+            <p:column headerText="Estado">
+                #{m.estado.valor}
+            </p:column>
+
+        </p:dataTable>
+
+    </h:form>
+
+</div>
+
+<h:outputScript library="bootstrap" name="js/bootstrap.bundle.min.js" />
+
+</h:body>
 </html>

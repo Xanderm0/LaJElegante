@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+    <title>Reporte de Mesas</title>
+    <h:outputStylesheet library="bootstrap" name="css/bootstrap.min.css"/>
+</h:head>
+
+<h:body>
+
+<f:metadata>
+    <f:event type="preRenderView" listener="#{mesaReporteBean.init}" />
+</f:metadata>
+
+<div class="container mt-4">
+
+    <!-- ENCABEZADO -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="mb-1">Reporte de Mesas</h1>
+            <h:outputText id="resumenFiltros" value="#{mesaReporteBean.resumenFiltros}" styleClass="text-muted"/>
+        </div>
+
+        <p:button value="Volver al Listado"
+                  icon="pi pi-arrow-left"
+                  outcome="/views/empleado/admin/mesas/index.xhtml"
+                  styleClass="btn btn-outline-secondary"/>
+    </div>
+
+    <!-- FORM FILTROS -->
+    <h:form id="formFiltros" styleClass="card mb-4 border-0 shadow-sm">
+        <div class="card-header bg-light">
+            <h5 class="mb-0">Filtros de Búsqueda</h5>
+        </div>
+        <div class="card-body">
+            <div class="row g-3">
+
+                <!-- ESTADO -->
+                <div class="col-md-3">
+                    <h:outputLabel value="Estado" styleClass="form-label fw-semibold"/>
+                    <h:selectOneMenu value="#{mesaReporteBean.estadoFiltro}" styleClass="form-select">
+                        <f:selectItem itemLabel="-- Todos los estados --" itemValue="#{null}"/>
+                        <f:selectItems value="#{mesaReporteBean.estados}" var="e"
+                                       itemLabel="#{e.valor}" itemValue="#{e}"/>
+                    </h:selectOneMenu>
+                </div>
+
+                <!-- ZONA -->
+                <div class="col-md-3">
+                    <h:outputLabel value="Zona" styleClass="form-label fw-semibold"/>
+                    <h:selectOneMenu value="#{mesaReporteBean.zonaFiltro}" styleClass="form-select">
+                        <f:selectItem itemLabel="-- Todas las zonas --" itemValue="#{null}"/>
+                        <f:selectItems value="#{mesaReporteBean.listaZonas}" var="z"
+                                       itemLabel="#{z}" itemValue="#{z}"/>
+                    </h:selectOneMenu>
+                </div>
+
+                <!-- CAPACIDAD MÍNIMA -->
+                <div class="col-md-3">
+                    <h:outputLabel value="Capacidad Mínima" styleClass="form-label fw-semibold"/>
+                    <p:inputText value="#{mesaReporteBean.capacidadMin}" styleClass="form-control" placeholder="Cap. Min"/>
+                </div>
+
+                <!-- CAPACIDAD MÁXIMA -->
+                <div class="col-md-3">
+                    <h:outputLabel value="Capacidad Máxima" styleClass="form-label fw-semibold"/>
+                    <p:inputText value="#{mesaReporteBean.capacidadMax}" styleClass="form-control" placeholder="Cap. Max"/>
+                </div>
+
+            </div>
+
+            <!-- BOTONES FILTROS -->
+            <div class="mt-4 d-flex gap-2">
+                <p:commandButton value="Aplicar Filtros"
+                                 icon="pi pi-search"
+                                 action="#{mesaReporteBean.filtrarReporte}"
+                                 update=":formExportes:tablaReporte :growl resumenFiltros"
+                                 styleClass="btn btn-primary px-4"
+                                 ajax="true"/>
+                <p:commandButton value="Limpiar Filtros"
+                                 icon="pi pi-times"
+                                 action="#{mesaReporteBean.limpiarFiltros}"
+                                 update="formFiltros :formExportes:tablaReporte :growl resumenFiltros"
+                                 styleClass="btn btn-outline-secondary"
+                                 ajax="true"/>
+            </div>
+        </div>
+    </h:form>
+
+    <!-- MENSAJES -->
+    <p:growl id="growl" showDetail="true" sticky="false" life="3000"/>
+
+    <!-- FORM EXPORTACIÓN -->
+    <h:form id="formExportes">
+        <div class="card border-0 shadow-sm mb-4">
+            <div class="card-header bg-light">
+                <h5 class="mb-0">
+                    <i class="pi pi-download me-2"></i>
+                    Exportar Resultados
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="btn-group">
+                    <p:commandButton value="Exportar Excel"
+                                     icon="pi pi-file-excel"
+                                     styleClass="btn btn-success me-2"
+                                     ajax="false">
+                        <p:dataExporter type="xlsx" target="tablaReporte"
+                                        fileName="reporte_mesas"
+                                        preProcessor="#{mesaReporteBean.preProcessExcel}"/>
+                    </p:commandButton>
+
+                    <p:commandButton value="Exportar PDF"
+                                     icon="pi pi-file-pdf"
+                                     styleClass="btn btn-danger me-2"
+                                     ajax="false">
+                        <p:dataExporter type="pdf" target="tablaReporte"
+                                        fileName="reporte_mesas"
+                                        pageOnly="true"
+                                        preProcessor="#{mesaReporteBean.preProcessPDF}"/>
+                    </p:commandButton>
+
+                    <p:commandButton value="Exportar CSV"
+                                     icon="pi pi-file"
+                                     styleClass="btn btn-secondary"
+                                     ajax="false">
+                        <p:dataExporter type="csv" target="tablaReporte"
+                                        fileName="reporte_mesas"/>
+                    </p:commandButton>
+                </div>
+
+                <small class="text-muted d-block mt-2">
+                    Total registros a exportar: <strong>#{mesaReporteBean.listaReporte.size()}</strong>
+                </small>
+            </div>
+        </div>
+
+        <!-- TABLA DE RESULTADOS -->
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-light">
+                <h5 class="mb-0">
+                    <i class="pi pi-list me-2"></i>
+                    Resultados: #{mesaReporteBean.listaReporte.size()} mesa(s)
+                </h5>
+            </div>
+            <div class="card-body">
+                <p:dataTable id="tablaReporte"
+                             value="#{mesaReporteBean.listaReporte}"
+                             var="m"
+                             paginator="true"
+                             rows="10"
+                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             rowsPerPageTemplate="5,10,20,50"
+                             styleClass="table table-hover"
+                             emptyMessage="No se encontraron mesas con los filtros aplicados">
+
+                    <p:column headerText="ID" exportable="true">
+                        #{m.idMesa}
+                    </p:column>
+
+                    <p:column headerText="Número" exportable="true">
+                        #{m.numeroMesa}
+                    </p:column>
+
+                    <p:column headerText="Capacidad" exportable="true">
+                        #{m.capacidad}
+                    </p:column>
+
+                    <p:column headerText="Zona" exportable="true">
+                        #{m.zona}
+                    </p:column>
+
+                    <p:column headerText="Estado" exportable="true">
+                        #{m.estado.valor}
+                    </p:column>
+
+                    <p:column headerText="Registro" exportable="true">
+                        #{m.createdAt}
+                    </p:column>
+
+                </p:dataTable>
+            </div>
+        </div>
+    </h:form>
+</div>
+
+<h:outputScript library="bootstrap" name="js/bootstrap.bundle.min.js"/>
+
+</h:body>
+</html>
