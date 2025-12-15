@@ -434,13 +434,7 @@ public int contarClientes() {
 
         return lista;
     }
-
-<<<<<<< HEAD
-    
-=======
     /* ===================== MAPPER ===================== */
-
->>>>>>> java-julian
     private Cliente mapearResultSet(ResultSet rs) throws SQLException {
         Cliente c = new Cliente();
 
