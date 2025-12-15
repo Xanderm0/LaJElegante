@@ -39,7 +39,31 @@ public class EmpleadoDAO extends BaseDAO<Empleado> {
             cerrarRecursos(conn, ps);
         }
     }
+    //contar empleado
+    public int contarEmpleados() {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
 
+        try {
+            conn = ConectarBD.conectar();
+            if (conn == null) return 0;
+
+            String sql = "SELECT COUNT(*) FROM empleados";
+            ps = conn.prepareStatement(sql);
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            ConectarBD.cerrarConexion(conn, ps, rs);
+        }
+        return 0;
+    }
     @Override
     public Empleado buscar(int id) {
         Connection conn = null;
