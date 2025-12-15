@@ -6,13 +6,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ApplicationScoped;
+import javax.faces.bean.ViewScoped;
 import models.Mesa;
 import models.enums.Estado;
 import utils.MessageUtil;
 
 @ManagedBean
-@ApplicationScoped
+@ViewScoped
 public class MesaBean implements Serializable {
     private static final long serialVersionUID = 1L; // Identificador de versión para serialización (objetos a bytes)
     

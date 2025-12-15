@@ -1,100 +1,111 @@
-<?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
 
 <h:head>
     <title>Listado de Clientes</title>
-     <h:outputStylesheet library="bootstrap" name="css/bootstrap.min.css" />
+    <h:outputStylesheet library="bootstrap" name="css/bootstrap.min.css" />
 </h:head>
 
 <h:body>
 
-<h:form id="formClientes">
+<f:metadata>
+    <!-- Cargar clientes al entrar -->
+    <f:event type="preRenderView"
+             listener="#{clienteBean.listar}" />
+</f:metadata>
 
-    <p:card header="Listado de Clientes">
+<div class="container mt-4">
 
-        <!-- Mensaje de éxito -->
-        <p:messages id="mensajes" closable="true" showSummary="true"/>
+    <h1>Listado de Clientes</h1>
+    
+    <div class="mb-3 d-flex gap-2">
 
-        <!-- Botón nuevo cliente -->
-        <p:commandButton value="Nuevo Cliente"
-                         icon="pi pi-plus"
-                         action="nuevoCliente.xhtml?faces-redirect=true"
-                         styleClass="ui-button-primary"
-                         style="margin-bottom:15px"/>
+        <!-- NUEVO CLIENTE -->
+        <p:button value="Nuevo Cliente"
+                  icon="pi pi-plus"
+                  outcome="create"
+                  styleClass="btn btn-primary" />
 
-        <!-- Tabla de clientes -->
-        <p:dataTable id="tablaClientes"
-                     value="#{clienteBean.listaClientes}"
-                     var="cliente"
+        <!-- PAPELERA -->
+        <p:button value="Papelera"
+                  icon="pi pi-trash"
+                  outcome="papelera"
+                  styleClass="btn btn-secondary" />
+
+        <!-- IR A REPORTES -->
+        <p:button value="Ir a Reportes"
+                  icon="pi pi-file"
+                  outcome="reportes"
+                  styleClass="btn btn-success" />
+
+    </div>
+
+    <!-- MENSAJES -->
+    <p:messages closable="true">
+        <p:autoUpdate />
+    </p:messages>
+
+    <h:form id="formClientes">
+
+        <!-- TABLA -->
+        <p:dataTable value="#{clienteBean.listaClientes}"
+                     var="c"
                      paginator="true"
                      rows="10"
-                     emptyMessage="No hay clientes registrados"
-                     responsiveLayout="scroll">
+                     styleClass="table table-bordered">
 
             <p:column headerText="ID">
-                <h:outputText value="#{cliente.id_cliente}" />
+                #{c.idCliente}
             </p:column>
 
             <p:column headerText="Nombre completo">
-                <h:outputText value="#{cliente.nombre} #{cliente.apellido}" />
+                #{c.nombre} #{c.apellido}
             </p:column>
 
             <p:column headerText="Email">
-                <h:outputText value="#{cliente.email_info}" />
+                #{c.email}
             </p:column>
 
             <p:column headerText="Teléfono">
-                <h:outputText value="#{cliente.numero_telefono}" />
+                #{c.prefijo} #{c.numTel}
             </p:column>
 
             <p:column headerText="Tipo Cliente">
-                <h:outputText value="#{cliente.tipoCliente.nombre_tipo != null ? cliente.tipoCliente.nombre_tipo : 'Sin tipo'}" />
+                #{c.tipoCliente.nombreTipo}
             </p:column>
 
             <p:column headerText="Estado">
-                <h:outputText value="#{cliente.estado}" />
+                #{c.estado.valor}
             </p:column>
 
-            <!-- ACCIONES -->
-            <p:column headerText="Acciones" style="width:220px">
+            <p:column headerText="Acciones" style="width:180px">
 
-                <!-- Botón ver -->
-                <p:commandButton value="Ver"
-                                 icon="pi pi-eye"
-                                 action="#{clienteBean.ver(cliente.id_cliente)}"
-                                 styleClass="ui-button-info ui-button-sm"
-                                 update="@form"/>
+                <!-- EDITAR -->
+                <p:button icon="pi pi-pencil"
+                          title="Editar"
+                          outcome="edit">
+                    <f:param name="id" value="#{c.idCliente}" />
+                </p:button>
 
-                &nbsp;
-
-                <!-- Botón editar -->
-                <p:commandButton value="Editar"
-                                 icon="pi pi-pencil"
-                                 action="#{clienteBean.editar(cliente.id_cliente)}"
-                                 styleClass="ui-button-warning ui-button-sm"
-                                 update="@form"/>
-
-                &nbsp;
-
-                <!-- Botón eliminar -->
-                <p:commandButton value="Eliminar"
-                                 icon="pi pi-trash"
-                                 action="#{clienteBean.eliminar(cliente.id_cliente)}"
-                                 styleClass="ui-button-danger ui-button-sm"
-                                 update="@form"
-                                 onclick="return confirm('¿Seguro que deseas eliminar este cliente?')"/>
-
+                <!-- ELIMINAR -->
+                <p:commandButton icon="pi pi-trash"
+                                 title="Eliminar"
+                                 action="#{clienteBean.eliminar(c.idCliente)}"
+                                 update="formClientes"
+                                 styleClass="btn btn-danger"
+                                 onclick="return confirm('¿Seguro que deseas eliminar este cliente?')" />
             </p:column>
 
         </p:dataTable>
 
-    </p:card>
+    </h:form>
 
-</h:form>
+</div>
+
 <h:outputScript library="bootstrap" name="js/bootstrap.bundle.min.js" />
+
 </h:body>
 </html>

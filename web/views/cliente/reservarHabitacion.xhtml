@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+    <title>Reservar Habitación</title>
+</h:head>
+
+<h:body>
+
+<h:form>
+
+    <h2>Reserva de Habitación</h2>
+
+    <p:panelGrid columns="2">
+
+        <h:outputLabel value="Fecha entrada:" />
+        <p:calendar value="#{clienteReservaHabitacionBean.fechaInicio}"
+                    pattern="dd/MM/yyyy" />
+
+        <h:outputLabel value="Fecha salida:" />
+        <p:calendar value="#{clienteReservaHabitacionBean.fechaFin}"
+                    pattern="dd/MM/yyyy" />
+
+        <h:outputLabel value="Personas:" />
+        <p:spinner min="1"
+                   value="#{clienteReservaHabitacionBean.cantidadPersonas}" />
+
+    </p:panelGrid>
+
+    <br/>
+
+    <p:commandButton value="Buscar habitaciones"
+                     action="#{clienteReservaHabitacionBean.buscarHabitaciones}"
+                     update="@form" />
+
+    <br/><br/>
+
+    <p:dataTable value="#{clienteReservaHabitacionBean.habitacionesDisponibles}"
+                 var="h"
+                 rendered="#{not empty clienteReservaHabitacionBean.habitacionesDisponibles}">
+
+        <p:column headerText="Tipo">
+            #{h.tipo}
+        </p:column>
+
+        <p:column headerText="Capacidad">
+            #{h.capacidad}
+        </p:column>
+
+        <p:column>
+            <p:commandButton value="Reservar"
+                             action="#{clienteReservaHabitacionBean.setIdHabitacionSeleccionada(h.idHabitacion)}"
+                             update="@form" />
+        </p:column>
+
+    </p:dataTable>
+
+    <br/>
+
+    <p:commandButton value="Confirmar reserva"
+                     action="#{clienteReservaHabitacionBean.reservar}"
+                     rendered="#{clienteReservaHabitacionBean.idHabitacionSeleccionada > 0}" />
+
+    <br/><br/>
+
+    <p:button value="Volver"
+              icon="pi pi-arrow-left"
+              outcome="/views/cliente/misReservas" />
+
+</h:form>
+
+</h:body>
+</html>

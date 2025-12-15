@@ -1,8 +1,10 @@
 package models;
 
+import java.util.Objects;
+
 public class TipoCliente extends ClaseBase {
+
     private int idTipoCliente;
-    
     private String nombreTipo;
 
     public int getIdTipoCliente() {
@@ -19,5 +21,19 @@ public class TipoCliente extends ClaseBase {
 
     public void setNombreTipo(String nombreTipo) {
         this.nombreTipo = nombreTipo;
+    }
+
+    // 🔐 CLAVE PARA JSF
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof TipoCliente)) return false;
+        TipoCliente that = (TipoCliente) o;
+        return idTipoCliente == that.idTipoCliente;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(idTipoCliente);
     }
 }
