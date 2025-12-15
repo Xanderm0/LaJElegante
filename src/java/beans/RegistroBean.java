@@ -143,7 +143,7 @@ public class RegistroBean implements Serializable {
             clienteDAO.crear(nuevoCliente);
             limpiarFormularioSeguro();
             MessageUtil.success("¡Registro exitoso! Tu cuenta ha sido creada correctamente.");
-            return "/hotel/login.xhtml?faces-redirect=true&registro=exitoso";
+            return "/views/hotel/login.xhtml?faces-redirect=true&registro=exitoso";
             
         } catch (Exception e) {
             MessageUtil.error("Error del sistema", 
@@ -184,6 +184,6 @@ public class RegistroBean implements Serializable {
     }
     
     public String irALogin() {
-        return "views/hotel/login.xhtml?faces-redirect=true";
+        return "/views/hotel/login.xhtml?faces-redirect=true";
     }
 }
