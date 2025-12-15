@@ -1,0 +1,93 @@
+            /* Estilos adicionales para esta vista */
+            .avatar-circle {
+                width: 40px;
+                height: 40px;
+                background: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%);
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: white;
+                font-size: 1.2rem;
+            }
+            
+            .btn-primary, .btn-secondary, .btn-success {
+                padding: 10px 20px;
+                border-radius: 8px;
+                font-weight: 600;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+            }
+            
+            .btn-primary {
+                background: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%);
+                border: none;
+            }
+            
+            .btn-secondary {
+                background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+                border: none;
+            }
+            
+            .btn-success {
+                background: linear-gradient(135deg, #28a745 0%, #1e7e34 100%);
+                border: none;
+            }
+            
+            .ui-datatable .ui-paginator {
+                padding: 20px;
+                background: #f8f9fa;
+                border-top: 1px solid #dee2e6;
+                border-radius: 0 0 10px 10px;
+            }
+            
+            .ui-datatable .ui-datatable-data tr:last-child td {
+                border-bottom: none;
+            }
+            
+            /* Estilos para growl */
+            .ui-growl {
+                top: 70px !important;
+                right: 20px !important;
+            }
+            
+            .ui-growl-item-container {
+                border-radius: 10px !important;
+                border: none !important;
+                box-shadow: 0 5px 15px rgba(0,0,0,0.1) !important;
+            }
+            
+            /* Responsive */
+            @media (max-width: 768px) {
+                .admin-table-header {
+                    flex-direction: column;
+                    align-items: flex-start;
+                    gap: 15px;
+                }
+                
+                .admin-actions {
+                    width: 100%;
+                    flex-wrap: wrap;
+                    gap: 10px;
+                }
+                
+                .admin-actions .btn {
+                    flex: 1;
+                    min-width: 150px;
+                }
+                
+                .quick-stats {
+                    grid-template-columns: repeat(2, 1fr);
+                }
+            }
+            
+            @media (max-width: 576px) {
+                .quick-stats {
+                    grid-template-columns: 1fr;
+                }
+                
+                .admin-actions .btn {
+                    min-width: 100%;
+                }
+            }

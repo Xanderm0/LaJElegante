@@ -249,3 +249,301 @@
         .sidebar-toggle:hover {
             background-color: rgba(255, 255, 255, 0.2);
         }
+/* ===== ESTILOS PARA TABLAS DE ADMIN ===== */
+.admin-table-container {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+    overflow: hidden;
+}
+
+.admin-table-header {
+    background: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%);
+    color: white;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.admin-table-header h3 {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.admin-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.admin-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.admin-table th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+    padding: 16px 20px;
+    border-bottom: 2px solid #dee2e6;
+    color: #495057;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+}
+
+.admin-table td {
+    padding: 16px 20px;
+    border-bottom: 1px solid #e9ecef;
+    vertical-align: middle;
+    color: #6c757d;
+}
+
+.admin-table tr:hover {
+    background-color: #f8fafc;
+}
+
+.admin-table tr:nth-child(even) {
+    background-color: #fafbfc;
+}
+
+.admin-table tr:nth-child(even):hover {
+    background-color: #f1f5f9;
+}
+
+/* Estilos para estados */
+.status-badge {
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.status-active {
+    background-color: rgba(40, 167, 69, 0.1);
+    color: #28a745;
+    border: 1px solid rgba(40, 167, 69, 0.3);
+}
+
+.status-inactive {
+    background-color: rgba(220, 53, 69, 0.1);
+    color: #dc3545;
+    border: 1px solid rgba(220, 53, 69, 0.3);
+}
+
+.status-pending {
+    background-color: rgba(255, 193, 7, 0.1);
+    color: #ffc107;
+    border: 1px solid rgba(255, 193, 7, 0.3);
+}
+
+/* Botones de acción */
+.action-buttons {
+    display: flex;
+    gap: 8px;
+}
+
+.btn-action {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+}
+
+.btn-action:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.btn-edit {
+    background-color: rgba(13, 110, 253, 0.1);
+    color: #0d6efd;
+}
+
+.btn-edit:hover {
+    background-color: #0d6efd;
+    color: white;
+}
+
+.btn-delete {
+    background-color: rgba(220, 53, 69, 0.1);
+    color: #dc3545;
+}
+
+.btn-delete:hover {
+    background-color: #dc3545;
+    color: white;
+}
+
+.btn-view {
+    background-color: rgba(25, 135, 84, 0.1);
+    color: #198754;
+}
+
+.btn-view:hover {
+    background-color: #198754;
+    color: white;
+}
+
+/* Paginador personalizado */
+.pagination-custom .ui-paginator {
+    background: transparent;
+    border: none;
+    padding: 20px;
+}
+
+.pagination-custom .ui-paginator-page,
+.pagination-custom .ui-paginator-prev,
+.pagination-custom .ui-paginator-next,
+.pagination-custom .ui-paginator-last,
+.pagination-custom .ui-paginator-first {
+    border-radius: 8px !important;
+    margin: 0 4px;
+    border: 1px solid #dee2e6 !important;
+}
+
+.pagination-custom .ui-paginator-page.ui-state-active {
+    background: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%) !important;
+    border-color: #4361ee !important;
+    color: white !important;
+}
+
+/* Tarjetas de estadísticas rápidas */
+.quick-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.stat-card-sm {
+    background: white;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+    display: flex;
+    align-items: center;
+    transition: all 0.3s ease;
+}
+
+.stat-card-sm:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+
+.stat-icon-sm {
+    width: 50px;
+    height: 50px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 15px;
+    font-size: 1.5rem;
+}
+
+.stat-icon-sm.primary {
+    background: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%);
+    color: white;
+}
+
+.stat-icon-sm.success {
+    background: linear-gradient(135deg, #28a745 0%, #1e7e34 100%);
+    color: white;
+}
+
+.stat-icon-sm.warning {
+    background: linear-gradient(135deg, #ffc107 0%, #e0a800 100%);
+    color: #212529;
+}
+
+.stat-icon-sm.danger {
+    background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+    color: white;
+}
+
+.stat-info-sm h4 {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.stat-info-sm p {
+    margin: 0;
+    color: #6c757d;
+    font-size: 0.85rem;
+}
+/* Estilos para PrimeFaces Growl */
+.ui-growl {
+    top: 70px !important;
+    right: 20px !important;
+    z-index: 2000 !important;
+}
+
+.ui-growl-item-container {
+    border-radius: 10px !important;
+    border: none !important;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1) !important;
+    margin-bottom: 10px !important;
+    opacity: 0.95 !important;
+    transition: all 0.3s ease !important;
+}
+
+.ui-growl-item-container:hover {
+    opacity: 1 !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15) !important;
+}
+
+.ui-growl-info {
+    background: linear-gradient(135deg, #17a2b8 0%, #0d8aa5 100%) !important;
+    color: white !important;
+    border-left: 4px solid #0d8aa5 !important;
+}
+
+.ui-growl-success {
+    background: linear-gradient(135deg, #28a745 0%, #1e7e34 100%) !important;
+    color: white !important;
+    border-left: 4px solid #1e7e34 !important;
+}
+
+.ui-growl-warn {
+    background: linear-gradient(135deg, #ffc107 0%, #e0a800 100%) !important;
+    color: #212529 !important;
+    border-left: 4px solid #e0a800 !important;
+}
+
+.ui-growl-error {
+    background: linear-gradient(135deg, #dc3545 0%, #c82333 100%) !important;
+    color: white !important;
+    border-left: 4px solid #c82333 !important;
+}
+
+.ui-growl-title {
+    font-weight: 600 !important;
+    font-size: 1rem !important;
+    margin-bottom: 5px !important;
+}
+
+.ui-growl-message {
+    font-size: 0.9rem !important;
+    opacity: 0.9 !important;
+}
+
+.ui-growl-icon-close {
+    color: rgba(255, 255, 255, 0.7) !important;
+    font-size: 1.2rem !important;
+}
+
+.ui-growl-icon-close:hover {
+    color: white !important;
+}
