@@ -211,17 +211,7 @@
 
 <h:outputScript library="bootstrap" name="js/bootstrap.bundle.min.js"/>
 
-<script>
-    // Inicializar tooltips de Bootstrap si es necesario
-    document.addEventListener('DOMContentLoaded', function() {
-        if (typeof bootstrap !== 'undefined' && bootstrap.Tooltip) {
-            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-            tooltipTriggerList.map(function (tooltipTriggerEl) {
-                return new bootstrap.Tooltip(tooltipTriggerEl);
-            });
-        }
-    });
-</script>
+<h:outputScript name="js/reporte.js" target="body"/>
 
 </h:body>
 </html>
