@@ -11,11 +11,15 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletResponse;
+import java.io.ByteArrayOutputStream;
 import models.Cliente;
 import models.TipoCliente;
 import models.enums.Estado;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import com.itextpdf.text.*;
+import com.itextpdf.text.pdf.*;
+import com.itextpdf.text.Font.FontFamily;
 import utils.MessageUtil;
 
 @ManagedBean
@@ -394,6 +398,196 @@ public class ClienteReporteBean implements Serializable {
         } catch (Exception e) {
             MessageUtil.error("Error al exportar Excel: " + e.getMessage());
         }
+    }
+    
+        // ===== EXPORTAR PDF =====
+
+    /**
+     * Exportar a PDF usando iText
+     */
+    public void exportarPDF() {
+        if (listaReporte == null || listaReporte.isEmpty()) {
+            MessageUtil.warn("No hay datos para exportar a PDF");
+            return;
+        }
+
+        try {
+            // 1. Crear documento
+            Document document = new Document(PageSize.A4.rotate()); // Horizontal
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            PdfWriter.getInstance(document, baos);
+
+            // 2. Abrir documento
+            document.open();
+
+            // 3. Agregar título
+            Font titleFont = new Font(FontFamily.HELVETICA, 16, Font.BOLD);
+            Paragraph title = new Paragraph("REPORTE DE CLIENTES", titleFont);
+            title.setAlignment(Element.ALIGN_CENTER);
+            title.setSpacingAfter(20);
+            document.add(title);
+
+            // 4. Agregar información de filtros
+            if (isFiltrosActivos()) {
+                Font filterFont = new Font(FontFamily.HELVETICA, 10, Font.ITALIC);
+                Paragraph filters = new Paragraph("Filtros aplicados: " + getResumenFiltros(), filterFont);
+                filters.setSpacingAfter(15);
+                document.add(filters);
+            }
+
+            // 5. Crear tabla
+            PdfPTable table = new PdfPTable(7); // 7 columnas
+            table.setWidthPercentage(100);
+            table.setSpacingBefore(10);
+
+            // 6. Estilo para encabezados
+            Font headerFont = new Font(FontFamily.HELVETICA, 10, Font.BOLD, BaseColor.WHITE);
+            PdfPCell headerCell;
+
+            // Encabezados
+            String[] headers = {"ID", "Nombre", "Apellido", "Email", "Tipo", "Teléfono", "Estado"};
+
+            for (String header : headers) {
+                headerCell = new PdfPCell(new Phrase(header, headerFont));
+                headerCell.setBackgroundColor(new BaseColor(59, 89, 152)); // Azul
+                headerCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+                headerCell.setPadding(5);
+                table.addCell(headerCell);
+            }
+
+            // 7. Llenar datos
+            Font dataFont = new Font(FontFamily.HELVETICA, 9);
+            Font activeFont = new Font(FontFamily.HELVETICA, 9, Font.NORMAL, BaseColor.GREEN);
+            Font inactiveFont = new Font(FontFamily.HELVETICA, 9, Font.NORMAL, BaseColor.RED);
+
+            for (Cliente cliente : listaReporte) {
+                // ID
+                table.addCell(new PdfPCell(new Phrase(
+                    String.valueOf(cliente.getIdCliente()), dataFont)));
+
+                // Nombre
+                table.addCell(new PdfPCell(new Phrase(
+                    cliente.getNombre() != null ? cliente.getNombre() : "", dataFont)));
+
+                // Apellido
+                table.addCell(new PdfPCell(new Phrase(
+                    cliente.getApellido() != null ? cliente.getApellido() : "", dataFont)));
+
+                // Email
+                table.addCell(new PdfPCell(new Phrase(
+                    cliente.getEmail() != null ? cliente.getEmail() : "", dataFont)));
+
+                // Tipo
+                String tipoNombre = (cliente.getTipoCliente() != null && 
+                                   cliente.getTipoCliente().getNombreTipo() != null) ?
+                                   cliente.getTipoCliente().getNombreTipo() : "";
+                table.addCell(new PdfPCell(new Phrase(tipoNombre, dataFont)));
+
+                // Teléfono
+                String telefono = "";
+                if (cliente.getPrefijo() != null && cliente.getNumTel() != null) {
+                    telefono = cliente.getPrefijo() + " " + cliente.getNumTel();
+                } else if (cliente.getNumTel() != null) {
+                    telefono = cliente.getNumTel();
+                }
+                table.addCell(new PdfPCell(new Phrase(telefono, dataFont)));
+
+                // Estado (con color según estado)
+                Font estadoFont = (cliente.getEstado() != null && 
+                                 cliente.getEstado().name().equals("ACTIVO")) ? 
+                                 activeFont : inactiveFont;
+                String estadoValor = cliente.getEstado() != null ? 
+                    cliente.getEstado().getValor() : "";
+                table.addCell(new PdfPCell(new Phrase(estadoValor, estadoFont)));
+            }
+
+            // 8. Agregar tabla al documento
+            document.add(table);
+
+            // 9. Agregar pie de página
+            Font footerFont = new Font(FontFamily.HELVETICA, 8, Font.ITALIC);
+            Paragraph footer = new Paragraph(
+                "Generado el " + LocalDate.now() + " - Total: " + listaReporte.size() + " clientes", 
+                footerFont);
+            footer.setAlignment(Element.ALIGN_RIGHT);
+            footer.setSpacingBefore(20);
+            document.add(footer);
+
+            // 10. Cerrar documento
+            document.close();
+
+            // 11. Preparar respuesta HTTP
+            FacesContext context = FacesContext.getCurrentInstance();
+            HttpServletResponse response = (HttpServletResponse) 
+                context.getExternalContext().getResponse();
+
+            String nombreArchivo = "reporte_clientes_" + LocalDate.now() + ".pdf";
+            response.setContentType("application/pdf");
+            response.setHeader("Content-Disposition", 
+                "attachment; filename=\"" + nombreArchivo + "\"");
+            response.setContentLength(baos.size());
+
+            // 12. Escribir PDF en respuesta
+            response.getOutputStream().write(baos.toByteArray());
+            response.getOutputStream().flush();
+
+            context.responseComplete();
+
+            MessageUtil.success("Reporte PDF exportado correctamente: " + nombreArchivo);
+
+        } catch (Exception e) {
+            MessageUtil.error("Error al exportar PDF: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Exportar PDF con nombre personalizado
+     */
+    public void exportarPDFPersonalizado() {
+        if (listaReporte == null || listaReporte.isEmpty()) {
+            MessageUtil.warn("No hay datos para exportar a PDF");
+            return;
+        }
+
+        try {
+            String nombreBase = "reporte_clientes";
+
+            if (estadoFiltro != null) {
+                nombreBase += "_" + estadoFiltro.name().toLowerCase();
+            }
+
+            if (idTipoClienteFiltro != null) {
+                nombreBase += "_tipo" + idTipoClienteFiltro;
+            }
+
+            if (fechaDesde != null) {
+                nombreBase += "_desde_" + fechaDesde;
+            }
+
+            if (fechaHasta != null) {
+                nombreBase += "_hasta_" + fechaHasta;
+            }
+
+            if (!isFiltrosActivos()) {
+                nombreBase += "_completo";
+            }
+
+            String nombreArchivo = nombreBase + "_" + LocalDate.now() + ".pdf";
+
+            // Llamar al método principal con nombre personalizado
+            exportarPDFConNombre(nombreArchivo);
+
+        } catch (Exception e) {
+            MessageUtil.error("Error al exportar PDF personalizado: " + e.getMessage());
+        }
+    }
+
+    // Método auxiliar para exportar con nombre específico
+    private void exportarPDFConNombre(String nombreArchivo) {
+        // Implementación similar a exportarPDF() pero con nombreArchivo personalizado
+        // Copia el código de exportarPDF() y cambia solo el nombre del archivo
+        exportarPDF(); // Por ahora usamos el mismo
     }
 
     // ===== ENUMS PARA LA VISTA =====

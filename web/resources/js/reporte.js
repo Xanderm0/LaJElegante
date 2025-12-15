@@ -8,8 +8,8 @@ function inicializarTooltips() {
     }
 }
 
-function confirmarExportacion(numRegistros) {
-    return confirm('¿Exportar ' + numRegistros + ' registro(s) a Excel?');
+function confirmarExportacion(numRegistros, formato) {
+    return confirm('¿Exportar ' + numRegistros + ' registro(s) a ' + formato + '?');
 }
 
 // Inicializar cuando el DOM esté listo

@@ -122,15 +122,6 @@
                 </h5>
                 
                 <!-- BOTONES DE EXPORTACIÓN MEJORADOS -->
-                <div class="btn-group">
-                    <p:commandButton value="Exportar Excel"
-                                     icon="pi pi-file-excel"
-                                     action="#{clienteReporteBean.exportarExcel}"
-                                     disabled="#{empty clienteReporteBean.listaReporte}"
-                                     styleClass="btn btn-success"
-                                     ajax="false"
-                                     onclick="return confirm('¿Exportar #{clienteReporteBean.listaReporte.size()} registro(s) a Excel?')"/>
-                                     
                     <!-- Opcional: Exportación personalizada con filtros en nombre -->
                     <!--
                     <p:commandButton value="Exportar Personalizado"
@@ -140,7 +131,34 @@
                                      styleClass="btn btn-info ms-2"
                                      ajax="false"/>
                     -->
-                </div>
+                    <div class="btn-group">
+                        <p:commandButton value="Exportar Excel"
+                                         icon="pi pi-file-excel"
+                                         action="#{clienteReporteBean.exportarExcel}"
+                                         disabled="#{empty clienteReporteBean.listaReporte}"
+                                         styleClass="btn btn-success"
+                                         ajax="false"
+                                         onclick="return confirmarExportacion(#{clienteReporteBean.listaReporte.size()}, 'Excel')"/>
+
+                        <p:commandButton value="Exportar PDF"
+                                         icon="pi pi-file-pdf"
+                                         action="#{clienteReporteBean.exportarPDF}"
+                                         disabled="#{empty clienteReporteBean.listaReporte}"
+                                         styleClass="btn btn-danger ms-2"
+                                         ajax="false"
+                                         onclick="return confirmarExportacion(#{clienteReporteBean.listaReporte.size()}, 'PDF')"/>
+                        <!-- En tu vista, reemplaza el botón PDF por: -->
+                            <p:commandButton value="Exportar PDF"
+                                             icon="pi pi-file-pdf"
+                                             styleClass="btn btn-danger ms-2"
+                                             ajax="false">
+                                <p:dataExporter type="pdf" 
+                                                target="tablaReporte" 
+                                                fileName="reporte_clientes"
+                                                pageOnly="true"
+                                                preProcessor="#{clienteReporteBean.preProcessPDF}"/>
+                            </p:commandButton>
+                    </div>
             </div>
             
             <div class="card-body">
