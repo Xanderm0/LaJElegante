@@ -79,8 +79,12 @@ public class ClienteBean implements Serializable {
     public void listar() {
         try {
             listaClientes = clienteDAO.listar();
+            if (listaClientes == null) {
+                listaClientes = new ArrayList<>();
+            }
         } catch (Exception e) {
             MessageUtil.error("Error al listar clientes: " + e.getMessage());
+            listaClientes = new ArrayList<>();
         }
     }
 
@@ -164,16 +168,20 @@ public class ClienteBean implements Serializable {
             MessageUtil.error("Error al restaurar cliente: " + e.getMessage());
         }
     }
-
+    
     // ===== AUX =====
     public void cargarTiposCliente() {
         try {
             listaTipos = tipoClienteDAO.listar();
+            if (listaTipos == null) {
+                listaTipos = new ArrayList<>();
+            }
         } catch (Exception e) {
             MessageUtil.error("Error al cargar tipos de cliente: " + e.getMessage());
+            listaTipos = new ArrayList<>();
         }
     }
-
+    
     private boolean validarCliente() {
         boolean valido = true;
         
@@ -268,5 +276,9 @@ public class ClienteBean implements Serializable {
 
     public Estado[] getEstados() {
         return Estado.values();
+    }
+    
+    public int getCantidadEliminados() {
+        return clienteDAO.contarEliminados();
     }
 }

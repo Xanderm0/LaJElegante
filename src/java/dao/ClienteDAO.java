@@ -382,7 +382,32 @@ public int contarClientes() {
 
         return c;
     }
+    
+    
+    public int contarEliminados() {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        int count = 0;
 
+        try {
+            conn = ConectarBD.conectar();
+            String sql = "SELECT COUNT(*) FROM clientes WHERE deleted_at IS NOT NULL";
+            ps = conn.prepareStatement(sql);
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                count = rs.getInt(1);
+            }
+
+        } catch (SQLException e) {
+            System.err.println("ClienteDAO.contarEliminados: " + e.getMessage());
+        } finally {
+            cerrarRecursos(conn, ps, rs);
+        }
+
+        return count;
+    }
     /* ===================== REPORTE ===================== */
 
     public List<Cliente> listarReporte(
