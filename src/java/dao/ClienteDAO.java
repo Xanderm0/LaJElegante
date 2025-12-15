@@ -434,7 +434,38 @@ public int contarClientes() {
 
         return lista;
     }
-    /* ===================== MAPPER ===================== */
+    
+    public int contarClientesNuevosUltimos30Dias() {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        int total = 0;
+
+        try {
+            conn = ConectarBD.conectar();
+            if (conn == null) return 0;
+
+            String sql = "SELECT COUNT(*) FROM clientes " +
+                        "WHERE created_at >= DATE_SUB(CURDATE(), INTERVAL 30 DAY) " +
+                        "AND deleted_at IS NULL " +
+                        "AND estado = 'activo'";
+
+            ps = conn.prepareStatement(sql);
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                total = rs.getInt(1);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            ConectarBD.cerrarConexion(conn, ps, rs);
+        }
+
+        return total;
+    }
+        /* ===================== MAPPER ===================== */
     private Cliente mapearResultSet(ResultSet rs) throws SQLException {
         Cliente c = new Cliente();
 

@@ -404,7 +404,103 @@ public class ReservaHabitacionDAO extends BaseDAO<ReservaHabitacion> {
             cerrarRecursos(null, null, rs);
         }
     }
+    
+    // Métodos para el Dashboard - JDBC
+    public int contarReservasHoy() {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
 
+        try {
+            conn = ConectarBD.conectar();
+            if (conn == null) return 0;
+
+            // Usando CURDATE() en lugar de CURRENT_DATE para MySQL
+            String sql = "SELECT COUNT(*) FROM reserva_habitacion " +
+                        "WHERE DATE(created_at) = CURDATE() " +
+                        "AND deleted_at IS NULL";
+
+            ps = conn.prepareStatement(sql);
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            ConectarBD.cerrarConexion(conn, ps, rs);
+        }
+        return 0;
+    }
+
+    public int contarReservasUltimos30Dias() {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        try {
+            conn = ConectarBD.conectar();
+            if (conn == null) return 0;
+
+            // DATE_SUB para restar 30 días
+            String sql = "SELECT COUNT(*) FROM reserva_habitacion " +
+                        "WHERE created_at >= DATE_SUB(CURDATE(), INTERVAL 30 DAY) " +
+                        "AND deleted_at IS NULL";
+
+            ps = conn.prepareStatement(sql);
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            ConectarBD.cerrarConexion(conn, ps, rs);
+        }
+        return 0;
+    }
+
+    public List<Object[]> reservasPorMesAnioActual() {
+        List<Object[]> lista = new ArrayList<>();
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        try {
+            conn = ConectarBD.conectar();
+            if (conn == null) return lista;
+
+            // Ajustando para usar YEAR(CURDATE()) y MONTH()
+            String sql = 
+                "SELECT MONTH(created_at) AS mes, COUNT(*) AS total " +
+                "FROM reserva_habitacion " +
+                "WHERE YEAR(created_at) = YEAR(CURDATE()) " +
+                "AND deleted_at IS NULL " +
+                "GROUP BY MONTH(created_at) " +
+                "ORDER BY mes";
+
+            ps = conn.prepareStatement(sql);
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                lista.add(new Object[]{
+                    rs.getInt("mes"),
+                    rs.getInt("total")
+                });
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            ConectarBD.cerrarConexion(conn, ps, rs);
+        }
+
+        return lista;
+    }
     private ReservaHabitacion mapearResultSet(ResultSet rs) throws SQLException {
         ReservaHabitacion r = new ReservaHabitacion();
         r.setIdReservaHabitacion(rs.getInt("id_reserva_habitacion"));

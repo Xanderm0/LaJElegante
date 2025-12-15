@@ -316,6 +316,36 @@ public class DetallesReservaHabitacionDAO extends BaseDAO<DetallesReservaHabitac
         }
         return lista;
     }
+    
+    public double calcularIngresosHoy() {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        double total = 0.0;
+
+        try {
+            conn = ConectarBD.conectar();
+            if (conn == null) return 0.0;
+
+            String sql = "SELECT SUM(precio_total) FROM detalles_reserva_habitacion " +
+                        "WHERE DATE(created_at) = CURDATE() " +
+                        "AND deleted_at IS NULL";
+
+            ps = conn.prepareStatement(sql);
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                total = rs.getDouble(1);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            ConectarBD.cerrarConexion(conn, ps, rs);
+        }
+
+        return total;
+    }
 
     private DetallesReservaHabitacion mapearResultSet(ResultSet rs) throws SQLException {
 

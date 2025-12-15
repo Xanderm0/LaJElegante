@@ -142,7 +142,7 @@ public class HabitacionDAO extends BaseDAO<Habitacion> {
 
         String sql =
             "SELECT COUNT(*) FROM habitaciones " +
-            "WHERE estado = 'OCUPADA' AND deleted_at IS NULL";
+            "WHERE estado_habitacion  = 'ocupada' AND deleted_at IS NULL";
 
         ps = conn.prepareStatement(sql);
         rs = ps.executeQuery();
@@ -385,6 +385,46 @@ public class HabitacionDAO extends BaseDAO<Habitacion> {
 
         return habitaciones;
     }
+    
+    
+    // Métodos adicionales para el Dashboard
+    public int contarHabitacionesDisponibles() {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        try {
+            conn = ConectarBD.conectar();
+            if (conn == null) return 0;
+
+            String sql = "SELECT COUNT(*) FROM habitaciones " +
+                        "WHERE estado_habitacion = 'disponible' " +
+                        "AND deleted_at IS NULL";
+
+            ps = conn.prepareStatement(sql);
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            ConectarBD.cerrarConexion(conn, ps, rs);
+        }
+
+        return 0;
+    }
+
+    public double calcularOcupacionPorcentaje() {
+        int total = contarHabitaciones();
+        if (total == 0) return 0.0;
+
+        int ocupadas = contarHabitacionesOcupadas();
+        return (ocupadas * 100.0) / total;
+    }
+    
     
     private Habitacion mapearResultSet(ResultSet rs) throws SQLException {
         Habitacion h = new Habitacion();
