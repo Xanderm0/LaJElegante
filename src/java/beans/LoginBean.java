@@ -36,7 +36,7 @@ public class LoginBean implements Serializable {
                     usuarioLogueado = cliente;
                     guardarEnSesion(cliente, "CLIENTE");
                     MessageUtil.loginSuccess(cliente.getNombre());
-                    return "/views/cliente/dashboard?faces-redirect=true";
+                    return "/views/cliente/dashboard/index?faces-redirect=true";
                 }
             }
 
@@ -52,17 +52,17 @@ public class LoginBean implements Serializable {
 
                     switch(rol) {
                         case "administrador":
-                            return "/views/empleado/admin/dashboard?faces-redirect=true";
+                            return "/views/empleado/admin/dashboard/index?faces-redirect=true";
                         case "gerente_general":
-                            return "/views/empleado/gerente_general/dashboard?faces-redirect=true";
+                            return "/views/empleado/gerente_general/dashboard/index?faces-redirect=true";
                         case "gerente_habitaciones":
-                            return "/views/empleado/gerente_habitaciones/dashboard?faces-redirect=true";
+                            return "/views/empleado/gerente_habitaciones/dashboard/index?faces-redirect=true";
                         case "gerente_alimentos":
-                            return "/views/empleado/gerente_alimentos/dashboard?faces-redirect=true";
+                            return "/views/empleado/gerente_alimentos/dashboard/index?faces-redirect=true";
                         case "recepcionista":
-                            return "/views/empleado/recepcionista/dashboard?faces-redirect=true";
+                            return "/views/empleado/recepcionista/dashboard/index?faces-redirect=true";
                         case "asistente_administrativo":
-                            return "/views/empleado/asistente/dashboard?faces-redirect=true";
+                            return "/views/empleado/asistente/dashboard/index?faces-redirect=true";
                         default:
                             MessageUtil.warn("Rol no configurado", "Redirigiendo al lobby principal");
                             return "/views/hotel/lobby?faces-redirect=true";
