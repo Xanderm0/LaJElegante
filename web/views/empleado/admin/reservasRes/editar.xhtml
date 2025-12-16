@@ -1,117 +1,15 @@
-<?xml version='1.0' encoding='UTF-8' ?>
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit this template
+-->
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:p="http://primefaces.org/ui"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
-
-<h:head>
-    <title>Editar Reserva</title>
-     <h:outputStylesheet library="bootstrap" name="css/bootstrap.min.css" />
-</h:head>
-
-<h:body>
-
-<h:form id="formEditReserva">
-
-    <p:panel header="Editar Reserva" style="width:650px; margin:auto;">
-
-        <p:messages autoUpdate="true" closable="true" />
-
-        <!-- CLIENTE -->
-        <p:outputLabel value="Cliente:" for="cliente" />
-        <p:selectOneMenu id="cliente"
-                         value="#{reservaController.reserva.idCliente}"
-                         required="true"
-                         style="width:100%">
-            <f:selectItem itemLabel="Seleccione un cliente" itemValue="" />
-            <f:selectItems value="#{reservaController.listaClientes}"
-                           var="c"
-                           itemLabel="#{c.nombre} #{c.apellido}"
-                           itemValue="#{c.idCliente}" />
-        </p:selectOneMenu>
-
-        <br/><br/>
-
-        <!-- MESA -->
-        <p:outputLabel value="Mesa:" for="mesa" />
-        <p:selectOneMenu id="mesa"
-                         value="#{reservaController.reserva.idMesa}"
-                         required="true"
-                         style="width:100%">
-            <f:selectItem itemLabel="Seleccione una mesa" itemValue="" />
-            <f:selectItems value="#{reservaController.listaMesas}"
-                           var="m"
-                           itemLabel="Mesa #{m.numeroMesa} (Cap: #{m.capacidad})"
-                           itemValue="#{m.idMesa}" />
-        </p:selectOneMenu>
-
-        <br/><br/>
-
-        <!-- FECHA -->
-        <p:outputLabel value="Fecha reserva:" for="fecha" />
-        <p:calendar id="fecha"
-                    value="#{reservaController.reserva.fecha}"
-                    pattern="yyyy-MM-dd"
-                    required="true" />
-
-        <br/><br/>
-
-        <!-- HORA -->
-        <p:outputLabel value="Hora reserva:" for="hora" />
-        <p:calendar id="hora"
-                    value="#{reservaController.reserva.hora}"
-                    pattern="HH:mm"
-                    timeOnly="true"
-                    required="true" />
-
-        <br/><br/>
-
-        <!-- NÚMERO PERSONAS -->
-        <p:outputLabel value="Número de personas:" for="personas" />
-        <p:spinner id="personas"
-                   value="#{reservaController.reserva.numeroPersonas}"
-                   min="1"
-                   required="true" />
-
-        <br/><br/>
-
-        <!-- ESTADO -->
-        <p:outputLabel value="Estado reserva:" for="estado" />
-        <p:selectOneMenu id="estado"
-                         value="#{reservaController.reserva.estado}"
-                         required="true">
-            <f:selectItem itemLabel="Pendiente" itemValue="pendiente"/>
-            <f:selectItem itemLabel="Confirmada" itemValue="confirmada"/>
-            <f:selectItem itemLabel="Cancelada" itemValue="cancelada"/>
-        </p:selectOneMenu>
-
-        <br/><br/>
-
-        <!-- ACTIVO -->
-        <p:outputLabel value="Activo:" for="activo" />
-        <p:selectOneMenu id="activo"
-                         value="#{reservaController.reserva.activo}"
-                         required="true">
-            <f:selectItem itemLabel="Sí" itemValue="1"/>
-            <f:selectItem itemLabel="No" itemValue="0"/>
-        </p:selectOneMenu>
-
-        <br/><br/><br/>
-
-        <!-- BOTONES -->
-        <p:commandButton value="Actualizar"
-                         action="#{reservaController.actualizar()}"
-                         update="formEditReserva"
-                         styleClass="ui-button-primary" />
-
-        <p:commandButton value="Cancelar"
-                         action="#{reservaController.irListado()}"
-                         styleClass="ui-button-secondary" />
-
-    </p:panel>
-
-</h:form>
-<h:outputScript library="bootstrap" name="js/bootstrap.bundle.min.js" />
-</h:body>
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <title>TODO supply a title</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </head>
+    <body>
+        <div>TODO write content</div>
+    </body>
 </html>

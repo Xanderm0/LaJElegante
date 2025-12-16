@@ -1,92 +1,15 @@
-<?xml version='1.0' encoding='UTF-8' ?>
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit this template
+-->
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:p="http://primefaces.org/ui"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
-
-<h:head>
-    <title>Tipos de Cliente</title>
-    <h:outputStylesheet library="bootstrap" name="css/bootstrap.min.css" />
-</h:head>
-
-<h:body>
-
-<h:form id="formTipos">
-
-    <h1>Tipos de Cliente</h1>
-
-    <p:messages />
-
-    <p:commandButton value="+ Nuevo Tipo de Cliente"
-                     icon="pi pi-plus"
-                     action="#{tipoClienteBean.irCrear}"
-                     style="margin-bottom:10px" />
-
-    <p:dataTable value="#{tipoClienteBean.listaTipos}"
-                 var="tc"
-                 emptyMessage="No hay tipos de cliente registrados"
-                 styleClass="table table-bordered table-striped">
-
-        <p:column headerText="ID">
-            #{tc.id_tipo_cliente}
-        </p:column>
-
-        <p:column headerText="Nombre del Tipo">
-            #{tc.nombre_tipo}
-        </p:column>
-
-        <p:column headerText="Acciones">
-
-            <!-- Botón para editar -->
-            <p:commandButton value="Editar"
-                             icon="pi pi-pencil"
-                             styleClass="ui-button-warning"
-                             update=":formModal"
-                             actionListener="#{tipoClienteBean.cargarEditar(tc)}"
-                             oncomplete="PF('modalEditar').show()" />
-
-            <!-- Botón eliminar -->
-            <p:commandButton value="Eliminar"
-                             icon="pi pi-trash"
-                             styleClass="ui-button-danger"
-                             action="#{tipoClienteBean.eliminar(tc.id_tipo_cliente)}"
-                             update="@form"
-                             onclick="return confirm('¿Seguro que deseas eliminar este tipo de cliente?')" />
-
-        </p:column>
-
-    </p:dataTable>
-
-</h:form>
-
-<!-- MODAL EDITAR -->
-<p:dialog widgetVar="modalEditar"
-          modal="true"
-          header="Editar Tipo de Cliente"
-          closable="true">
-
-    <h:form id="formModal">
-
-        <p:outputLabel value="Nombre del Tipo"/>
-        <p:inputText value="#{tipoClienteBean.tipoEditar.nombre_tipo}" required="true"/>
-
-        <br/><br/>
-
-        <p:commandButton value="Guardar Cambios"
-                         icon="pi pi-check"
-                         update=":formTipos @form"
-                         action="#{tipoClienteBean.actualizar()}"
-                         oncomplete="PF('modalEditar').hide()" />
-
-        <p:commandButton value="Cancelar"
-                         icon="pi pi-times"
-                         styleClass="ui-button-secondary"
-                         onclick="PF('modalEditar').hide()"
-                         type="button"/>
-    </h:form>
-
-</p:dialog>
-<h:outputScript library="bootstrap" name="js/bootstrap.bundle.min.js" />
-</h:body>
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <title>TODO supply a title</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </head>
+    <body>
+        <div>TODO write content</div>
+    </body>
 </html>

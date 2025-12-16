@@ -1,104 +1,15 @@
-<?xml version='1.0' encoding='UTF-8' ?>
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit this template
+-->
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
-
-<h:head>
-    <title>Nuevo Cliente</title>
-     <h:outputStylesheet library="bootstrap" name="css/bootstrap.min.css" />
-</h:head>
-
-<h:body>
-
-<h:form id="formCliente">
-
-    <p:card header="Nuevo Cliente">
-
-        <p:messages showSummary="true" closable="true"/>
-
-        <p:panelGrid columns="2" columnClasses="label,value" style="width:100%">
-
-            <!-- Nombre -->
-            <p:outputLabel value="Nombre:" for="nombre"/>
-            <p:inputText id="nombre" value="#{clienteBean.nombre}" required="true"/>
-            <p:message for="nombre"/>
-
-            <!-- Apellido -->
-            <p:outputLabel value="Apellido:" for="apellido"/>
-            <p:inputText id="apellido" value="#{clienteBean.apellido}" required="true"/>
-            <p:message for="apellido"/>
-
-            <!-- Email -->
-            <p:outputLabel value="Email:" for="email"/>
-            <p:inputText id="email" value="#{clienteBean.email_info}" required="true"
-                         placeholder="correo@dominio.com"/>
-            <p:message for="email"/>
-
-            <!-- Tipo Cliente -->
-            <p:outputLabel value="Tipo Cliente:" for="tipo"/>
-            <p:selectOneMenu id="tipo" value="#{clienteBean.id_tipo_cliente}" required="true">
-                <f:selectItem itemLabel="Seleccione un tipo" itemValue=""/>
-                <f:selectItems value="#{clienteBean.tipos}"
-                               var="tipo"
-                               itemValue="#{tipo.id_tipo_cliente}"
-                               itemLabel="#{tipo.nombre_tipo}"/>
-            </p:selectOneMenu>
-            <p:message for="tipo"/>
-
-            <!-- Prefijo -->
-            <p:outputLabel value="Prefijo:" for="prefijo"/>
-            <p:inputText id="prefijo" value="#{clienteBean.prefijo_telefono}"/>
-            <p:message for="prefijo"/>
-
-            <!-- Teléfono -->
-            <p:outputLabel value="Teléfono:" for="telefono"/>
-            <p:inputText id="telefono" value="#{clienteBean.numero_telefono}"/>
-            <p:message for="telefono"/>
-
-            <!-- Contraseña -->
-            <p:outputLabel value="Contraseña:" for="contrasena" />
-            <p:password id="contrasena"
-                        value="#{clienteBean.contrasena}"
-                        required="true"
-                        promptLabel="Mínimo 8 caracteres"
-                        feedback="true"/>
-            <p:message for="contrasena"/>
-
-            <!-- Confirmación contraseña -->
-            <p:outputLabel value="Confirmar Contraseña:" for="confirmacion"/>
-            <p:password id="confirmacion"
-                        value="#{clienteBean.contrasena_confirmation}"
-                        required="true"/>
-            <p:message for="confirmacion"/>
-
-            <!-- Estado -->
-            <p:outputLabel value="Estado:" for="estado"/>
-            <p:selectOneMenu id="estado" value="#{clienteBean.estado}">
-                <f:selectItem itemLabel="Activo" itemValue="activo"/>
-                <f:selectItem itemLabel="Inactivo" itemValue="inactivo"/>
-            </p:selectOneMenu>
-            <p:message for="estado"/>
-
-        </p:panelGrid>
-
-        <br/>
-
-        <!-- Botones -->
-        <p:commandButton value="Guardar" 
-                         action="#{clienteBean.guardar}"
-                         update="@form"
-                         styleClass="ui-button-success"/>
-
-        <p:commandButton value="Cancelar"
-                         action="clientes.xhtml?faces-redirect=true"
-                         immediate="true"
-                         styleClass="ui-button-secondary"/>
-
-    </p:card>
-
-</h:form>
-<h:outputScript library="bootstrap" name="js/bootstrap.bundle.min.js" />
-</h:body>
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <title>TODO supply a title</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </head>
+    <body>
+        <div>TODO write content</div>
+    </body>
 </html>

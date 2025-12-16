@@ -1,125 +1,15 @@
-<?xml version='1.0' encoding='UTF-8' ?>
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit this template
+-->
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:p="http://primefaces.org/ui"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
-
-<h:head>
-    <title>Listado de Reservas</title>
-     <h:outputStylesheet library="bootstrap" name="css/bootstrap.min.css" />
-</h:head>
-
-<h:body>
-
-<h:form id="formReserva">
-
-    <p:growl id="msg" life="3000" />
-
-    <h1>Listado de Reservas</h1>
-
-    <!-- BOTÓN CREAR -->
-    <p:commandButton value="Nueva Reserva"
-                     action="#{reservaController.irCrear()}"
-                     icon="pi pi-plus"
-                     styleClass="ui-button-success" />
-
-    <!-- BOTONES DE EXPORTAR -->
-    <p:commandButton value="Exportar Excel"
-                     icon="pi pi-file-excel"
-                     actionListener="#{reservaController.exportarExcel}" />
-
-    <p:commandButton value="Exportar PDF"
-                     icon="pi pi-file-pdf"
-                     actionListener="#{reservaController.exportarPDF}"
-                     styleClass="ui-button-danger" />
-
-    <br/><br/>
-
-    <!-- FILTRO MOSTRAR OCULTOS -->
-    <h:panelGroup>
-        <h:outputText value="Mostrar reservas ocultas" />
-        <p:selectBooleanCheckbox value="#{reservaController.mostrarOcultos}">
-            <p:ajax update="tabla" listener="#{reservaController.filtrarReservas}" />
-        </p:selectBooleanCheckbox>
-    </h:panelGroup>
-
-    <br/><br/>
-
-    <p:dataTable id="tabla"
-                 value="#{reservaController.listaReservas}"
-                 var="r"
-                 paginator="true"
-                 rows="10"
-                 emptyMessage="No hay reservas registradas"
-                 responsiveLayout="scroll"
-                 style="width:100%">
-
-        <p:column headerText="ID">
-            <h:outputText value="#{r.idReserva}" />
-        </p:column>
-
-        <p:column headerText="Cliente">
-            <h:outputText value="#{r.cliente != null ? r.cliente.nombre.concat(' ').concat(r.cliente.apellido) : 'Anónimo'}" />
-        </p:column>
-
-        <p:column headerText="Mesa">
-            <h:outputText value="Mesa #{r.mesa.numeroMesa}" />
-        </p:column>
-
-        <p:column headerText="Fecha">
-            <h:outputText value="#{r.fecha}" />
-        </p:column>
-
-        <p:column headerText="Hora">
-            <h:outputText value="#{r.hora}" />
-        </p:column>
-
-        <p:column headerText="# Personas">
-            <h:outputText value="#{r.numeroPersonas}" />
-        </p:column>
-
-        <p:column headerText="Estado">
-            <h:outputText value="#{r.estado}" />
-        </p:column>
-
-        <p:column headerText="Activo">
-            <h:outputText value="#{r.activo == 1 ? 'Sí' : 'No'}" />
-        </p:column>
-
-        <!-- ACCIONES -->
-        <p:column headerText="Acciones">
-
-            <p:commandButton value="Ver"
-                             icon="pi pi-eye"
-                             action="#{reservaController.ver(r.idReserva)}" />
-
-            <p:commandButton value="Editar"
-                             icon="pi pi-pencil"
-                             styleClass="ui-button-warning"
-                             action="#{reservaController.editar(r.idReserva)}" />
-
-            <!-- BOTÓN OCULTAR -->
-            <p:commandButton rendered="#{r.activo == 1}"
-                             value="Eliminar"
-                             icon="pi pi-trash"
-                             styleClass="ui-button-danger"
-                             action="#{reservaController.ocultar(r.idReserva)}"
-                             update="tabla msg" />
-
-            <!-- BOTÓN RESTAURAR -->
-            <p:commandButton rendered="#{r.activo == 0}"
-                             value="Restaurar"
-                             icon="pi pi-refresh"
-                             styleClass="ui-button-success"
-                             action="#{reservaController.mostrar(r.idReserva)}"
-                             update="tabla msg" />
-
-        </p:column>
-
-    </p:dataTable>
-
-</h:form>
-<h:outputScript library="bootstrap" name="js/bootstrap.bundle.min.js" />
-</h:body>
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <title>TODO supply a title</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </head>
+    <body>
+        <div>TODO write content</div>
+    </body>
 </html>

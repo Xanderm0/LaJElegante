@@ -1,44 +1,15 @@
-<?xml version='1.0' encoding='UTF-8' ?>
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:p="http://primefaces.org/ui">
-    <h:head>
-        <title>crear cliente</title>
-        <h:outputStylesheet library="bootstrap" name="css/bootstrap.min.css" />
-    </h:head>
-<h:body>
-
-    <h:form>
-        <div class="card">
-            <h2>Crear Tipo de Cliente</h2>
-
-            <!-- Mostrar mensajes -->
-            <p:messages id="msgs" closable="true" showDetail="true" />
-
-            <p:panelGrid columns="2" columnClasses="label,value">
-
-                <h:outputText value="Nombre del tipo:" />
-
-                <p:inputText value="#{tipoClienteBean.nombreTipo}" 
-                             required="true"
-                             maxlength="50"
-                             requiredMessage="El nombre es obligatorio"
-                             placeholder="Ej: Cliente VIP"/>
-            </p:panelGrid>
-
-            <br/>
-
-            <p:commandButton value="Guardar"
-                             action="#{tipoClienteBean.guardar}"
-                             update="msgs" 
-                             styleClass="ui-button-success"/>
-
-            <p:commandButton value="Cancelar"
-                             styleClass="ui-button-secondary"
-                             action="#{tipoClienteBean.volver}" />
-
-        </div>
-    </h:form>
-<h:outputScript library="bootstrap" name="js/bootstrap.bundle.min.js" />
-</h:body>
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit this template
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <title>TODO supply a title</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </head>
+    <body>
+        <div>TODO write content</div>
+    </body>
 </html>

@@ -1,129 +1,15 @@
-<?xml version='1.0' encoding='UTF-8' ?>
-<?xml version='1.0' encoding='UTF-8' ?>
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit this template
+-->
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:p="http://primefaces.org/ui"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
-
-<h:head>
-    <title>Listado de Tipos de Habitación</title>
-       <h:outputStylesheet library="bootstrap" name="css/bootstrap.min.css" />
-</h:head>
-
-<h:body>
-
-<h:form id="formListado">
-
-    <div style="display:flex; justify-content:space-between;">
-        <h2>Listado de Tipos de Habitación</h2>
-
-        <p:commandButton value="+ Nuevo"
-                         icon="pi pi-plus"
-                         action="#{tipoHabitacionBean.irCrear}"/>
-    </div>
-
-    <p:messages />
-
-    <p:dataTable value="#{tipoHabitacionBean.listaTipos}" var="t"
-                 styleClass="table table-striped table-bordered"
-                 paginator="true" rows="10">
-
-        <p:column headerText="ID">
-            #{t.id_tipo_habitacion}
-        </p:column>
-
-        <p:column headerText="Nombre">
-            #{t.nombre_tipo}
-        </p:column>
-
-        <p:column headerText="Descripción">
-            #{t.descripcion}
-        </p:column>
-
-        <p:column headerText="Capacidad">
-            #{t.capacidad_maxima}
-        </p:column>
-
-        <p:column headerText="Acciones">
-
-            <!-- EDITAR abre modal -->
-            <p:commandButton value="Editar"
-                             icon="pi pi-pencil"
-                             styleClass="ui-button-warning"
-                             process="@this"
-                             update=":formEditar"
-                             oncomplete="PF('editDialog').show()"
-                             action="#{tipoHabitacionBean.prepararEdicion(t)}"/>
-
-            <!-- ELIMINAR -->
-            <p:commandButton value="Eliminar"
-                             icon="pi pi-trash"
-                             styleClass="ui-button-danger"
-                             action="#{tipoHabitacionBean.eliminar(t.id_tipo_habitacion)}"
-                             update="@form"
-                             onclick="return confirm('¿Seguro que deseas eliminar?');"/>
-
-        </p:column>
-
-    </p:dataTable>
-
-</h:form>
-
-<!-- DIALOG EDITAR -->
-<p:dialog widgetVar="editDialog"
-          modal="true"
-          resizable="false"
-          header="Editar Tipo de Habitación"
-          closable="true">
-
-    <h:form id="formEditar">
-
-        <!-- Nombre -->
-        <p:outputLabel value="Nombre" for="nombreEdit"/>
-
-        <p:selectOneMenu id="nombreEdit"
-                         value="#{tipoHabitacionBean.tipoHabitacion.nombre_tipo}"
-                         required="true">
-            <f:selectItem itemValue="familiar" itemLabel="Familiar"/>
-            <f:selectItem itemValue="pareja" itemLabel="Pareja"/>
-            <f:selectItem itemValue="basica" itemLabel="Básica"/>
-            <f:selectItem itemValue="especial" itemLabel="Especial"/>
-        </p:selectOneMenu>
-
-        <br/><br/>
-
-        <!-- Descripción -->
-        <p:outputLabel value="Descripción" for="descripcionEdit"/>
-
-        <p:inputTextarea id="descripcionEdit"
-                         rows="3"
-                         value="#{tipoHabitacionBean.tipoHabitacion.descripcion}"/>
-        <br/><br/>
-
-        <!-- Capacidad -->
-        <p:outputLabel value="Capacidad Máxima" for="capacidadEdit"/>
-
-        <p:inputNumber id="capacidadEdit"
-                       value="#{tipoHabitacionBean.tipoHabitacion.capacidad_maxima}"
-                       required="true"/>
-        <br/><br/>
-
-        <!-- Botones -->
-        <p:commandButton value="Guardar Cambios"
-                         icon="pi pi-check"
-                         action="#{tipoHabitacionBean.actualizar}"
-                         update=":formListado"
-                         oncomplete="PF('editDialog').hide()"/>
-
-        <p:commandButton value="Cancelar"
-                         styleClass="ui-button-secondary"
-                         icon="pi pi-times"
-                         onclick="PF('editDialog').hide();return false;"/>
-
-    </h:form>
-
-</p:dialog>
-<h:outputScript library="bootstrap" name="js/bootstrap.bundle.min.js" />
-</h:body>
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <title>TODO supply a title</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </head>
+    <body>
+        <div>TODO write content</div>
+    </body>
 </html>
